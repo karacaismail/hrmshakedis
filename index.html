@@ -6,8 +6,9 @@
 <title>hrmshakedis — Yazılım Geliştirme Teklifi &amp; Waterfall Proje Planı</title>
 <meta name="description" content="Asgari İşçilik & Hakediş Uyum Platformu: yazılım geliştirme teklifi, canlı waterfall planı ve parametreler. Veriler Google Sheets'ten canlı okunur.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Roboto,sans-serif'>h</text></svg>">
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -215,6 +216,26 @@ table{font-size:1rem}
 </section>
 </main>
 
+<!-- MODÜL DETAY MODALI -->
+<div id="modal" class="fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true" aria-labelledby="mdlCode">
+ <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="closeMod()"></div>
+ <div class="absolute inset-x-0 bottom-0 top-12 sm:inset-0 sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(44rem,92vw)] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+  <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-200 bg-slate-50">
+   <div class="flex items-center gap-2 min-w-0">
+    <span id="mdlCode" class="badge bg-brand-900 text-white">M1</span>
+    <span id="mdlEfor" class="badge bg-brand-50 text-brand-700 border border-brand-100">— adam-gün</span>
+    <span class="badge bg-slate-100 text-slate-500 border border-slate-200 hidden sm:inline">kapsam sözleşmesi</span>
+   </div>
+   <button onclick="closeMod()" class="w-10 h-10 rounded-full hover:bg-slate-200 flex items-center justify-center shrink-0" aria-label="Kapat"><i class="ph ph-x text-2xl"></i></button>
+  </div>
+  <div id="mdlBody" class="overflow-y-auto px-6 py-5 prose prose-slate max-w-none prose-headings:font-medium prose-h1:text-2xl prose-h1:mb-2 prose-h2:text-lg prose-h2:mt-6 prose-p:leading-7 prose-li:leading-7 prose-table:text-base prose-blockquote:text-slate-600 prose-blockquote:border-brand-600" style="font-size:1rem"></div>
+  <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+   <a id="mdlSrc" href="#" target="_blank" rel="noopener" class="text-brand-700 hover:underline inline-flex items-center gap-1"><i class="ph ph-file-text"></i> Kaynak .md</a>
+   <button onclick="closeMod()" class="btn bg-brand-600 text-white hover:bg-brand-700">Kapat</button>
+  </div>
+ </div>
+</div>
+
 <footer class="border-t border-slate-200 bg-white">
  <div class="max-w-6xl mx-auto px-4 py-8 leading-7">
   <p class="muted">hrmshakedis · v4 · Müşteri adı anonimleştirildi. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a></p>
@@ -302,15 +323,18 @@ function render(D,live,msg){
   const tut=[.3,.4,.3][i]*kv.bedel;
   const txt=typeof o==='string'&&o.includes(':')?o:`${o}: ${trTL(tut)}`;
   return `<div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center font-medium">${i+1}</span><span>${txt}</span></div>`;}).join('');
- // Kapsam kartları
+ // Kapsam kartları — tıklanınca alt bileşen modalı
+ MODS=D.modul;
  document.getElementById('modCards').innerHTML=D.modul.map(m=>{
   const on=String(m.sec).toUpperCase()==='EVET';
-  return `<div class="card ${on?'':'opacity-60'}">
+  const code=codeOf(m.ad);
+  return `<button type="button" onclick="openMod('${code}')" class="card text-left w-full hover:border-brand-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-600 transition ${on?'':'opacity-60'}">
    <div class="flex items-center justify-between gap-2">
     <span class="badge ${on?'bg-emerald-50 text-emerald-700 border border-emerald-100':'bg-slate-100 text-slate-500 border border-slate-200'}">${on?'DAHİL':'HARİÇ'}</span>
     <span class="badge bg-brand-50 text-brand-700 border border-brand-100">${trN(m.gun,0)} a-g</span></div>
    <h3 class="mt-2 font-medium text-slate-900">${m.ad}</h3>
-   <p class="mt-1 leading-7">${m.ic||''}</p></div>`;}).join('');
+   <p class="mt-1 leading-7">${m.ic||''}</p>
+   <p class="mt-3 inline-flex items-center gap-1 text-brand-700 font-medium">Alt bileşenler <i class="ph ph-caret-right"></i></p></button>`;}).join('');
  // Timeline
  const colors=['#64748B','#1A56DB','#1642A8','#0E9F6E','#B45309','#0F172A'];
  document.getElementById('timeline').innerHTML=faz.map((p,i)=>{
@@ -355,6 +379,28 @@ function render(D,live,msg){
   series:[{name:'2025',type:'bar',itemStyle:{color:slate,borderRadius:[4,4,0,0]},data:D.maliyet.map(m=>m.y25)},
           {name:'2026',type:'bar',itemStyle:{color:brand,borderRadius:[4,4,0,0]},data:D.maliyet.map(m=>m.y26)}]});
 }
+// ===== Modül detay modalı (docs/modules/*.md) =====
+let MODS=[];const mdCache={};
+const MODFILES={M0:'M0-cekirdek-altyapi',M1:'M1-ruhsat-hesap-motoru',M2:'M2-ihale-hesabi',M3:'M3-hakedis-izleme-kota',M4:'M4-mevzuat-parametre',M5:'M5-google-sheets-koprusu',M6:'M6-denetim-raporlari-kvkk'};
+const codeOf=ad=>{const s=String(ad||'').trim();return s.startsWith('M')?s.split(' ')[0]:'M0';};
+function openMod(code){
+ const f=MODFILES[code]||MODFILES.M0;
+ const m=MODS.find(x=>codeOf(x.ad)===code);
+ document.getElementById('mdlCode').textContent=code;
+ document.getElementById('mdlEfor').textContent=m?trN(m.gun,0)+' adam-gün':'';
+ document.getElementById('mdlSrc').href='docs/modules/'+f+'.md';
+ const b=document.getElementById('mdlBody');
+ b.innerHTML='<p class="text-slate-400">Kapsam sözleşmesi yükleniyor…</p>';
+ document.getElementById('modal').classList.remove('hidden');
+ document.body.style.overflow='hidden';
+ (mdCache[f]?Promise.resolve(mdCache[f])
+   :fetch('docs/modules/'+f+'.md',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(t=>(mdCache[f]=t)))
+ .then(t=>{b.innerHTML=marked.parse(t);b.scrollTop=0;})
+ .catch(()=>{b.innerHTML='<p class="text-amber-700">Detay dosyası yüklenemedi: docs/modules/'+f+'.md</p>';});
+}
+function closeMod(){document.getElementById('modal').classList.add('hidden');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
+
 async function tick(){
  try{const D=await fetchLive();
   // TEKLIF ek alanları
