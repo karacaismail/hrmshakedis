@@ -43,7 +43,13 @@ body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#
  <button onclick="load()" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-arrows-clockwise"></i> Yenile</button>
  <a href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-table"></i> Sheets'te düzenle</a>
 </div>
-<p class="noprint max-w-3xl mx-auto px-4 pt-2 text-slate-500 leading-6">Bu sayfa, Google Sheets'teki <span class="font-medium text-slate-700">TEKLİF GİRDİ</span> sayfasından beslenir: tabloda girdileri değiştirin, burada Yenile'ye basın. 60 saniyede bir kendini de tazeler.</p>
+<p class="noprint max-w-3xl mx-auto px-4 pt-2 text-slate-500 leading-6">Bu sayfa, Google Sheets'teki <span class="font-medium text-slate-700">TEKLİF GİRDİ</span> sayfasından beslenir: tabloda girdileri değiştirin, burada Yenile'ye basın. 60 saniyede bir ve sekmeye dönüşte kendini tazeler.</p>
+<div id="guide" class="noprint hidden max-w-3xl mx-auto mt-3 mx-4 px-4">
+ <div class="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 p-4 leading-7">
+  <p class="font-medium flex items-center gap-2"><i class="ph ph-warning"></i>Veri alınamadı: <span id="guideReason">—</span></p>
+  <p class="mt-1">Çözüm: çekirdek çalışma kitabının <span class="font-medium">v3</span> dosyasını aynı Sheets adresine yükleyin — Google Sheets'te <span class="font-medium">Dosya &gt; İçe aktar &gt; E-tabloyu değiştir</span>. Dosyada TEKLİF GİRDİ, TEKLİF FORMU ve WEB_PARAM sayfaları bulunmalı. İçe aktarınca bu sayfa kendiliğinden dolacaktır.</p>
+ </div>
+</div>
 
 <main class="max-w-3xl mx-auto px-4 py-5">
  <div id="sheetCard" class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
@@ -128,13 +134,17 @@ async function load(){
   set('adam_ay',(T.adam_ay??0).toLocaleString('tr-TR')+' adam-ay');
   set('degerlendirme',T.degerlendirme??'—');
   dot.className='inline-block w-2.5 h-2.5 rounded-full bg-emerald-500'; st.textContent='Sheets canlı';
+  document.getElementById('guide').classList.add('hidden');
   document.getElementById('ts').textContent='Son okuma: '+new Date().toLocaleString('tr-TR')+' · Kaynak: Google Sheets WEB_PARAM';
  }catch(e){
   dot.className='inline-block w-2.5 h-2.5 rounded-full bg-amber-500'; st.textContent='veri alınamadı';
-  document.getElementById('ts').textContent='Sheets okunamadı ('+e.message+'). Çalışma kitabının v2 sürümünü (TEKLİF + WEB_PARAM sayfalı) aynı Sheets adresine içe aktarın, sonra Yenile deyin.';
+  document.getElementById('guide').classList.remove('hidden');
+  document.getElementById('guideReason').textContent=e.message;
+  document.getElementById('ts').textContent='Son deneme: '+new Date().toLocaleString('tr-TR');
  }
 }
 load(); setInterval(load,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});
 </script>
 </body>
 </html>

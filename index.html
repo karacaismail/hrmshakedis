@@ -3,371 +3,384 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>hrmshakedis — Asgari İşçilik &amp; Hakediş Uyum Platformu | Stratejik Yol Haritası</title>
-<meta name="description" content="Python framework üzerinde headless asgari işçilik ve hakediş uyum platformu: vizyon, SMART hedefler, canlı yol haritası, risk ve gap analizi.">
+<title>hrmshakedis — Asgari İşçilik &amp; Hakediş Uyum Platformu | Stratejik Rapor</title>
+<meta name="description" content="Headless asgari işçilik ve hakediş uyum platformu: strateji, canlı zaman çizelgesi, risk ve gap analizi. Veriler Google Sheets'ten canlı okunur.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script>
-tailwind.config={theme:{extend:{fontFamily:{sans:['Roboto','system-ui','sans-serif']},colors:{brand:{50:'#EBF1FE',100:'#DCE7FD',600:'#1A56DB',700:'#1642A8',900:'#0F172A'}}}}}
+tailwind.config={theme:{extend:{fontFamily:{sans:['Roboto','system-ui','sans-serif']},colors:{brand:{50:'#EBF1FE',100:'#DCE7FD',600:'#1A56DB',700:'#1642A8',900:'#0F172A'}},boxShadow:{card:'0 1px 2px rgba(15,23,42,.05),0 8px 24px -12px rgba(15,23,42,.12)'}}}}
 </script>
 <style>
 html{font-size:16px;scroll-behavior:smooth}
 body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem}
 table{font-size:1rem}
-.tbl th{font-weight:500;text-align:left;padding:.7rem .9rem;border-bottom:2px solid #E2E8F0;color:#0F172A;white-space:nowrap}
+.tbl th{font-weight:500;text-align:left;padding:.7rem .9rem;border-bottom:2px solid #E2E8F0;color:#0F172A;white-space:nowrap;background:#F8FAFC}
 .tbl td{font-weight:300;padding:.65rem .9rem;border-bottom:1px solid #EEF2F7;color:#334155;vertical-align:top}
-.chip{display:inline-flex;align-items:center;gap:.45rem;font-size:1rem;font-weight:400;padding:.4rem .85rem;border-radius:9999px;border:1px solid #E2E8F0;color:#475569;background:#fff;white-space:nowrap}
-.card{background:#fff;border:1px solid #E7ECF3;border-radius:1rem;padding:1.25rem}
+.chip{display:inline-flex;align-items:center;gap:.45rem;font-size:1rem;font-weight:400;padding:.35rem .8rem;border-radius:9999px;border:1px solid #E2E8F0;color:#475569;background:#fff;white-space:nowrap}
+.card{background:#fff;border:1px solid #E7ECF3;border-radius:1rem;padding:1.25rem;box-shadow:0 1px 2px rgba(15,23,42,.04)}
 .h2{font-size:1.55rem;font-weight:500;color:#0F172A;letter-spacing:-.01em}
-.kicker{font-size:1rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#1A56DB}
-.navlink{font-size:1rem;font-weight:400;color:#475569;padding:.45rem .8rem;border-radius:9999px;border:1px solid transparent;white-space:nowrap}
+.kicker{font-size:1rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#1A56DB;display:flex;align-items:center;gap:.75rem}
+.kicker::after{content:"";flex:1;height:1px;background:#E2E8F0}
+.navlink{font-size:1rem;font-weight:400;color:#475569;padding:.45rem .8rem;border-radius:9999px;white-space:nowrap}
 .navlink:hover{color:#1A56DB;background:#EBF1FE}
-.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:500;padding:.65rem 1.1rem;border-radius:.75rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:500;padding:.65rem 1.1rem;border-radius:.75rem;transition:.15s}
 .muted{color:#64748B;font-size:1rem}
-.stat{font-size:1.6rem;font-weight:500;color:#1642A8}
+.stat{font-size:1.7rem;font-weight:500;color:#1642A8;line-height:1.2}
 .scrollnav{display:flex;gap:.25rem;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:.5rem 1rem;scrollbar-width:none}
 .scrollnav::-webkit-scrollbar{display:none}
+.badge{font-size:.95rem;font-weight:500;padding:.15rem .6rem;border-radius:9999px}
+/* Timeline */
+.tline{position:relative;padding-left:2.4rem}
+.tline::before{content:"";position:absolute;left:.95rem;top:.4rem;bottom:.4rem;width:2px;background:linear-gradient(#DCE7FD,#1A56DB33)}
+.titem{position:relative;padding-bottom:1.6rem}
+.titem:last-child{padding-bottom:0}
+.tdot{position:absolute;left:-2.4rem;top:.15rem;width:2rem;height:2rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:.95rem;box-shadow:0 0 0 4px #fff}
 </style>
 </head>
-<body class="bg-[#F5F7FA] text-slate-700">
+<body class="bg-[#F4F6FA] text-slate-700">
 
 <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
  <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
   <div class="flex items-center gap-2 min-w-0">
-   <i class="ph ph-buildings text-brand-600 text-2xl"></i>
+   <span class="w-9 h-9 rounded-xl bg-brand-900 text-white flex items-center justify-center"><i class="ph ph-buildings text-xl"></i></span>
    <span class="font-medium text-slate-900 truncate">hrmshakedis</span>
+   <span class="hidden md:inline muted">· stratejik rapor</span>
   </div>
   <div class="flex items-center gap-2">
    <span id="liveDot" class="inline-block w-2.5 h-2.5 rounded-full bg-slate-300"></span>
-   <span id="liveStatus" class="muted hidden sm:inline">veri bekleniyor…</span>
+   <span id="liveStatus" class="muted hidden sm:inline">bağlanıyor…</span>
   </div>
  </div>
  <nav class="scrollnav max-w-7xl mx-auto border-t border-slate-100">
   <a class="navlink" href="#ozet">Özet</a><a class="navlink" href="#strateji">Strateji</a>
   <a class="navlink" href="#mevzuat">Mevzuat</a><a class="navlink" href="#mimari">Mimari</a>
-  <a class="navlink" href="#hiz">Hız Modeli</a><a class="navlink" href="#hedefler">Hedefler</a>
-  <a class="navlink" href="#yol">Yol Haritası</a><a class="navlink" href="#risk">Risk</a>
-  <a class="navlink" href="#gap">Gap</a><a class="navlink" href="#test">Test</a><a class="navlink" href="#kaynak">Kaynakça</a>
+  <a class="navlink" href="#hiz">Hız Modeli</a><a class="navlink" href="#zaman">Zaman Çizelgesi</a>
+  <a class="navlink" href="#hedefler">Hedefler</a><a class="navlink" href="#backlog">Backlog</a>
+  <a class="navlink" href="#risk">Risk</a><a class="navlink" href="#gap">Gap</a>
+  <a class="navlink" href="#test">Test &amp; KPI</a><a class="navlink" href="#kaynak">Kaynakça</a>
  </nav>
 </header>
 
+<!-- HERO -->
 <section class="bg-brand-900 text-white">
- <div class="max-w-7xl mx-auto px-4 py-12 sm:py-16">
-  <p class="kicker !text-blue-300">Ürün Stratejisi Raporu · v2.0</p>
-  <h1 class="mt-3 text-3xl sm:text-5xl font-medium leading-tight">Asgari İşçilik &amp; Hakediş<br>Uyum Platformu</h1>
-  <p class="mt-4 max-w-3xl text-slate-300 text-lg font-light leading-8">Python framework üzerinde, tamamen vibecoding ile (AI kodu ultra hızlı yazar, insan doğrular) inşa edilen <span class="text-white font-normal">headless</span> bir SGK uyum ürünü. Ruhsat, ihale ve hakediş bazlı üç hesap tipini tek doğruluk kaynağında birleştirir.</p>
-  <div class="mt-6 flex flex-wrap gap-2">
-   <span class="chip !bg-white/10 !border-white/20 !text-slate-100"><i class="ph ph-user"></i> Müşteri: İnşaat firması</span>
-   <span class="chip !bg-white/10 !border-white/20 !text-slate-100"><i class="ph ph-cpu"></i> <span id="chipDev">1 insan + AI ajanları</span></span>
-   <span class="chip !bg-white/10 !border-white/20 !text-slate-100"><i class="ph ph-gauge"></i> Zaman çarpanı: <span id="chipCarpan">1,000</span></span>
-   <span class="chip !bg-white/10 !border-white/20 !text-slate-100"><i class="ph ph-calendar-check"></i> GA: <span id="chipGA">18.12.2026</span></span>
+ <div class="max-w-7xl mx-auto px-4 py-12 sm:py-16 grid lg:grid-cols-3 gap-8 items-start">
+  <div class="lg:col-span-2">
+   <p class="text-blue-300 font-medium tracking-widest uppercase">Ürün Stratejisi Raporu · v3</p>
+   <h1 class="mt-3 text-3xl sm:text-5xl font-medium leading-tight">Asgari İşçilik &amp; Hakediş<br>Uyum Platformu</h1>
+   <p class="mt-4 max-w-2xl text-slate-300 text-lg font-light leading-8">Python framework üzerinde, tamamen vibecoding ile inşa edilen <span class="text-white font-normal">headless</span> SGK uyum ürünü: AI kodu ultra hızlı yazar, insan doğrular. Üç hesap tipi (ruhsat · ihale · hakediş) tek doğruluk kaynağında.</p>
+   <div class="mt-7 flex flex-wrap gap-3">
+    <a href="teklif.html" target="_blank" rel="noopener" class="btn bg-white text-brand-900 hover:bg-blue-50"><i class="ph ph-file-text"></i> Teklif Formu <span class="badge bg-brand-100 text-brand-700">canlı · A4</span></a>
+    <a href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white/10 border border-white/25 text-white hover:bg-white/20"><i class="ph ph-table"></i> Google Sheets</a>
+   </div>
   </div>
-  <div class="mt-7 flex flex-wrap gap-3">
-   <a href="teklif.html" target="_blank" rel="noopener" class="btn bg-white text-brand-900 hover:bg-blue-50"><i class="ph ph-file-text"></i> Teklif Formu (canlı, A4)</a>
-   <a id="sheetLink" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white/10 border border-white/25 text-white hover:bg-white/20"><i class="ph ph-table"></i> Google Sheets (veri kaynağı)</a>
+  <div class="card !bg-white/5 !border-white/15 backdrop-blur text-slate-100 w-full">
+   <div class="flex items-center justify-between">
+    <p class="font-medium flex items-center gap-2"><i class="ph ph-broadcast text-blue-300"></i>Canlı veri</p>
+    <span class="badge bg-white/10 border border-white/20" id="liveMode">—</span>
+   </div>
+   <dl class="mt-3 space-y-2">
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Geliştirici (insan)</dt><dd id="kDev" class="font-medium">1</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Zaman çarpanı</dt><dd id="kCarpan" class="font-medium">0,550</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Plan süresi</dt><dd id="kSure" class="font-medium">92 gün</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">GA hedefi</dt><dd id="kGA" class="font-medium">13.10.2026</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Altın senaryo paritesi</dt><dd id="kParite" class="font-medium">7/7</dd></div>
+   </dl>
+   <p class="mt-3 text-slate-400 leading-6" id="liveNote">Sheets'e bağlanılıyor…</p>
+   <p class="mt-1 text-slate-400">Otomatik yenileme: 60 sn · <span id="liveTime">—</span></p>
   </div>
-  <p id="liveNote" class="mt-4 text-slate-400 text-base"></p>
  </div>
 </section>
 
 <main class="max-w-7xl mx-auto px-4 py-12 space-y-16 sm:space-y-20">
 
+<!-- 01 ÖZET -->
 <section id="ozet">
  <p class="kicker">01 · Yönetici Özeti</p>
- <h2 class="h2 mt-1">Bu ürün nedir, ne yapar, ne yapmaz?</h2>
+ <h2 class="h2 mt-2">Bu ürün nedir, ne yapar, ne yapmaz?</h2>
  <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-  <div class="card"><i class="ph ph-question text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Bu nedir?</h3><p class="mt-2 leading-7">İnşaat projelerinde SGK'nın aradığı asgari işçilik (bildirilmesi zorunlu en az prim matrahı) yükümlülüğünü hesaplayan ve izleyen bir uyum platformu. Bugün bu iş, kırık bağlantılı ve güncel olmayan oranlı tablolarla yürüyor.</p></div>
-  <div class="card"><i class="ph ph-target text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne işe yarar?</h3><p class="mt-2 leading-7">İlişiksizlik belgesi (SGK'nın "borç kalmadı" yazısı) sürecine sürprizsiz girilmesini sağlar; eksik bildirimin fark prim + gecikme cezası olarak geri dönmesini erken uyarıyla önler; teminat iadesini hızlandırır.</p></div>
-  <div class="card"><i class="ph ph-gear text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne yapar?</h3><p class="mt-2 leading-7">Sistem: 3 hesap tipini güncel parametrelerle çalıştırır, aylık adam-ay kotasını izler, eşik aşımında uyarı üretir, denetim izi tutar. Kullanıcı: veri girer ve raporları onaylar. AI ajanı: yalnız geliştirme aşamasında kod üretir.</p></div>
-  <div class="card"><i class="ph ph-prohibit text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne yapmaz?</h3><p class="mt-2 leading-7">SGK'ya otomatik bildirim göndermez, resmi hesabın yerine geçmez (nihai karar SGK ünitesinindir), bordroyu yeniden hesaplamaz (İK modülünden okur), insan onayı olmadan hiçbir veriyi değiştirmez.</p></div>
+  <div class="card"><i class="ph ph-question text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Bu nedir?</h3><p class="mt-2 leading-7">SGK'nın aradığı asgari işçilik (bildirilmesi zorunlu en az prim matrahı) yükümlülüğünü hesaplayan ve izleyen uyum platformu. Bugün bu iş kırık bağlantılı, güncel olmayan oranlı tablolarla yürüyor.</p></div>
+  <div class="card"><i class="ph ph-target text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne işe yarar?</h3><p class="mt-2 leading-7">İlişiksizlik belgesi sürecine sürprizsiz girilmesini sağlar; eksik bildirimin fark prim + gecikme cezası olarak dönmesini erken uyarıyla önler; teminat iadesini hızlandırır.</p></div>
+  <div class="card"><i class="ph ph-gear text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne yapar?</h3><p class="mt-2 leading-7">Sistem: 3 hesap tipini güncel parametrelerle çalıştırır, adam-ay kotasını izler, eşik aşımında uyarır, denetim izi tutar. Kullanıcı: veri girer, onaylar. AI ajanı: yalnız geliştirmede kod üretir.</p></div>
+  <div class="card"><i class="ph ph-prohibit text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne yapmaz?</h3><p class="mt-2 leading-7">SGK'ya otomatik bildirim göndermez, resmi hesabın yerine geçmez, bordroyu yeniden hesaplamaz, insan onayı olmadan hiçbir veriyi değiştirmez.</p></div>
  </div>
  <div class="mt-6 card border-l-4 !border-l-brand-600">
-  <p class="leading-8"><span class="font-medium text-slate-900">Neden şimdi?</span> 16.05.2026 SSİY değişikliği ve 2026/16 sayılı Genelge hesap kurallarını değiştirdi (aritmetik ortalama, kısmi araştırma, tescilsiz işte indirim kaldırılması). Mevcut tablo eski çarpanlarla (0,345 / 0,375 / 0,385) ve tek yıl birim maliyetiyle çalışıyor; iki etabın özet hesabı kırık başvurular yüzünden fiilen hesaplanamıyor. Açık kaynak ekosistemde bu alana özel hazır bir uygulama yok — doğrulanmış boşluk.</p>
+  <p class="leading-8"><span class="font-medium text-slate-900">Neden şimdi?</span> 16.05.2026 SSİY değişikliği ve 2026/16 Genelgesi hesap kurallarını değiştirdi (aritmetik ortalama, kısmi araştırma, tescilsiz işte indirimin kalkması). Mevcut tablo eski çarpanlarla çalışıyor; iki etabın özeti kırık başvurular yüzünden hesaplanamıyor. Açık kaynak ekosistemde bu alana özel hazır uygulama yok — doğrulanmış boşluk.</p>
  </div>
 </section>
 
+<!-- 02 STRATEJİ -->
 <section id="strateji">
- <p class="kicker">02 · Strateji</p>
- <h2 class="h2 mt-1">Vizyon, misyon, değerler ve ürün kültürü</h2>
+ <p class="kicker">02 · Strateji ve Kültür</p>
+ <h2 class="h2 mt-2">Vizyon, misyon, değerler</h2>
  <div class="mt-6 grid gap-4 lg:grid-cols-2">
   <div class="card"><div class="flex items-center gap-2"><i class="ph ph-eye text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">Vizyon</h3></div>
-   <p class="mt-2 leading-8">Türkiye inşaat sektöründe SGK asgari işçilik uyumunu kırılgan tablolardan çıkarıp, her an denetime hazır, gerçek zamanlı ve izlenebilir bir uyum altyapısına dönüştürmek.</p></div>
+   <p class="mt-2 leading-8">SGK asgari işçilik uyumunu kırılgan tablolardan çıkarıp, her an denetime hazır, gerçek zamanlı ve izlenebilir bir uyum altyapısına dönüştürmek.</p></div>
   <div class="card"><div class="flex items-center gap-2"><i class="ph ph-compass text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">Misyon</h3></div>
-   <p class="mt-2 leading-8">Ana yüklenici ve taşeron zincirinin ruhsat, ihale ve hakediş bazlı yükümlülüklerini tek doğruluk kaynağında hesaplamak, aylık SPEK ve adam-ay kotasını izlemek, eksikleri erken uyarmak.</p></div>
+   <p class="mt-2 leading-8">Ana yüklenici ve taşeron zincirinin ruhsat, ihale ve hakediş bazlı yükümlülüklerini tek doğruluk kaynağında hesaplamak; aylık SPEK ve adam-ay kotasını izleyip erken uyarmak.</p></div>
  </div>
- <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-  <div class="card"><i class="ph ph-scales text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Mevzuat doğruluğu</p><p class="mt-1 leading-6">Her parametre Resmî Gazete referansına bağlı.</p></div>
-  <div class="card"><i class="ph ph-fingerprint text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">İzlenebilirlik</p><p class="mt-1 leading-6">Kim, neyi, ne zaman — her kayıtta yanıtlı.</p></div>
-  <div class="card"><i class="ph ph-shield-check text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Veri gizliliği</p><p class="mt-1 leading-6">KVKK: en az yetki, maskeleme, erişim logu.</p></div>
-  <div class="card"><i class="ph ph-feather text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Sürdürülebilir sadelik</p><p class="mt-1 leading-6">Tek insan + AI ajanlarının taşıyabileceği mimari.</p></div>
-  <div class="card"><i class="ph ph-check-circle text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Önce doğruluk</p><p class="mt-1 leading-6">Hesap kanıtlanmadan otomasyon yok.</p></div>
+ <div class="mt-4 grid gap-3 grid-cols-2 lg:grid-cols-5">
+  <div class="card !p-4"><i class="ph ph-scales text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Mevzuat doğruluğu</p></div>
+  <div class="card !p-4"><i class="ph ph-fingerprint text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">İzlenebilirlik</p></div>
+  <div class="card !p-4"><i class="ph ph-shield-check text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Veri gizliliği (KVKK)</p></div>
+  <div class="card !p-4"><i class="ph ph-feather text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Sürdürülebilir sadelik</p></div>
+  <div class="card !p-4"><i class="ph ph-check-circle text-brand-600 text-xl"></i><p class="mt-1 font-medium text-slate-900">Önce doğruluk</p></div>
  </div>
  <div class="mt-6 card">
-  <div class="flex items-center gap-2"><i class="ph ph-plant text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">Geliştirme kültürü: tamamen vibecoding, disiplinli — "Vibe Engineering"</h3></div>
-  <p class="mt-2 leading-7 muted">Vibecoding (Karpathy, Şub 2025): AI çıktısını okumadan kabul etmek — bu projede yasak. Bizim modumuz: kodu AI ultra hızlı yazar; insan kod yazmaz, spec + test + PR kapılarıyla doğrular ve merge kararını verir.</p>
+  <div class="flex items-center gap-2"><i class="ph ph-plant text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">Kültür: tamamen vibecoding, disiplinli</h3></div>
   <div class="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2 xl:grid-cols-4">
-   <p class="flex gap-2 leading-7"><i class="ph ph-robot text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">AI yazar, insan doğrular:</span> insan spec yazar, testleri onaylar, PR inceler.</span></p>
+   <p class="flex gap-2 leading-7"><i class="ph ph-robot text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">AI yazar, insan doğrular:</span> insan kod yazmaz; spec, test onayı ve merge kararı insanda.</span></p>
    <p class="flex gap-2 leading-7"><i class="ph ph-file-text text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Spec-driven:</span> her özellik önce yazılı spec; sohbetten kod yok.</span></p>
    <p class="flex gap-2 leading-7"><i class="ph ph-flask text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Önce test:</span> altın senaryolar yazılmadan üretim kodu yazılmaz.</span></p>
-   <p class="flex gap-2 leading-7"><i class="ph ph-git-pull-request text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">AI PR açar, insan merge eder:</span> main korumalı; AI main'e asla doğrudan yazamaz.</span></p>
-   <p class="flex gap-2 leading-7"><i class="ph ph-sliders text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Velocity = parametre:</span> hız, ECA kurallarıyla ayarlanır; plan otomatik ölçeklenir.</span></p>
-   <p class="flex gap-2 leading-7"><i class="ph ph-note-pencil text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">ADR:</span> mimari kararlar tarihli kayıtla; "neden" kaybolmaz.</span></p>
-   <p class="flex gap-2 leading-7"><i class="ph ph-skull text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Premortem:</span> her faz başında "proje battı, neden?" egzersizi.</span></p>
-   <p class="flex gap-2 leading-7"><i class="ph ph-books text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Docs-as-code:</span> runbook depoda yaşar (bus factor 1 telafisi).</span></p>
+   <p class="flex gap-2 leading-7"><i class="ph ph-git-pull-request text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">AI PR açar, insan merge eder:</span> main korumalı.</span></p>
+   <p class="flex gap-2 leading-7"><i class="ph ph-sliders text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Velocity = parametre:</span> ECA kurallarıyla ayarlanır; plan otomatik ölçeklenir.</span></p>
+   <p class="flex gap-2 leading-7"><i class="ph ph-note-pencil text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">ADR:</span> mimari kararlar tarihli kayıtla.</span></p>
+   <p class="flex gap-2 leading-7"><i class="ph ph-skull text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Premortem:</span> her faz başında "proje battı, neden?"</span></p>
+   <p class="flex gap-2 leading-7"><i class="ph ph-books text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Docs-as-code:</span> bilgi depoda yaşar (bus factor 1 telafisi).</span></p>
   </div>
  </div>
 </section>
 
+<!-- 03 MEVZUAT -->
 <section id="mevzuat">
  <p class="kicker">03 · Mevzuat Çerçevesi</p>
- <h2 class="h2 mt-1">Üç hesap tipi ve 2026 değişiklikleri</h2>
+ <h2 class="h2 mt-2">Üç hesap tipi ve 2026 değişiklikleri</h2>
  <div class="mt-6 grid gap-4 lg:grid-cols-3">
   <div class="card"><div class="flex items-center gap-2"><i class="ph ph-blueprint text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">1 · Ruhsata göre</h3></div>
-   <p class="mt-2 leading-7">Özel bina inşaatı: <span class="font-mono bg-slate-100 px-1 rounded">m² × birim maliyet × oran × 0,75</span>. Yıllara sâri işte birim maliyet, bitiş yılı hariç yılların <span class="font-medium text-slate-900">aritmetik ortalaması</span> (2026/16 yeniliği).</p>
-   <p class="mt-2 muted">Dayanak: 5510 md.85 · SSİY md.111 · Genelge 2011/13 + 2026/16</p></div>
+   <p class="mt-2 leading-7"><span class="font-mono bg-slate-100 px-1 rounded">m² × birim maliyet × oran × 0,75</span>. Yıllara sâri işte birim maliyet, bitiş yılı hariç yılların <span class="font-medium text-slate-900">aritmetik ortalaması</span>.</p>
+   <p class="mt-2 muted">5510 md.85 · SSİY md.111 · 2011/13 + 2026/16</p></div>
   <div class="card"><div class="flex items-center gap-2"><i class="ph ph-gavel text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">2 · İhaleye göre</h3></div>
-   <p class="mt-2 leading-7">Kamu işleri: <span class="font-mono bg-slate-100 px-1 rounded">istihkak (KDV hariç) × oran × 0,75</span>. Yenilik: ödenen hakediş üzerinden <span class="font-medium text-slate-900">kısmi araştırma</span>; ilişiksizlik belgesi toplam istihkak bildirilince mahsupla verilir.</p>
-   <p class="mt-2 muted">Dayanak: SSİY md.110 · AİTK Oran Tebliği · Genelge 2026/16 §3.1</p></div>
+   <p class="mt-2 leading-7"><span class="font-mono bg-slate-100 px-1 rounded">istihkak (KDV hariç) × oran × 0,75</span>. Yenilik: ödenen hakediş üzerinden <span class="font-medium text-slate-900">kısmi araştırma</span>; ilişiksizlik toplam istihkakla, mahsuplu.</p>
+   <p class="mt-2 muted">SSİY md.110 · AİTK Tebliği · 2026/16 §3.1</p></div>
   <div class="card"><div class="flex items-center gap-2"><i class="ph ph-chart-line-up text-brand-600 text-xl"></i><h3 class="font-medium text-slate-900">3 · Hakedişe göre</h3></div>
-   <p class="mt-2 leading-7">Dönemsel izleme: taşeronun kümülatif hakedişi × indirimli oran = bildirmesi gereken SPEK. Eksiği, dönem prim oranıyla çarpılıp hakedişten kesinti/karşılık olarak yönetilir. Adam-ay kotası buradan türetilir.</p>
-   <p class="mt-2 muted">Dayanak: 5510 md.88/90 · Genelge 2011/13 böl.3</p></div>
+   <p class="mt-2 leading-7">Taşeron bazında kümülatif hakediş × indirimli oran = gereken SPEK; eksik, dönem prim oranıyla kesinti/karşılığa çevrilir. Adam-ay kotası buradan türetilir.</p>
+   <p class="mt-2 muted">5510 md.88/90 · 2011/13 böl.3</p></div>
  </div>
  <div class="mt-6 grid gap-4 lg:grid-cols-2">
   <div class="card">
-   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-bar text-brand-600"></i>Yapı birim maliyetleri: 2025 → 2026 (TL/m²) <span class="chip !py-1">canlı</span></h3>
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-bar text-brand-600"></i>Birim maliyetler 2025 → 2026 (TL/m²) <span class="badge bg-brand-50 text-brand-700 border border-brand-100">canlı</span></h3>
    <div id="chartMaliyet" class="mt-3 h-64 sm:h-72"></div>
-   <p class="muted mt-1">Kaynak: RG 31.01.2025/32799 ve RG 03.02.2026/33157 · Veri: Google Sheets PARAMETRELER</p>
+   <p class="muted mt-1">RG 31.01.2025/32799 · RG 03.02.2026/33157 · Veri: Sheets PARAMETRELER</p>
   </div>
   <div class="card">
-   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-percent text-brand-600"></i>Fark prim oranı dönemleri <span class="chip !py-1">canlı</span></h3>
-   <div class="overflow-x-auto mt-3"><table class="tbl w-full min-w-[520px]">
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-percent text-brand-600"></i>Fark prim oranı dönemleri <span class="badge bg-brand-50 text-brand-700 border border-brand-100">canlı</span></h3>
+   <div class="overflow-x-auto mt-3"><table class="tbl w-full min-w-[440px]">
     <thead><tr><th>Geçerlilik</th><th>Oran</th></tr></thead>
-    <tbody id="tblDonem"><tr><td colspan="2" class="muted">Sheets'ten yükleniyor…</td></tr></tbody>
+    <tbody id="tblDonem"><tr><td colspan="2" class="muted">yükleniyor…</td></tr></tbody>
    </table></div>
-   <p class="muted mt-2">İşsizlik primi fark tahakkukuna dahil edilmez. 2026 asgari ücret: <span id="chipUcret">33.030,00</span> TL/ay brüt; SPEK tavanı 9 kat. Eski tablodaki 0,345 / 0,375 / 0,385 çarpanları günceldışıdır; ürün oranı tahakkuk dönemine göre kendisi seçer.</p>
+   <p class="muted mt-2">İşsizlik primi dahil edilmez. 2026 asgari ücret: <span id="kUcret">33.030,00</span> TL/ay; SPEK tavanı 9 kat. Eski 0,345/0,375/0,385 çarpanları günceldışı — ürün oranı döneme göre kendisi seçer.</p>
   </div>
  </div>
  <div class="mt-4 card">
-  <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-seal-check text-brand-600"></i>Genelge 2026/16 — ürünü şekillendiren 8 değişiklik</h3>
+  <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-seal-check text-brand-600"></i>Genelge 2026/16 — 8 değişiklik</h3>
   <div class="mt-3 grid gap-x-8 gap-y-2 md:grid-cols-2 leading-7">
-   <p>1. "Ön değerlendirme" yerine <span class="font-medium">"araştırma işlemi"</span>: çok aşamalı, veri temelli süreç.</p>
-   <p>2. İhale + özel inşaatta araştırma kapsamı yeniden çizildi; tebliğ hükümleri güncellendi.</p>
-   <p>3. <span class="font-medium">Aritmetik ortalama</span>: yıllara sâri işte birim maliyet ortalaması (bitiş yılı hariç).</p>
-   <p>4. <span class="font-medium">Kısmi araştırma</span>: ödenen hakediş üzerinden hesap; ilişiksizlik toplam istihkakla.</p>
-   <p>5. Çok ruhsatlı tek dosyada <span class="font-medium">ruhsat başına ayrı hesap</span>, toplamda karşılaştırma.</p>
-   <p>6. 2 yıl bildirimsiz dosyaya <span class="font-medium">re'sen araştırma</span>.</p>
-   <p>7. İş bitim tarihi: geçici kabul tutanağındaki bitim esas alınır.</p>
-   <p>8. <span class="font-medium">Kısmi ilişiksizlik</span>: biten bölümlere SSİY Ek-11 cetveliyle ayrı belge.</p>
+   <p>1. "Ön değerlendirme" → <span class="font-medium">"araştırma işlemi"</span>.</p>
+   <p>2. Araştırma kapsamı yeniden çizildi; tebliğ hükümleri güncellendi.</p>
+   <p>3. <span class="font-medium">Aritmetik ortalama</span> (bitiş yılı hariç).</p>
+   <p>4. <span class="font-medium">Kısmi araştırma</span>: ödenen hakediş üzerinden.</p>
+   <p>5. Çok ruhsatlı dosyada ruhsat başına ayrı hesap.</p>
+   <p>6. 2 yıl bildirimsiz dosyaya re'sen araştırma.</p>
+   <p>7. İş bitimi: geçici kabul tutanağındaki tarih.</p>
+   <p>8. Kısmi ilişiksizlik: SSİY Ek-11 cetveliyle.</p>
   </div>
  </div>
 </section>
 
+<!-- 04 MİMARİ -->
 <section id="mimari">
  <p class="kicker">04 · Mimari</p>
- <h2 class="h2 mt-1">Headless mimari ve canlı veri akışı</h2>
- <p class="mt-2 max-w-3xl leading-7">Headless: çekirdek hiçbir son kullanıcı ekranı dayatmaz; tüm yetenek REST API'den sunulur. Bugün bile bu rapor, Google Sheets'teki çalışma kitabının WEB_PARAM sayfasını her açılışta okur: tabloyu güncellediğinizde bu sayfa ve teklif formu kendini günceller. Next.js bilinçli olarak kullanılmaz (proje standardı).</p>
+ <h2 class="h2 mt-2">Headless mimari ve canlı veri akışı</h2>
+ <p class="mt-2 max-w-3xl leading-7">Çekirdek hiçbir ekran dayatmaz; her yetenek API'den sunulur. Bu rapor bile aynı deseni kullanır: Google Sheets'teki WEB_PARAM sayfası → bu sayfa ve teklif formu. Next.js kullanılmaz (proje standardı).</p>
  <div class="mt-6 card !p-0 overflow-hidden">
-  <div class="grid sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
    <div class="p-5"><p class="kicker !text-slate-400">Tüketiciler</p>
     <div class="mt-2 space-y-2 leading-7">
-     <p class="flex items-center gap-2"><i class="ph ph-table text-brand-600"></i>Google Sheets (çalışma kitabı + köprü)</p>
-     <p class="flex items-center gap-2"><i class="ph ph-globe text-brand-600"></i>Bu rapor + teklif sayfası (canlı)</p>
+     <p class="flex items-center gap-2"><i class="ph ph-table text-brand-600"></i>Google Sheets (çekirdek kitap)</p>
+     <p class="flex items-center gap-2"><i class="ph ph-globe text-brand-600"></i>Bu rapor + teklif sayfası</p>
      <p class="flex items-center gap-2"><i class="ph ph-browser text-brand-600"></i>React paneli <span class="muted">(F6+)</span></p>
      <p class="flex items-center gap-2"><i class="ph ph-flow-arrow text-brand-600"></i>n8n otomasyonları <span class="muted">(F6)</span></p>
     </div></div>
    <div class="p-5 bg-brand-50/40"><p class="kicker">API yüzeyi</p>
     <div class="mt-2 space-y-2 leading-7">
-     <p class="flex items-center gap-2"><i class="ph ph-plugs-connected text-brand-600"></i>REST API · token / OAuth2</p>
+     <p class="flex items-center gap-2"><i class="ph ph-plugs-connected text-brand-600"></i>REST · token / OAuth2</p>
      <p class="flex items-center gap-2"><i class="ph ph-webhooks-logo text-brand-600"></i>Webhook olayları</p>
-     <p class="flex items-center gap-2"><i class="ph ph-shield-check text-brand-600"></i>CORS + rate limit açık</p>
+     <p class="flex items-center gap-2"><i class="ph ph-shield-check text-brand-600"></i>CORS + rate limit</p>
     </div></div>
    <div class="p-5 bg-brand-50/70"><p class="kicker">Özel app: hakedis_core</p>
     <div class="mt-2 space-y-2 leading-7">
      <p class="flex items-center gap-2"><i class="ph ph-calculator text-brand-600"></i>Hesap motoru (3 tip + kota)</p>
-     <p class="flex items-center gap-2"><i class="ph ph-database text-brand-600"></i>12 veri nesnesi (proje, ruhsat, taşeron, hakediş, SPEK, parametreler…)</p>
-     <p class="flex items-center gap-2"><i class="ph ph-clock-counter-clockwise text-brand-600"></i>Snapshot + sürüm denetim izi</p>
+     <p class="flex items-center gap-2"><i class="ph ph-database text-brand-600"></i>12 veri nesnesi</p>
+     <p class="flex items-center gap-2"><i class="ph ph-clock-counter-clockwise text-brand-600"></i>Snapshot + denetim izi</p>
     </div></div>
    <div class="p-5 bg-brand-50"><p class="kicker">Çekirdek</p>
     <div class="mt-2 space-y-2 leading-7">
-     <p class="flex items-center gap-2"><i class="ph ph-stack text-brand-600"></i>Python framework v16 (Py 3.14, MariaDB 11.8, Redis)</p>
-     <p class="flex items-center gap-2"><i class="ph ph-users-three text-brand-600"></i>ERP + İK modülleri v16 (zorunlu ikili)</p>
-     <p class="flex items-center gap-2"><i class="ph ph-hard-drives text-brand-600"></i>Hetzner Debian · Docker imajları · Traefik/TLS</p>
+     <p class="flex items-center gap-2"><i class="ph ph-stack text-brand-600"></i>Python framework v16</p>
+     <p class="flex items-center gap-2"><i class="ph ph-users-three text-brand-600"></i>ERP + İK modülleri v16</p>
+     <p class="flex items-center gap-2"><i class="ph ph-hard-drives text-brand-600"></i>Hetzner Debian · Docker · Traefik</p>
     </div></div>
   </div>
  </div>
  <div class="mt-4 grid gap-4 md:grid-cols-3">
-  <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-scroll text-brand-600"></i>Lisans durumu</h4><p class="mt-2 leading-7">Çekirdek çatı MIT; ERP ve İK modülleri GPLv3. Ürün yalnız iç kullanımda çalışacağı (dağıtılmayacağı) için GPLv3 kaynak paylaşım yükümlülüğü tetiklenmez. Satış kararı alınırsa hukuki değerlendirme backlog'dadır (B40).</p></div>
-  <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-git-branch text-brand-600"></i>CI/CD hattı</h4><p class="mt-2 leading-7">GitHub private repo → PR kapıları (lint, type, gitleaks, pip-audit, altın dosya testleri, kapsam ≥ %85, ikinci AI incelemesi) → imaj → staging'e otomatik, prod'a elle onaylı dağıtım. Prod öncesi yedek kanıtı zorunlu.</p></div>
-  <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-robot text-brand-600"></i>AI'ın sınırları</h4><p class="mt-2 leading-7">AI ajanı dalda kod/test yazar ve PR açar. Yapamadıkları: main'e push, prod dağıtımı, parametre değişikliği, test dosyasını zayıflatma, günlük token bütçesini aşma.</p></div>
+  <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-scroll text-brand-600"></i>Lisans</h4><p class="mt-2 leading-7">Çekirdek çatı MIT; ERP/İK modülleri GPLv3. İç kullanımda (dağıtım yok) kaynak paylaşım yükümlülüğü tetiklenmez; satış kararında hukuk görüşü alınır.</p></div>
+  <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-git-branch text-brand-600"></i>CI/CD</h4><p class="mt-2 leading-7">PR kapıları: lint, type, gitleaks, pip-audit, altın dosya testleri, kapsam ≥ %85, ikinci AI incelemesi → staging otomatik, prod elle onaylı; öncesinde yedek kanıtı.</p></div>
+  <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-robot text-brand-600"></i>AI'ın sınırları</h4><p class="mt-2 leading-7">Dalda kod/test yazar, PR açar. Yapamaz: main'e push, prod dağıtımı, parametre değişikliği, testleri zayıflatma, token bütçesini aşma.</p></div>
  </div>
 </section>
 
+<!-- 05 HIZ MODELİ -->
 <section id="hiz">
  <p class="kicker">05 · Hız Modeli</p>
- <h2 class="h2 mt-1">Velocity: tahmin değil, parametre <span class="chip align-middle ml-1">canlı</span></h2>
- <p class="mt-2 max-w-3xl leading-7">Tamamen vibecoding varsayımı: insan kod yazmaz, AI ultra hızlı yazar. Süre Amdahl yasasıyla modellenir: <span class="font-mono bg-slate-100 px-1 rounded">süre oranı = insana bağlı pay + AI payı ÷ AI hızı</span>. ECA (Olay-Koşul-Aksiyon) kuralları bu oranı pragmatik olarak ayarlar; sonuç tek bir zaman çarpanıdır ve Sheets'te değiştirildiği anda buradaki tüm tarihler yeniden hesaplanır.</p>
- <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" id="velCards">
-  <div class="card"><p class="muted">İnsan (spec/test/onay)</p><p class="stat" id="velDev">1</p><p class="mt-1 leading-6">Kod yazmaz; inceleme kapasitesi sağlar (Brooks verimi <span id="velVerim">0,70</span>)</p></div>
-  <div class="card"><p class="muted">AI hız çarpanı</p><p class="stat" id="velAi">×4,0</p><p class="mt-1 leading-6">Devredilebilir iş payı: <span id="velPay">%60</span> → Amdahl oranı <span id="velAmdahl">0,550</span></p></div>
-  <div class="card"><p class="muted">ECA kural çarpanı</p><p class="stat" id="velEca">1,000</p><p class="mt-1 leading-6">5 kural (hızlan/yavaşla) Sheets PARAMETRELER §5'ten açılıp kapanır</p></div>
-  <div class="card !border-brand-600 border-2"><p class="muted">Nihai zaman çarpanı</p><p class="stat" id="velCarpan">1,000</p><p class="mt-1 leading-6">GA hedefi: <span id="velGA" class="font-medium text-slate-900">18.12.2026</span> · tampon sonu <span id="velTampon">27.12.2026</span></p></div>
+ <h2 class="h2 mt-2">Velocity: tahmin değil, parametre <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">canlı</span></h2>
+ <p class="mt-2 max-w-3xl leading-7">İnsan kod yazmaz; AI ultra hızlı yazar. <span class="font-mono bg-slate-100 px-1 rounded">çarpan = Amdahl × ECA ÷ geliştirici sayısı</span>. Geliştirici etkisi <span class="font-medium text-slate-900">lineerdir</span>: 3 kişi → süre ÷ 3. Amdahl: süre oranı = insana bağlı pay + AI payı ÷ AI hızı. ECA (Olay-Koşul-Aksiyon) kuralları Sheets'ten açılıp kapanır.</p>
+ <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="card"><p class="muted">Geliştirici (insan)</p><p class="stat" id="vDev">1</p><p class="mt-1 leading-6">Lineer bölen — Sheets PARAMETRELER §5'ten değiştirin</p></div>
+  <div class="card"><p class="muted">AI hızı × pay</p><p class="stat"><span id="vAi">×4,0</span> · <span id="vPay">%60</span></p><p class="mt-1 leading-6">Amdahl oranı: <span id="vAmdahl" class="font-medium text-slate-900">0,550</span></p></div>
+  <div class="card"><p class="muted">ECA kural çarpanı</p><p class="stat" id="vEca">1,000</p><p class="mt-1 leading-6">5 pragmatik kural: hızlan/yavaşla</p></div>
+  <div class="card !border-brand-600 border-2"><p class="muted">Nihai çarpan → süre</p><p class="stat"><span id="vCarpan">0,550</span> → <span id="vGun">92 g</span></p><p class="mt-1 leading-6">GA: <span id="vGA" class="font-medium text-slate-900">13.10.2026</span> · tampon <span id="vTampon">27.10.2026</span></p></div>
  </div>
- <p class="mt-3 muted">Formül: çarpan = (Amdahl ÷ 0,55 taban) × ECA ÷ (1 + (insan−1) × verim). Varsayılanlarda 1,000. AI hızını artırın → plan kısalır; "mevzuat değişti" kuralını açın → plan uzar.</p>
+ <div class="mt-4 card">
+  <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-scales text-brand-600"></i>İnsan-eşdeğeri plana karşı vibecoding planı</h3>
+  <div class="mt-4 space-y-3" id="cmpBars"></div>
+  <div class="mt-4 flex flex-wrap gap-2" id="whatif"></div>
+  <p class="muted mt-3">What-if çipleri canlı çarpandan türetilir: aynı Amdahl × ECA, farklı geliştirici sayısı. Kalıcı değişiklik için Sheets PARAMETRELER §5.</p>
+ </div>
 </section>
 
+<!-- 06 ZAMAN ÇİZELGESİ -->
+<section id="zaman">
+ <p class="kicker">06 · Zaman Çizelgesi</p>
+ <h2 class="h2 mt-2">Fazlar <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">tarihler canlı hesaplanır</span></h2>
+ <div class="mt-6 grid gap-4 lg:grid-cols-5">
+  <div class="card lg:col-span-3">
+   <div class="tline mt-2" id="timeline"></div>
+  </div>
+  <div class="lg:col-span-2 space-y-4">
+   <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-bar-horizontal text-brand-600"></i>Faz süreleri (gün)</h3>
+    <div id="chartFaz" class="h-72 mt-2"></div></div>
+   <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-info text-brand-600"></i>Nasıl okunur?</h3>
+    <p class="mt-2 leading-7">Faz taban süreleri insan-eşdeğeridir (toplam <span id="tTaban">168</span> gün); ekranda gördüğünüz tarihler taban × canlı çarpan ile hesaplanır. Sheets'te geliştirici sayısını veya AI hızını değiştirin — bu çizelge ve GA tarihi otomatik güncellenir. F6 otomasyon fazı opsiyoneldir, GA'yı koşullamaz.</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- 07 HEDEFLER -->
 <section id="hedefler">
- <p class="kicker">06 · SMART Hedefler</p>
- <h2 class="h2 mt-1">Sekiz ölçülebilir taahhüt <span class="chip align-middle ml-1">tarihler canlı</span></h2>
+ <p class="kicker">07 · SMART Hedefler</p>
+ <h2 class="h2 mt-2">Sekiz ölçülebilir taahhüt <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">tarihler canlı</span></h2>
  <div class="mt-6 card !p-0 overflow-x-auto">
   <table class="tbl w-full min-w-[880px]">
    <thead><tr><th>ID</th><th>Hedef</th><th>Metrik ve eşik</th><th>Son tarih</th><th>Faz</th></tr></thead>
-   <tbody>
-    <tr><td class="font-medium text-brand-700">H1</td><td>Hesap motoru paritesi: müşteri tablosu + Genelge 2026/16 örnekleri</td><td>12 altın senaryo, %100; sapma &lt; 0,01 TL</td><td id="h1">06.09.2026</td><td>F1</td></tr>
-    <tr><td class="font-medium text-brand-700">H2</td><td>Headless REST API yayına hazır</td><td>12 uç nokta; p95 &lt; 300 ms; kapsam ≥ %85</td><td id="h2">01.11.2026</td><td>F3</td></tr>
-    <tr><td class="font-medium text-brand-700">H3</td><td>Pilot: 3 etabın canlı veriyle çalışması</td><td>3 etap yüklü; kota uyarılarının %100'ü doğru</td><td id="h3">29.11.2026</td><td>F4</td></tr>
-    <tr><td class="font-medium text-brand-700">H4</td><td>Enterprise sertleştirme (KVKK, denetim izi, yedeklilik)</td><td>4 rol RBAC; RPO ≤ 24 sa; RTO ≤ 4 sa</td><td id="h4">13.12.2026</td><td>F4</td></tr>
-    <tr><td class="font-medium text-brand-700">H5</td><td>Google Sheets köprüsü</td><td>Senkron ≤ 5 dk; hata &lt; %1</td><td id="h5">01.11.2026</td><td>F3</td></tr>
-    <tr><td class="font-medium text-brand-700">H6</td><td>Parametre güncelleme operasyonu</td><td>Yeni tebliğ → canlı ≤ 15 dk</td><td id="h6">18.10.2026</td><td>F2</td></tr>
-    <tr><td class="font-medium text-brand-700">H7</td><td>Denetime hazır rapor seti</td><td>4 rapor; üretim ≤ 30 sn</td><td id="h7">29.11.2026</td><td>F4</td></tr>
-    <tr><td class="font-medium text-brand-700">H8</td><td>GA ve devir: bus factor telafisi</td><td>Tam runbook; sıfırdan kurulum ≤ 2 sa</td><td id="h8">18.12.2026</td><td>F5</td></tr>
-   </tbody>
+   <tbody id="tblSmart"></tbody>
   </table>
  </div>
 </section>
 
-<section id="yol">
- <p class="kicker">07 · Yol Haritası</p>
- <h2 class="h2 mt-1">Sprint planı <span class="chip align-middle ml-1">Sheets'ten canlı</span></h2>
- <div class="mt-6 card"><div id="chartGantt" class="h-[430px]"></div>
-  <p class="muted mt-1">2 haftalık sprint tabanı × zaman çarpanı. F6 otomasyon fazı (2027) opsiyoneldir ve GA'yı koşullamaz.</p></div>
- <div class="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3" id="fazCards"></div>
- <div class="mt-4 card">
-  <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-donut text-brand-600"></i>Backlog dağılımı (<span id="blToplam">40</span> kalem, MoSCoW) <span class="chip !py-1">canlı</span></h3>
-  <div class="grid md:grid-cols-2 items-center">
-   <div id="chartMoscow" class="h-64"></div>
-   <div class="space-y-2 leading-7">
-    <p><span class="font-medium text-slate-900">Must:</span> altyapı, parametreler, üç hesap motoru, taşeron/hakediş modeli, kota, API, Sheets, KVKK, pilot, GA dokümanları.</p>
-    <p><span class="font-medium text-slate-900">Should:</span> devir/kısmi ilişiksizlik, döviz, BI panoları, webhook, bordro köprüsü.</p>
-    <p><span class="font-medium text-slate-900">Could:</span> n8n mevzuat izleme, OpenClaw özet ajanı, React panel MVP.</p>
-    <p><span class="font-medium text-slate-900">Won't v1:</span> SGK ekran otomasyonu, e-Devlet başvurusu, çok müşterili SaaS.</p>
-   </div>
+<!-- 08 BACKLOG -->
+<section id="backlog">
+ <p class="kicker">08 · Backlog</p>
+ <h2 class="h2 mt-2">MoSCoW dağılımı — 40 kalem</h2>
+ <div class="mt-6 grid gap-4 lg:grid-cols-2">
+  <div class="card"><div id="chartMoscow" class="h-64"></div></div>
+  <div class="card">
+   <h3 class="font-medium text-slate-900">Must (21) — MVP/GA şartı</h3>
+   <div class="mt-3 flex flex-wrap gap-2" id="mustChips"></div>
+   <p class="muted mt-3">Should (11): devir/kısmi ilişiksizlik, döviz, BI panoları, webhook, bordro köprüsü · Could (5): n8n mevzuat izleme, OpenClaw özet ajanı, React panel · Won't v1 (3): SGK ekran otomasyonu, e-Devlet başvurusu, çok müşterili SaaS.</p>
   </div>
  </div>
 </section>
 
+<!-- 09 RİSK -->
 <section id="risk">
- <p class="kicker">08 · Risk ve Unk-Unk Yönetimi</p>
- <h2 class="h2 mt-1">Bilinen riskler + bilinmeyen bilinmeyenler</h2>
+ <p class="kicker">09 · Risk ve Unk-Unk</p>
+ <h2 class="h2 mt-2">Bilinen riskler + bilinmeyen bilinmeyenler</h2>
  <div class="mt-6 grid gap-4 lg:grid-cols-2">
   <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-warning-diamond text-brand-600"></i>Risk matrisi (olasılık × etki)</h3>
-   <div id="chartRisk" class="h-72 sm:h-80 mt-2"></div>
-   <p class="muted">Skor ≥ 12 kırmızı bölge (<span id="riskYuksek">7</span> adet): mevzuat değişikliği, veri kalitesi, bus factor 1, AI kod kalitesi… Tam kayıt çalışma kitabındadır.</p></div>
-  <div class="card">
-   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-question text-brand-600"></i>Unk-unk nedir, nasıl yönetiyoruz?</h3>
-   <p class="mt-2 leading-7">Unk-unk (unknown unknown): önceden listelenemeyen risk. Kavram 1960'ların ABD savunma-uzay mühendisliğinden; Rumsfeld'in 2002 matrisiyle popülerleşti. Akademik çerçeve (De Meyer / Loch / Pich): belirsizlik dört tiptir — varyasyon, öngörülen, öngörülemeyen (unk-unk), kaos. Bu proje "öngörülemeyen" sınıfındadır: mevzuat canlı, veri kirli, AI araç zinciri yeni.</p>
-   <div class="mt-3 space-y-2 leading-7">
-    <p class="flex gap-2"><i class="ph ph-arrows-clockwise text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Strateji — öğrenme:</span> kısa iterasyon + pilotta gerçek veriyle erken temas (tek insanla seçilimcilik lüksü yok).</span></p>
-    <p class="flex gap-2"><i class="ph ph-skull text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Yüzeye çıkarma:</span> premortem (Klein), varsayım kaydı + sinyaller (RAND), keşif odaklı planlama (McGrath), yürüyen iskelet (Cockburn), emniyetli problar (Cynefin).</span></p>
-    <p class="flex gap-2"><i class="ph ph-piggy-bank text-brand-600 mt-1"></i><span><span class="font-medium text-slate-900">Şok emme:</span> %15 takvim tamponu, %20 yönetim rezervi (PMI), geri alınabilir dağıtım + günlük yedek (Taleb: tahmin değil dayanıklılık) — ve ECA kurallarıyla planın kendisi esner.</span></p>
-   </div>
+   <div id="chartRisk" class="h-72 sm:h-80 mt-2"></div></div>
+  <div class="card !p-0 overflow-hidden">
+   <div class="overflow-x-auto max-h-[26rem] overflow-y-auto"><table class="tbl w-full min-w-[560px]">
+    <thead class="sticky top-0"><tr><th>Risk</th><th>Skor</th><th>Önlem</th></tr></thead>
+    <tbody id="tblRisk"></tbody>
+   </table></div>
   </div>
  </div>
- <div class="mt-4 card !p-0 overflow-x-auto">
-  <table class="tbl w-full min-w-[760px]">
-   <thead><tr><th>Bilgi matrisi</th><th>Örnek (bu proje)</th><th>Yönetim aracı</th></tr></thead>
-   <tbody>
-    <tr><td class="font-medium text-slate-900">Bilinen bilinenler</td><td>2026 oranları, formüller, genelge örnekleri</td><td>Parametre tabloları + altın testler</td></tr>
-    <tr><td class="font-medium text-slate-900">Bilinen bilinmeyenler</td><td>Bir sonraki asgari ücret; framework v17 değişiklikleri</td><td>Risk kaydı + contingency (sprint içi pay)</td></tr>
-    <tr><td class="font-medium text-slate-900">Bilinmeyen bilinmeyenler</td><td>Tanım gereği örneklenemez (dünkü örnek: 2026/16'nın aritmetik ortalamayı getirmesi)</td><td>Öğrenme iterasyonları + rezervler + ECA ile esneyen plan</td></tr>
-    <tr><td class="font-medium text-slate-900">Bilinmeyen bilinenler</td><td>Örtük bilgi: "SGK ünitesi pratikte şunu ister"</td><td>Pilot mutabakatı + SGK uzmanıyla düzenli oturum</td></tr>
-   </tbody>
-  </table>
+ <div class="mt-4 grid gap-4 lg:grid-cols-2">
+  <div class="card">
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-question text-brand-600"></i>Unk-unk nedir?</h3>
+   <p class="mt-2 leading-7">Önceden listelenemeyen risk (1960'lar ABD savunma-uzay jargonu "unk-unk"; Rumsfeld 2002 matrisi). De Meyer/Loch/Pich tipolojisinde bu proje "öngörülemeyen belirsizlik" sınıfında: mevzuat canlı, veri kirli, AI araç zinciri yeni. Strateji: <span class="font-medium text-slate-900">öğrenme</span> — kısa iterasyon + pilotta gerçek veriyle erken temas.</p>
+  </div>
+  <div class="card">
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-shield-plus text-brand-600"></i>Yönetim mekanizmaları</h3>
+   <p class="mt-2 leading-7"><span class="font-medium text-slate-900">Yüzeye çıkarma:</span> premortem (Klein), varsayım kaydı + sinyaller (RAND), keşif odaklı planlama (McGrath), yürüyen iskelet (Cockburn), emniyetli problar (Cynefin). <span class="font-medium text-slate-900">Şok emme:</span> %15 takvim tamponu, %20 yönetim rezervi (PMI), günlük yedek + geri alınabilir dağıtım (Taleb) ve ECA kurallarıyla esneyen plan.</p>
+  </div>
  </div>
 </section>
 
+<!-- 10 GAP -->
 <section id="gap">
- <p class="kicker">09 · Gap Analizi</p>
- <h2 class="h2 mt-1">Mevcut tablodan hedef ürüne</h2>
+ <p class="kicker">10 · Gap Analizi</p>
+ <h2 class="h2 mt-2">Mevcut tablodan hedef ürüne — 14 boşluk</h2>
  <div class="mt-6 grid gap-4 lg:grid-cols-5">
   <div class="card lg:col-span-2"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-radar text-brand-600"></i>Olgunluk radarı (0–5)</h3>
    <div id="chartGap" class="h-72 sm:h-80 mt-2"></div></div>
-  <div class="card lg:col-span-3 !p-0 overflow-x-auto">
-   <table class="tbl w-full min-w-[640px]">
-    <thead><tr><th>Boyut</th><th>Mevcut (kanıtlı)</th><th>Hedef</th></tr></thead>
-    <tbody>
-     <tr><td class="font-medium text-slate-900">Parametre güncelliği</td><td>0,345/0,375/0,385 karışık; 2025 ücreti</td><td>Dönem kilitli parametre tablosu, RG referanslı</td></tr>
-     <tr><td class="font-medium text-slate-900">Formül bütünlüğü</td><td>2 etabın özeti kırık başvuru (REF) hatalarıyla hesaplanamıyor</td><td>İlişkisel model; bağ kırılması imkânsız</td></tr>
-     <tr><td class="font-medium text-slate-900">Hesap yöntemi</td><td>Tek yıl birim maliyeti (18.200 sabit)</td><td>Aritmetik ortalama motoru (2026/16)</td></tr>
-     <tr><td class="font-medium text-slate-900">Veri girişi</td><td>"Manuel elle yazılacak alan" + ekrandan kopya; metinleşmiş sayılar</td><td>Doğrulamalı form + CSV içe aktarma + hata listesi</td></tr>
-     <tr><td class="font-medium text-slate-900">İzlenebilirlik</td><td>Sürüm = dosya adındaki "GÜNCEL" kelimesi</td><td>Sürüm denetim izi + hesap snapshot'ları</td></tr>
-     <tr><td class="font-medium text-slate-900">KVKK</td><td>Kişi adları/vergi no'lar korumasız dosyada e-postayla</td><td>RBAC + maskeleme + erişim logu</td></tr>
-     <tr><td class="font-medium text-slate-900">Kota takibi</td><td>Adam-ay tek hücrede elle</td><td>Aylık kota izleme + eşik uyarıları</td></tr>
-     <tr><td class="font-medium text-slate-900">Raporlama</td><td>Ekran görüntüsüyle yönetim bilgilendirmesi</td><td>4 denetim raporu + BI panoları</td></tr>
-    </tbody>
-   </table>
+  <div class="card lg:col-span-3 !p-0 overflow-hidden">
+   <div class="overflow-x-auto max-h-[26rem] overflow-y-auto"><table class="tbl w-full min-w-[640px]">
+    <thead class="sticky top-0"><tr><th>Boyut</th><th>Mevcut (kanıtlı)</th><th>Hedef</th></tr></thead>
+    <tbody id="tblGap"></tbody>
+   </table></div>
   </div>
  </div>
 </section>
 
+<!-- 11 TEST & KPI -->
 <section id="test">
- <p class="kicker">10 · Test Stratejisi ve KPI</p>
- <h2 class="h2 mt-1">Önce test: altın dosya yaklaşımı</h2>
+ <p class="kicker">11 · Test Stratejisi ve KPI</p>
+ <h2 class="h2 mt-2">Önce test: altın dosya yaklaşımı</h2>
  <div class="mt-6 grid gap-4 lg:grid-cols-2">
-  <div class="card">
-   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-flask text-brand-600"></i>Test katmanları</h3>
-   <div class="mt-3 space-y-2">
-    <div class="rounded-lg border border-slate-200 p-3 bg-brand-50/60 leading-7"><span class="font-medium text-slate-900">1 · Altın dosya paritesi:</span> müşteri tablosu + genelge örneklerinden 12 senaryo; sapma &lt; 0,01 TL; her commit'te koşar.</div>
-    <div class="rounded-lg border border-slate-200 p-3 leading-7"><span class="font-medium text-slate-900">2 · Birim + özellik testleri:</span> aritmetik ortalama sınır durumları; hypothesis ile monotonluk/negatif olmama.</div>
-    <div class="rounded-lg border border-slate-200 p-3 leading-7"><span class="font-medium text-slate-900">3 · Entegrasyon + API sözleşmesi:</span> IntegrationTestCase, izin matrisi, schemathesis.</div>
-    <div class="rounded-lg border border-slate-200 p-3 leading-7"><span class="font-medium text-slate-900">4 · Güvenlik + regresyon:</span> gitleaks, pip-audit, slopsquatting kontrolü, parametre versiyon snapshot'ları.</div>
-    <div class="rounded-lg border border-slate-200 p-3 leading-7"><span class="font-medium text-slate-900">5 · Yük + DR:</span> ay kapanışı p95 &lt; 300 ms; yedekten dönüş RTO ≤ 4 sa.</div>
-   </div>
+  <div class="card !p-0 overflow-hidden">
+   <div class="p-4 border-b border-slate-100"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-flask text-brand-600"></i>12 altın senaryo <span class="badge bg-brand-50 text-brand-700 border border-brand-100">parite: <span id="kParite2">7/7</span> canlı</span></h3></div>
+   <div class="overflow-x-auto max-h-[24rem] overflow-y-auto"><table class="tbl w-full min-w-[540px]">
+    <thead class="sticky top-0"><tr><th>Kod</th><th>Senaryo</th><th>Beklenen</th></tr></thead>
+    <tbody id="tblTest"></tbody>
+   </table></div>
   </div>
   <div class="card">
-   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-gauge text-brand-600"></i>Öne çıkan KPI'lar</h3>
-   <div class="mt-3 grid grid-cols-2 gap-3">
-    <div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat"><span id="statParite">7/7</span></p><p class="mt-1 leading-6">Altın senaryo paritesi (çalışma kitabında canlı doğrulanıyor)</p></div>
-    <div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat">≥ %85</p><p class="mt-1 leading-6">Test kapsamı (hesap motoru ≥ %90)</p></div>
-    <div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat">≤ 15 dk</p><p class="mt-1 leading-6">Yeni tebliğ → üründe canlı parametre</p></div>
-    <div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat">&lt; 300 ms</p><p class="mt-1 leading-6">API p95 gecikme</p></div>
-    <div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat">24 sa / 4 sa</p><p class="mt-1 leading-6">RPO / RTO taahhüdü</p></div>
-    <div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat">±%15</p><p class="mt-1 leading-6">Velocity sapma bandı (ECA ile düzeltilir)</p></div>
-   </div>
-   <p class="muted mt-3">Tam KPI sözlüğü (14 metrik) ve altın senaryo listesi çalışma kitabının KPI ve TEST STRATEJİSİ sayfalarındadır.</p>
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-gauge text-brand-600"></i>KPI hedefleri</h3>
+   <div class="mt-3 grid grid-cols-2 gap-3" id="kpiCards"></div>
+   <p class="muted mt-3">Test katmanları: altın dosya paritesi (her commit) → birim + property testleri → entegrasyon + API sözleşmesi → güvenlik (gitleaks, pip-audit, slopsquatting) → yük + DR tatbikatı.</p>
   </div>
  </div>
 </section>
 
+<!-- 12 KAYNAKÇA -->
 <section id="kaynak">
- <p class="kicker">11 · Kaynakça</p>
- <h2 class="h2 mt-1">Dayanaklar</h2>
+ <p class="kicker">12 · Kaynakça</p>
+ <h2 class="h2 mt-2">Dayanaklar</h2>
  <div class="mt-6 grid gap-4 md:grid-cols-2 leading-8">
   <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-scales text-brand-600"></i>Mevzuat</h4>
    <ul class="mt-2 space-y-1 list-none">
-    <li><a class="text-brand-700 hover:underline" href="https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf">5510 sayılı Kanun md. 85 (asgari işçilik, uzlaşma)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.mevzuat.gov.tr/mevzuatmetin/1.5.5510.pdf">5510 sayılı Kanun md. 85</a></li>
     <li><a class="text-brand-700 hover:underline" href="https://www.mevzuat.gov.tr/File/GeneratePdf?mevzuatNo=13973&mevzuatTur=KurumVeKurulusYonetmeligi&mevzuatTertip=5">SSİY md. 110-112 (değ. RG 16.05.2026/33255)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.alomaliye.com/2026/06/26/sgk-genelgesi-2026-16-2011-13-sayili-genelge/">SGK Genelgesi 2026/16 (26.06.2026) tam metni</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.asmmmo.org.tr/userfiles/others/files/Mvzt/Gnlg/5510/2011-13.pdf">SGK Genelgesi 2011/13 — İlişiksizlik Belgesi</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.resmigazete.gov.tr/eskiler/2026/02/20260203-4.htm">2026 Yapı Yaklaşık Birim Maliyetleri (RG 03.02.2026/33157)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://webdosya.csb.gov.tr/db/yfk/icerikler/m-m.-muh.-tebl-g-31.01.2025-ve-32799-sayili-rg-20250131073639.pdf">2025 Birim Maliyet Tebliği (RG 31.01.2025/32799)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.turmob.org.tr/arsiv/mbs/pratikBilgiler/cesitli%20is%20kollar%C4%B1-2022.pdf">AİTK Asgari İşçilik Oranları listesi (TÜRMOB derlemesi)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.cottgroup.com/tr/mevzuat/item/sgk-prim-artis-oranlari-ve-tavan-guncellemesini-iceren-7566-sayili-kanun-resmi-gazetede-yayimlandi">7566 s.K.: prim oranı ve 9 kat tavan (RG 19.12.2025/33112)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.alomaliye.com/2026/06/26/sgk-genelgesi-2026-16-2011-13-sayili-genelge/">SGK Genelgesi 2026/16 tam metni</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.asmmmo.org.tr/userfiles/others/files/Mvzt/Gnlg/5510/2011-13.pdf">SGK Genelgesi 2011/13</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.resmigazete.gov.tr/eskiler/2026/02/20260203-4.htm">2026 Birim Maliyetler (RG 03.02.2026/33157)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://webdosya.csb.gov.tr/db/yfk/icerikler/m-m.-muh.-tebl-g-31.01.2025-ve-32799-sayili-rg-20250131073639.pdf">2025 Birim Maliyetler (RG 31.01.2025/32799)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.turmob.org.tr/arsiv/mbs/pratikBilgiler/cesitli%20is%20kollar%C4%B1-2022.pdf">AİTK oran listesi (TÜRMOB)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.cottgroup.com/tr/mevzuat/item/sgk-prim-artis-oranlari-ve-tavan-guncellemesini-iceren-7566-sayili-kanun-resmi-gazetede-yayimlandi">7566 s.K. prim/tavan</a></li>
    </ul></div>
   <div class="card"><h4 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-books text-brand-600"></i>Yöntem literatürü</h4>
    <ul class="mt-2 space-y-1 list-none">
-    <li><a class="text-brand-700 hover:underline" href="https://sloanreview.mit.edu/article/managing-project-uncertainty-from-variation-to-chaos/">De Meyer, Loch &amp; Pich — Managing Project Uncertainty (MIT SMR, 2002)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9780470172377">Loch, De Meyer &amp; Pich — Managing the Unknown (Wiley, 2006)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://hbr.org/2007/09/performing-a-project-premortem">Klein — Project Premortem (HBR, 2007)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://hbr.org/2007/11/a-leaders-framework-for-decision-making">Snowden &amp; Boone — Cynefin (HBR, 2007)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.rand.org/pubs/monograph_reports/MR114.html">Dewar vd. — Assumption-Based Planning (RAND, 1993)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://x.com/karpathy/status/1886192184808149383">Karpathy — "vibe coding" (02.02.2025)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">GitHub Spec Kit — spec-driven development (2025)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen">Spracklen vd. — paket halüsinasyonu (USENIX Security 2025)</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://adr.github.io/">ADR — Architecture Decision Records</a></li>
-    <li><a class="text-brand-700 hover:underline" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl yasası — hızlanmanın sınırı</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://sloanreview.mit.edu/article/managing-project-uncertainty-from-variation-to-chaos/">De Meyer, Loch &amp; Pich — MIT SMR 2002</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9780470172377">Managing the Unknown — Wiley 2006</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://hbr.org/2007/09/performing-a-project-premortem">Klein — Premortem (HBR 2007)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://hbr.org/2007/11/a-leaders-framework-for-decision-making">Snowden &amp; Boone — Cynefin (HBR 2007)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.rand.org/pubs/monograph_reports/MR114.html">RAND — Assumption-Based Planning (1993)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://x.com/karpathy/status/1886192184808149383">Karpathy — vibe coding (02.02.2025)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">GitHub Spec Kit (2025)</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen">USENIX 2025 — paket halüsinasyonu</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl yasası</a></li>
+    <li><a class="text-brand-700 hover:underline" href="https://adr.github.io/">ADR</a></li>
    </ul></div>
  </div>
 </section>
@@ -375,132 +388,202 @@ table{font-size:1rem}
 
 <footer class="border-t border-slate-200 bg-white">
  <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between leading-7">
-  <p class="muted">hrmshakedis · Stratejik Yol Haritası v2.0 · Müşteri adı ticari gizlilik gereği anonimleştirilmiştir. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets çalışma kitabı</a> · <span id="footTime"></span></p>
-  <p class="muted flex items-center gap-2"><i class="ph ph-git-branch"></i>Tailwind CSS · Apache ECharts · Phosphor Icons · Roboto</p>
+  <p class="muted">hrmshakedis · v3 · Müşteri adı anonimleştirildi ("İnşaat firması"). Veri: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a></p>
+  <p class="muted flex items-center gap-2"><i class="ph ph-git-branch"></i>Tailwind · ECharts · Phosphor · Roboto</p>
  </div>
 </footer>
 
 <script>
+/* ================= VERİ (web'e gömülü strateji verileri) ================= */
+const PHASES=[
+ {f:'F0',ad:'Keşif & Spec',base:14,out:'Spec seti; 12 altın senaryonun test fixture\'ına dökümü; Hetzner staging; CI iskeleti (lint+test+gitleaks). Çıkış: tüm testler yazılı ve kırmızı.'},
+ {f:'F1',ad:'Hesap Motoru',base:42,out:'Parametre tabloları; ruhsat hesabı (aritmetik ortalama, tek yıl istisnası); ihale + kısmi araştırma. H1 kapanır: 12/12 parite.'},
+ {f:'F2',ad:'Hakediş & Kota',base:28,out:'Taşeron sicili + hiyerarşi; aylık SPEK matrisi; fark/kesinti; adam-ay kota izleme ve eşik uyarıları.'},
+ {f:'F3',ad:'Entegrasyon',base:28,out:'API sertleştirme (token, CORS, rate limit); Google Sheets köprüsü; BI panoları.'},
+ {f:'F4',ad:'Sertleştirme & Pilot',base:28,out:'KVKK/RBAC, denetim izi, DR tatbikatı; Defne 1-2-3 pilot mutabakatı.'},
+ {f:'F5',ad:'GA & Devir',base:28,out:'Yük/güvenlik testleri, runbook, eğitim; GA yayını + retrospektif.'}];
+const F6={f:'F6',ad:'Otomasyon (opsiyonel)',base:56,out:'n8n: RG/genelge izleme, MUHSGK hatırlatma, kota bildirimi; OpenClaw ile insan onaylı yönetim özetleri.'};
+const SMART=[
+ ['H1','Hesap motoru paritesi (müşteri tablosu + genelge örnekleri)','12 altın senaryo %100; sapma < 0,01 TL','F1'],
+ ['H2','Headless REST API yayına hazır','12 uç nokta; p95 < 300 ms; kapsam ≥ %85','F3'],
+ ['H3','Pilot: 3 etap canlı veriyle','kota uyarılarının %100\'ü doğru','F4'],
+ ['H4','Enterprise sertleştirme','RBAC 4 rol; RPO ≤ 24 sa; RTO ≤ 4 sa','F4'],
+ ['H5','Google Sheets köprüsü','senkron ≤ 5 dk; hata < %1','F3'],
+ ['H6','Parametre operasyonu','yeni tebliğ → canlı ≤ 15 dk','F2'],
+ ['H7','Denetim rapor seti','4 rapor; üretim ≤ 30 sn','F4'],
+ ['H8','GA ve devir','runbook; kurulum ≤ 2 sa','GA']];
+const RISKS=[
+ ['Mevzuat değişikliği (2026/16 örneği)',4,5,'Parametre/kural ayrımı; 15 dk güncelleme; n8n RG izleme; ECA "yavaşla" kuralı'],
+ ['Müşteri veri kalitesi (kırık REF, bozuk sayılar)',5,4,'İçe aktarmada doğrulama + mutabakat raporu; reddedilen satır listesi'],
+ ['Bus factor 1 (tek insan)',3,5,'Runbook + ADR; imajdan kurulum ≤ 2 sa; repo yedeği ikinci konumda'],
+ ['AI kod hatası (Veracode 2025: ~%45 zafiyet)',4,4,'Test-first + çift inceleme + SAST + altın dosya paritesi'],
+ ['Slopsquatting (uydurma paket adları)',3,4,'Bağımlılık yalnız insan onayıyla; pip-audit + ad doğrulama'],
+ ['Framework v17 kırıcı değişiklikleri',3,3,'Sürüm sabitleme; çeyreklik kontrollü yükseltme'],
+ ['SGK resmi API yok (elle/CSV veri)',4,3,'İçe aktarma şablonu + aylık kapanış kontrol listesi'],
+ ['KVKK ihlali',2,5,'RBAC + maskeleme + erişim logu + müdahale runbook\'u'],
+ ['Sheets kotaları / köprü kırılganlığı',3,2,'Rate limit + tekrar deneme; Sheets görüntü katmanı'],
+ ['Kapsam kayması',4,3,'MoSCoW sözleşmesi; değişiklik = backlog önceliklendirme'],
+ ['Oran/sınıf itirazları (AİTK)',2,3,'"İtirazda" durumu; alternatif oranla senaryo'],
+ ['Tek sunucu arızası',2,4,'Gecelik S3 yedek; RTO 4 sa tatbikatı'],
+ ['GPL/AGPL (satış senaryosu)',2,3,'V1 iç kullanım; satışta hukuk görüşü'],
+ ['Deprem bölgesi ertelemeleri',3,2,'Dönem parametrelerinde erteleme bayrağı']];
+const GAPS=[
+ ['Parametre güncelliği','0,345/0,375/0,385 karışık; 2025 ücreti','Dönem kilitli tablo; RG referanslı'],
+ ['Formül bütünlüğü','2 etap kırık başvuru (REF) ile hesaplanamıyor','İlişkisel model; kırılma imkânsız'],
+ ['Hesap yöntemi','Tek yıl birim maliyeti sabit','Aritmetik ortalama motoru (2026/16)'],
+ ['Veri girişi','"Manuel elle yazılacak alan"; metinleşmiş sayılar','Doğrulamalı form + CSV + hata listesi'],
+ ['İzlenebilirlik','Sürüm = dosya adında "GÜNCEL"','Denetim izi + hesap snapshot\'ları'],
+ ['KVKK','Kişi/vergi verisi korumasız dosyada','RBAC + maskeleme + erişim logu'],
+ ['Kota takibi','Adam-ay tek hücrede elle','Aylık izleme + eşik uyarıları'],
+ ['Çoklu proje','Sekme kopyalama; projeler karışık','Proje bazlı izolasyon'],
+ ['Raporlama','Ekran görüntüsüyle bilgilendirme','4 denetim raporu + BI panoları'],
+ ['Doğrulama','Hesap kontrol mekanizması yok','12 altın senaryo CI paritesi'],
+ ['Döviz','EUR/USD elle çevrim','TCMB kuru + kur tarihi kaydı'],
+ ['Kısmi süreçler','Kısmi araştırma/ilişiksizlik yok','2026/16 §3.1/§6/§8 akışları'],
+ ['İş sürekliliği','Bilgi tek kişide + tek dosyada','Runbook + imaj + günlük yedek'],
+ ['Mevzuat izleme','Değişiklik tesadüfen öğreniliyor','n8n RG izleme + SLA']];
+const TESTS=[
+ ['R1','III-B 2023→2026 aritmetik ortalama','13.866,67 TL/m²'],['R2','II-A 500 m² 2026, %6 indirimli','182.250,00 TL'],
+ ['R3','III-C 4.000 m² 2026, %9 indirimli','6.318.000,00 TL'],['R4','Defne-1 alan bazlı (müşteri verisi)','295.567.947,68 TL'],
+ ['I1','Kısmi araştırma 10M/500B ×%34,75','60.812,50 TL'],['I2','Kesin hakediş eki 1M ×%34,75','23.456,25 TL'],
+ ['I3','Defne-1 hakediş bazlı','290.202.405,52 TL'],['K1','Adam-ay: 3,5M / 33.030','106 adam-ay'],
+ ['P1','Dönem oranı seçimi (2025→2026)','%34,75 / %35,75'],['E1','Tek yılda biten iş','bitiş yılı bedeli'],
+ ['E2','Tescilsiz iş','indirim çarpanı 1,00'],['E3','Fazla bildirim','fark 0 · UYUMLU']];
+const KPIS=[['12/12','Altın senaryo paritesi'],['≥ %85','Test kapsamı (motor ≥ %90)'],['≤ 15 dk','Tebliğ → canlı parametre'],['< 300 ms','API p95'],['24/4 sa','RPO / RTO'],['±%15','Velocity sapma bandı (ECA ile düzeltme)']];
+const MUST=['Staging+prod (Docker)','CI kapıları','12 altın fixture','Birim maliyet tablosu','Oran tablosu','Dönem parametreleri','Ruhsat hesabı','İhale + kısmi araştırma','Hesap snapshot','Proje + ruhsat sicili','Taşeron sicili','Hakediş + SPEK içe aktarma','Kota + uyarılar','API sertleştirme','Sheets köprüsü','4 denetim raporu','RBAC + maskeleme','Denetim izi ekranı','Yedek/DR','Defne pilotu','Dokümantasyon'];
+const MOSCOW={Must:21,Should:11,Could:5,"Won't (v1)":3};
+
+/* ================= CANLI VERİ ================= */
 const SID='1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw';
 const brand='#1A56DB', slate='#94A3B8';
 const baseTxt={fontFamily:'Roboto',color:'#334155',fontSize:14};
 const trD=d=>d?d.toLocaleDateString('tr-TR'):'—';
-const trN=(v,dec=3)=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
-function gDate(v){if(v==null)return null;const m=String(v).match(/Date\((\d+),(\d+),(\d+)/);return m?new Date(+m[1],+m[2],+m[3]):null;}
-async function fetchWebParam(){
+const trN=(v,dec=3)=>v==null?'—':Number(v).toLocaleString('tr-TR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+function gDate(v){if(v==null)return null;if(v instanceof Date)return v;const m=String(v).match(/Date\((\d+),(\d+),(\d+)/);return m?new Date(+m[1],+m[2],+m[3]):null;}
+function chart(id){const el=document.getElementById(id);return echarts.getInstanceByDom(el)||echarts.init(el);}
+addEventListener('resize',()=>document.querySelectorAll('[id^=chart]').forEach(el=>{const c=echarts.getInstanceByDom(el);if(c)c.resize();}));
+const FB={kv:{dev_sayisi:1,ai_hiz:4,ai_pay:.6,amdahl:.55,eca_carpani:1,zaman_carpani:.55,taban_gun:168,efektif_gun:92,
+ baslangic:new Date(2026,6,13),ga_hedef:new Date(2026,9,13),tampon_sonu:new Date(2026,9,27),asgari_ucret_2026:33030,parite_ok:7,parite_hedef:7},
+ maliyet:[['III-A',17100,19800],['III-B',18200,21050],['III-C',19150,23400],['IV-A',21500,26450],['IV-B',27500,33900],['IV-C',32600,40500],['V-A',34400,42350],['V-D',43400,53500]].map(m=>({s:m[0],y25:m[1],y26:m[2]})),
+ donem:[{b:new Date(2024,0,1),o:.345},{b:new Date(2024,8,1),o:.3475},{b:new Date(2025,0,1),o:.3475},{b:new Date(2026,0,1),o:.3575}]};
+async function fetchLive(){
  const u=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=WEB_PARAM&headers=0&t=${Date.now()}`;
  const t=await(await fetch(u,{cache:'no-store'})).text();
  const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
  if(j.status==='error')throw new Error('WEB_PARAM yok');
- const rows=j.table.rows.map(r=>(r.c||[]).map(c=>c?c.v:null));
- const kv={},sprints=[],maliyet=[],donem=[],teklif=[];
- for(const r of rows){
-  const tag=r[0];
-  if(tag==='KV')kv[r[1]]=r[2];
-  else if(tag==='SPRINT')sprints.push({kod:r[1],ad:r[2],b:gDate(r[3]),e:gDate(r[4]),faz:r[5]});
-  else if(tag==='MALIYET')maliyet.push({s:r[1],y25:r[2],y26:r[3]});
-  else if(tag==='DONEM')donem.push({b:gDate(r[1]),o:r[2]});
-  else if(tag==='TEKLIF')teklif.push({k:r[1],v:r[2]});
- }
- if(!('zaman_carpani' in kv)||sprints.length<12)throw new Error('WEB_PARAM bulunamadı');
- return{kv,sprints,maliyet,donem,teklif};
+ const kv={},maliyet=[],donem=[];
+ for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
+  if(c[0]==='KV')kv[c[1]]=c[2];
+  else if(c[0]==='MALIYET')maliyet.push({s:c[1],y25:c[2],y26:c[3]});
+  else if(c[0]==='DONEM')donem.push({b:gDate(c[1]),o:c[2]});}
+ if(!('zaman_carpani' in kv))throw new Error('WEB_PARAM v3 değil');
+ kv.baslangic=gDate(kv.baslangic);kv.ga_hedef=gDate(kv.ga_hedef);kv.tampon_sonu=gDate(kv.tampon_sonu);
+ return{kv,maliyet,donem};
 }
-const FALLBACK={kv:{dev_sayisi:1,verim:.7,ai_hiz:4,ai_pay:.6,amdahl:.55,eca_carpani:1,zaman_carpani:1,
- asgari_ucret_2026:33030,parite_ok:7,parite_hedef:7,moscow_must:21,moscow_should:11,moscow_could:5,moscow_wont:3,risk_yuksek:7,
- baslangic:new Date(2026,6,13),ga_hedef:new Date(2026,11,18),tampon_sonu:new Date(2026,11,27)},
- sprints:[["S0","Keşif & Spec","F0"],["S1","Parametreler","F1"],["S2","Ruhsat hesabı","F1"],["S3","İhale hesabı","F1"],["S4","Taşeron & hakediş","F2"],["S5","Kota & uyarılar","F2"],["S6","API sertleştirme","F3"],["S7","Sheets & BI","F3"],["S8","KVKK & DR","F4"],["S9","Pilot","F4"],["S10","Yük testi & runbook","F5"],["S11","GA + tampon","F5"],["2027","Otomasyon (ops.)","F6"]]
-  .map((s,i)=>({kod:s[0],ad:s[1],faz:s[2],b:new Date(2026,6,13+14*i+(i===12?8:0)),e:new Date(2026,6,13+14*(i+1)-1+(i===12?8+42:0))})),
- maliyet:[["III-A",17100,19800],["III-B",18200,21050],["III-C",19150,23400],["IV-A",21500,26450],["IV-B",27500,33900],["IV-C",32600,40500],["V-A",34400,42350],["V-D",43400,53500]].map(m=>({s:m[0],y25:m[1],y26:m[2]})),
- donem:[{b:new Date(2024,0,1),o:.345},{b:new Date(2024,8,1),o:.3475},{b:new Date(2025,0,1),o:.3475},{b:new Date(2026,0,1),o:.3575}],teklif:[]};
-function mk(id){const c=echarts.init(document.getElementById(id));addEventListener('resize',()=>c.resize());return c;}
 function render(D,live,msg){
- const kv=D.kv;
- const dot=document.getElementById('liveDot'),st=document.getElementById('liveStatus');
- dot.className='inline-block w-2.5 h-2.5 rounded-full '+(live?'bg-emerald-500':'bg-amber-500');
- st.textContent=live?'Sheets canlı':'statik yedek veri';
- document.getElementById('liveNote').textContent=msg||'';
- document.getElementById('footTime').textContent='Görüntüleme: '+new Date().toLocaleString('tr-TR');
- document.getElementById('chipDev').textContent=`${kv.dev_sayisi} insan + AI ajanları`;
- document.getElementById('chipCarpan').textContent=trN(kv.zaman_carpani);
- const ga=kv.ga_hedef instanceof Date?kv.ga_hedef:gDate(kv.ga_hedef), tam=kv.tampon_sonu instanceof Date?kv.tampon_sonu:gDate(kv.tampon_sonu);
- document.getElementById('chipGA').textContent=trD(ga);
- document.getElementById('velDev').textContent=kv.dev_sayisi;
- document.getElementById('velVerim').textContent=trN(kv.verim,2);
- document.getElementById('velAi').textContent='×'+trN(kv.ai_hiz,1);
- document.getElementById('velPay').textContent='%'+Math.round(kv.ai_pay*100);
- document.getElementById('velAmdahl').textContent=trN(kv.amdahl);
- document.getElementById('velEca').textContent=trN(kv.eca_carpani);
- document.getElementById('velCarpan').textContent=trN(kv.zaman_carpani);
- document.getElementById('velGA').textContent=trD(ga);
- document.getElementById('velTampon').textContent=trD(tam);
- document.getElementById('chipUcret').textContent=(kv.asgari_ucret_2026||33030).toLocaleString('tr-TR',{minimumFractionDigits:2});
- document.getElementById('statParite').textContent=`${kv.parite_ok??7}/${kv.parite_hedef??7}`;
- document.getElementById('riskYuksek').textContent=kv.risk_yuksek??7;
- document.getElementById('blToplam').textContent=(kv.moscow_must??21)+(kv.moscow_should??11)+(kv.moscow_could??5)+(kv.moscow_wont??3);
- // SMART tarihleri
- const end=k=>{const s=D.sprints.find(x=>x.kod===k);return s?trD(s.e):'—';};
- const map={h1:'S3',h2:'S7',h3:'S9',h4:'S10',h5:'S7',h6:'S6',h7:'S9'};
- for(const[id,k]of Object.entries(map))document.getElementById(id).textContent=end(k);
- document.getElementById('h8').textContent=trD(ga);
- // Faz kartları
- const fazAd={F0:'Keşif & Spec',F1:'Hesap Motoru',F2:'Hakediş & Kota',F3:'Entegrasyon',F4:'Sertleştirme & Pilot',F5:'GA & Devir',F6:'Otomasyon (ops.)'};
- const fazDesc={F0:'Spec seti, 12 altın senaryo fixture, staging kurulumu, CI iskeleti.',F1:'Parametre tabloları; ruhsat hesabı (aritmetik ortalama); ihale + kısmi araştırma. H1 kapanır.',F2:'Taşeron sicili, aylık SPEK matrisi, fark/kesinti, adam-ay kota ve uyarılar.',F3:'API sertleştirme, Google Sheets köprüsü, BI panoları.',F4:'KVKK/RBAC, denetim izi, DR tatbikatı; Defne 1-2-3 pilotu.',F5:'Yük/güvenlik testleri, runbook, eğitim; GA.',F6:'n8n mevzuat izleme + OpenClaw özetleri (insan onaylı).'};
- const groups={};
- for(const s of D.sprints){(groups[s.faz]=groups[s.faz]||[]).push(s);}
- document.getElementById('fazCards').innerHTML=Object.entries(groups).map(([f,ss])=>{
-  const b=ss[0].b,e=ss[ss.length-1].e;
-  return `<div class="card"><p class="chip !bg-brand-50 !text-brand-700 !border-brand-100">${f} · ${trD(b)} – ${trD(e)}</p><h4 class="mt-2 font-medium text-slate-900">${fazAd[f]||f}</h4><p class="mt-1 leading-7">${fazDesc[f]||''}</p></div>`;}).join('');
- // Dönem tablosu
+ const kv=D.kv, carp=+kv.zaman_carpani||.55, t0=kv.baslangic||FB.kv.baslangic;
+ const dur=b=>Math.max(2,Math.round(b*carp));
+ let cur=new Date(t0);const ph=PHASES.map(p=>{const b=new Date(cur),d=dur(p.base);const e=new Date(cur.getTime()+(d-1)*864e5);cur=new Date(e.getTime()+864e5);return{...p,b,e,d};});
+ const f6b=new Date(cur.getTime()+7*864e5),f6={...F6,b:f6b,d:dur(F6.base),e:new Date(f6b.getTime()+(dur(F6.base)-1)*864e5)};
+ // durum
+ document.getElementById('liveDot').className='inline-block w-2.5 h-2.5 rounded-full '+(live?'bg-emerald-400':'bg-amber-400');
+ document.getElementById('liveStatus').textContent=live?'Sheets canlı':'statik yedek';
+ document.getElementById('liveMode').textContent=live?'CANLI':'STATİK';
+ document.getElementById('liveNote').textContent=msg;
+ document.getElementById('liveTime').textContent=new Date().toLocaleTimeString('tr-TR');
+ // hero + hız
+ const set=(id,v)=>document.getElementById(id).textContent=v;
+ set('kDev',kv.dev_sayisi);set('kCarpan',trN(carp));set('kSure',(kv.efektif_gun??Math.round(168*carp))+' gün');
+ set('kGA',trD(kv.ga_hedef));set('kParite',`${kv.parite_ok??7}/${kv.parite_hedef??7}`);set('kParite2',`${kv.parite_ok??7}/${kv.parite_hedef??7}`);
+ set('vDev',kv.dev_sayisi);set('vAi','×'+trN(kv.ai_hiz,1));set('vPay','%'+Math.round((kv.ai_pay??.6)*100));
+ set('vAmdahl',trN(kv.amdahl));set('vEca',trN(kv.eca_carpani));set('vCarpan',trN(carp));
+ set('vGun',(kv.efektif_gun??92)+' g');set('vGA',trD(kv.ga_hedef));set('vTampon',trD(kv.tampon_sonu));
+ set('kUcret',trN(kv.asgari_ucret_2026,2));set('tTaban',kv.taban_gun??168);
+ // karşılaştırma barları
+ const taban=kv.taban_gun??168, ef=kv.efektif_gun??Math.round(taban*carp);
+ document.getElementById('cmpBars').innerHTML=[
+  ['İnsan-eşdeğeri plan',taban,'bg-slate-300 text-slate-700',100],
+  ['Vibecoding planı (canlı)',ef,'bg-brand-600 text-white',Math.max(8,Math.round(ef/taban*100))]
+ ].map(b=>`<div><div class="flex justify-between"><span class="muted">${b[0]}</span><span class="font-medium text-slate-900">${b[1]} gün</span></div>
+  <div class="mt-1 h-8 rounded-lg bg-slate-100 overflow-hidden"><div class="h-full ${b[2]} flex items-center px-3 rounded-lg" style="width:${b[3]}%">${b[1]} g</div></div></div>`).join('');
+ const ae=(kv.amdahl??.55)*(kv.eca_carpani??1);
+ document.getElementById('whatif').innerHTML=[1,2,3,4].map(n=>{const g=Math.max(10,Math.round(taban*ae/n));
+  const on=+kv.dev_sayisi===n;
+  return `<span class="chip ${on?'!bg-brand-600 !text-white !border-brand-600':''}"><i class="ph ph-users"></i>${n} geliştirici → ${g} gün → GA ${trD(new Date(t0.getTime()+g*864e5))}</span>`;}).join('');
+ // timeline
+ const colors={F0:'#64748B',F1:'#1A56DB',F2:'#1642A8',F3:'#0E9F6E',F4:'#B45309',F5:'#0F172A',F6:'#7C3AED'};
+ const items=[...ph.map(p=>({...p,opt:false})),{...f6,opt:true}];
+ document.getElementById('timeline').innerHTML=items.map(p=>`
+  <div class="titem">
+   <span class="tdot" style="background:${colors[p.f]}">${p.f}</span>
+   <div class="${p.opt?'opacity-70':''}">
+    <div class="flex flex-wrap items-center gap-2">
+     <span class="font-medium text-slate-900 text-lg">${p.ad}</span>
+     <span class="badge bg-slate-100 text-slate-600">${trD(p.b)} → ${trD(p.e)}</span>
+     <span class="badge bg-brand-50 text-brand-700 border border-brand-100">${p.d} gün</span>
+     ${p.opt?'<span class="badge bg-violet-50 text-violet-700 border border-violet-100">opsiyonel</span>':''}
+    </div>
+    <p class="mt-1 leading-7">${p.out}</p>
+   </div>
+  </div>`).join('')+
+  `<div class="titem"><span class="tdot bg-emerald-600"><i class="ph ph-flag"></i></span>
+   <div><div class="flex flex-wrap items-center gap-2"><span class="font-medium text-slate-900 text-lg">GA — üretim yayını</span>
+   <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-100">${trD(kv.ga_hedef)}</span>
+   <span class="badge bg-slate-100 text-slate-600">tampon sonu ${trD(kv.tampon_sonu)}</span></div>
+   <p class="mt-1 leading-7">%15 takvim tamponu ve %20 yönetim rezervi (unk-unk'lar için) tanımlıdır.</p></div></div>`;
+ // SMART
+ const pend=f=>f==='GA'?trD(kv.ga_hedef):trD((ph.find(x=>x.f===f)||{}).e);
+ document.getElementById('tblSmart').innerHTML=SMART.map(s=>`<tr><td class="font-medium text-brand-700">${s[0]}</td><td>${s[1]}</td><td>${s[2]}</td><td>${pend(s[3])}</td><td>${s[3]}</td></tr>`).join('');
+ // tablolar
+ document.getElementById('tblRisk').innerHTML=RISKS.map(r=>{const sc=r[1]*r[2];
+  const cls=sc>=12?'bg-red-50 text-red-700 border-red-100':(sc>=6?'bg-amber-50 text-amber-700 border-amber-100':'bg-emerald-50 text-emerald-700 border-emerald-100');
+  return `<tr><td>${r[0]}</td><td><span class="badge border ${cls}">${sc}</span></td><td>${r[3]}</td></tr>`;}).join('');
+ document.getElementById('tblGap').innerHTML=GAPS.map(g=>`<tr><td class="font-medium text-slate-900">${g[0]}</td><td>${g[1]}</td><td>${g[2]}</td></tr>`).join('');
+ document.getElementById('tblTest').innerHTML=TESTS.map(t=>`<tr><td class="font-medium text-brand-700">${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td></tr>`).join('');
+ document.getElementById('kpiCards').innerHTML=KPIS.map(k=>`<div class="rounded-lg bg-slate-50 border border-slate-200 p-3"><p class="stat">${k[0]}</p><p class="mt-1 leading-6">${k[1]}</p></div>`).join('');
+ document.getElementById('mustChips').innerHTML=MUST.map(m=>`<span class="chip"><i class="ph ph-check text-emerald-600"></i>${m}</span>`).join('');
+ // dönem
  document.getElementById('tblDonem').innerHTML=D.donem.map((d,i)=>{
   const nxt=D.donem[i+1];const lbl=nxt?`${trD(d.b)} – ${trD(new Date(nxt.b-864e5))}`:`${trD(d.b)} →`;
-  const bold=!nxt?' class="font-medium text-slate-900"':'';
-  return `<tr><td${bold}>${lbl}</td><td${bold}>%${(d.o*100).toLocaleString('tr-TR',{minimumFractionDigits:2})}</td></tr>`;}).join('');
- // Grafikler
- mk('chartMaliyet').setOption({textStyle:baseTxt,tooltip:{trigger:'axis'},legend:{bottom:0,textStyle:baseTxt},
+  const b=!nxt?' class="font-medium text-slate-900"':'';
+  return `<tr><td${b}>${lbl}</td><td${b}>%${(d.o*100).toLocaleString('tr-TR',{minimumFractionDigits:2})}</td></tr>`;}).join('');
+ // grafikler
+ chart('chartMaliyet').setOption({textStyle:baseTxt,tooltip:{trigger:'axis'},legend:{bottom:0,textStyle:baseTxt},
   grid:{left:64,right:12,top:20,bottom:44},
   xAxis:{type:'category',data:D.maliyet.map(m=>m.s),axisLabel:baseTxt},
   yAxis:{type:'value',axisLabel:{...baseTxt,formatter:v=>(v/1000)+' bin'}},
   series:[{name:'2025',type:'bar',itemStyle:{color:slate,borderRadius:[4,4,0,0]},data:D.maliyet.map(m=>m.y25)},
           {name:'2026',type:'bar',itemStyle:{color:brand,borderRadius:[4,4,0,0]},data:D.maliyet.map(m=>m.y26)}]});
- const t0=D.sprints[0].b;const day=(a)=>Math.round((a-t0)/864e5);
- const fazColor={F0:'#94A3B8',F1:'#1A56DB',F2:'#1642A8',F3:'#0E9F6E',F4:'#B45309',F5:'#0F172A',F6:'#7C3AED'};
- const gmax=Math.max(...D.sprints.map(s=>day(s.e)))+7;
- mk('chartGantt').setOption({textStyle:baseTxt,
-  tooltip:{formatter:p=>{if(p.seriesIndex!==1)return'';const s=D.sprints[p.dataIndex];return `<b>${s.kod} ${s.ad}</b><br>${trD(s.b)} – ${trD(s.e)} · ${s.faz}`;}},
-  grid:{left:140,right:24,top:10,bottom:30},
-  xAxis:{type:'value',max:gmax,interval:Math.max(14,Math.round(gmax/12/7)*7),axisLabel:{...baseTxt,formatter:v=>{const d=new Date(t0.getTime()+v*864e5);return d.getDate()+'.'+(d.getMonth()+1);}},splitLine:{lineStyle:{color:'#EEF2F7'}}},
-  yAxis:{type:'category',inverse:true,data:D.sprints.map(s=>s.kod+' '+s.ad),axisLabel:{...baseTxt,fontSize:12}},
-  series:[{type:'bar',stack:'g',itemStyle:{color:'transparent'},data:D.sprints.map(s=>day(s.b)),silent:true},
-          {type:'bar',stack:'g',barWidth:14,itemStyle:{borderRadius:7,color:p=>fazColor[D.sprints[p.dataIndex].faz]||brand},data:D.sprints.map(s=>day(s.e)-day(s.b)+1)}]});
- mk('chartMoscow').setOption({textStyle:baseTxt,tooltip:{trigger:'item'},legend:{bottom:0,textStyle:baseTxt},
+ chart('chartFaz').setOption({textStyle:baseTxt,tooltip:{},grid:{left:120,right:30,top:10,bottom:24},
+  xAxis:{type:'value',axisLabel:baseTxt,splitLine:{lineStyle:{color:'#EEF2F7'}}},
+  yAxis:{type:'category',inverse:true,data:items.map(p=>p.f+' '+p.ad),axisLabel:{...baseTxt,fontSize:12}},
+  series:[{type:'bar',barWidth:14,itemStyle:{borderRadius:7,color:p=>colors[items[p.dataIndex].f]},
+   label:{show:true,position:'right',formatter:p=>items[p.dataIndex].d+' g',fontFamily:'Roboto'},data:items.map(p=>p.d)}]});
+ chart('chartMoscow').setOption({textStyle:baseTxt,tooltip:{trigger:'item'},legend:{bottom:0,textStyle:baseTxt},
   series:[{type:'pie',radius:['45%','70%'],center:['50%','44%'],itemStyle:{borderColor:'#fff',borderWidth:2},
    label:{show:true,formatter:'{c}',fontFamily:'Roboto'},
-   data:[{value:kv.moscow_must??21,name:'Must',itemStyle:{color:brand}},{value:kv.moscow_should??11,name:'Should',itemStyle:{color:'#0E9F6E'}},
-         {value:kv.moscow_could??5,name:'Could',itemStyle:{color:'#B45309'}},{value:kv.moscow_wont??3,name:"Won't (v1)",itemStyle:{color:slate}}]}]});
- const risks=[['Mevzuat değişikliği',4,5],['Veri kalitesi',5,4],['Bus factor 1',3,5],['AI kod kalitesi',4,4],['Slopsquatting',3,4],['Framework v17',3,3],['SGK API yok',4,3],['KVKK ihlali',2,5],['Sheets kotaları',3,2],['Kapsam kayması',4,3],['Oran itirazı',2,3],['Sunucu arızası',2,4],['Lisans (satış)',2,3],['Deprem ertelemeleri',3,2]];
- mk('chartRisk').setOption({textStyle:baseTxt,
+   data:[{value:MOSCOW.Must,name:'Must',itemStyle:{color:brand}},{value:MOSCOW.Should,name:'Should',itemStyle:{color:'#0E9F6E'}},
+         {value:MOSCOW.Could,name:'Could',itemStyle:{color:'#B45309'}},{value:MOSCOW["Won't (v1)"],name:"Won't (v1)",itemStyle:{color:slate}}]}]});
+ chart('chartRisk').setOption({textStyle:baseTxt,
   tooltip:{formatter:p=>`<b>${p.data[3]}</b><br>Olasılık ${p.data[0]} × Etki ${p.data[1]} = ${p.data[0]*p.data[1]}`},
   grid:{left:44,right:16,top:20,bottom:40},
   xAxis:{name:'Olasılık',nameTextStyle:baseTxt,min:.5,max:5.5,interval:1,axisLabel:baseTxt,splitLine:{lineStyle:{color:'#EEF2F7'}}},
   yAxis:{name:'Etki',nameTextStyle:baseTxt,min:.5,max:5.5,interval:1,axisLabel:baseTxt,splitLine:{lineStyle:{color:'#EEF2F7'}}},
   series:[{type:'scatter',symbolSize:d=>8+d[0]*d[1]*1.5,
    itemStyle:{color:p=>p.data[0]*p.data[1]>=12?'#C81E1E':(p.data[0]*p.data[1]>=6?'#B45309':'#0E9F6E'),opacity:.75},
-   data:risks.map(r=>[r[1],r[2],r[1]*r[2],r[0]])}]});
- mk('chartGap').setOption({textStyle:baseTxt,tooltip:{},legend:{bottom:0,textStyle:baseTxt},
-  radar:{indicator:[{name:'Parametre',max:5},{name:'Bütünlük',max:5},{name:'Yöntem',max:5},{name:'Veri girişi',max:5},{name:'İzlenebilirlik',max:5},{name:'KVKK',max:5},{name:'Kota',max:5},{name:'Raporlama',max:5}],
+   data:RISKS.map(r=>[r[1],r[2],r[1]*r[2],r[0]])}]});
+ chart('chartGap').setOption({textStyle:baseTxt,tooltip:{},legend:{bottom:0,textStyle:baseTxt},
+  radar:{indicator:['Parametre','Bütünlük','Yöntem','Veri girişi','İzlenebilirlik','KVKK','Kota','Raporlama'].map(n=>({name:n,max:5})),
    axisName:{...baseTxt,fontSize:12},splitLine:{lineStyle:{color:'#E2E8F0'}},splitArea:{show:false}},
   series:[{type:'radar',data:[{value:[1,1,1,2,1,1,2,1],name:'Mevcut tablo',itemStyle:{color:slate},areaStyle:{opacity:.18}},
         {value:[5,5,5,4,5,5,5,4],name:'Hedef ürün (GA)',itemStyle:{color:brand},areaStyle:{opacity:.15}}]}]});
 }
-(async()=>{
- try{
-  const D=await fetchWebParam();
-  D.kv.baslangic=gDate(D.kv.baslangic)||FALLBACK.kv.baslangic;
-  render(D,true,'Veriler Google Sheets çalışma kitabından canlı okunuyor; tabloyu düzenleyin, sayfayı yenileyin.');
- }catch(e){
-  render(FALLBACK,false,'Sheets okunamadı ('+e.message+'). Statik plan gösteriliyor — çalışma kitabının v2 sürümünü (WEB_PARAM sayfalı) aynı Sheets adresine içe aktarın.');
- }
-})();
+async function tick(){
+ try{const D=await fetchLive();render(D,true,'Google Sheets çalışma kitabından canlı okunuyor. Sheets\'i düzenleyin; bu sayfa 60 sn içinde kendini günceller.');}
+ catch(e){render(FB,false,'Sheets okunamadı: '+e.message+'. Çekirdek kitabın v3 sürümünü aynı Sheets adresine içe aktarın (Dosya > İçe aktar > E-tabloyu değiştir).');}
+}
+tick(); setInterval(tick,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
 </script>
 </body>
 </html>
