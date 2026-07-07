@@ -402,6 +402,7 @@ async function fetchWebParam(){
   else if(tag==='DONEM')donem.push({b:gDate(r[1]),o:r[2]});
   else if(tag==='TEKLIF')teklif.push({k:r[1],v:r[2]});
  }
+ if(!('zaman_carpani' in kv)||sprints.length<12)throw new Error('WEB_PARAM bulunamadı');
  return{kv,sprints,maliyet,donem,teklif};
 }
 const FALLBACK={kv:{dev_sayisi:1,verim:.7,ai_hiz:4,ai_pay:.6,amdahl:.55,eca_carpani:1,zaman_carpani:1,
