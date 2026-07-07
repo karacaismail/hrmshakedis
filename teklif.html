@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Teklif Formu — Asgari İşçilik Hesap Çıktısı (canlı)</title>
+<title>Yazılım Geliştirme Teklif Formu — canlı, A4</title>
 <meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Roboto,sans-serif'>h</text></svg>">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,18 +13,14 @@
 <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Roboto','system-ui','sans-serif']},colors:{brand:{50:'#EBF1FE',600:'#1A56DB',700:'#1642A8',900:'#0F172A'}}}}}</script>
 <style>
 html{font-size:16px}
-body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#F5F7FA}
-.row{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .9rem;border-bottom:1px solid #EEF2F7}
+body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#F4F6FA}
+.row{display:flex;justify-content:space-between;gap:1rem;padding:.5rem .9rem;border-bottom:1px solid #EEF2F7}
 .row dt{color:#64748B;font-weight:300}
 .row dd{color:#0F172A;font-weight:400;text-align:right}
 .band{background:#0F172A;color:#fff;font-weight:500;padding:.5rem .9rem;letter-spacing:.04em}
 .btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:500;padding:.65rem 1rem;border-radius:.75rem}
-@media print{
- @page{size:A4;margin:12mm}
- body{background:#fff}
- .noprint{display:none!important}
- #sheetCard{box-shadow:none!important;border:none!important;max-width:100%!important}
-}
+@media print{@page{size:A4;margin:12mm}body{background:#fff}.noprint{display:none!important}
+ #sheetCard{box-shadow:none!important;border:none!important;max-width:100%!important}}
 </style>
 </head>
 <body class="text-slate-700">
@@ -43,59 +40,58 @@ body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#
  <button onclick="load()" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-arrows-clockwise"></i> Yenile</button>
  <a href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-table"></i> Sheets'te düzenle</a>
 </div>
-<p class="noprint max-w-3xl mx-auto px-4 pt-2 text-slate-500 leading-6">Bu sayfa, Google Sheets'teki <span class="font-medium text-slate-700">TEKLİF GİRDİ</span> sayfasından beslenir: tabloda girdileri değiştirin, burada Yenile'ye basın. 60 saniyede bir ve sekmeye dönüşte kendini tazeler.</p>
-<div id="guide" class="noprint hidden max-w-3xl mx-auto mt-3 mx-4 px-4">
+<p class="noprint max-w-3xl mx-auto px-4 pt-2 text-slate-500 leading-6">Kaynak: Google Sheets <span class="font-medium text-slate-700">TEKLİF GİRDİ</span> + <span class="font-medium text-slate-700">PARAMETRELER</span>. 60 saniyede bir ve sekmeye dönüşte kendini tazeler.</p>
+<div id="guide" class="noprint hidden max-w-3xl mx-auto mt-3 px-4">
  <div class="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 p-4 leading-7">
   <p class="font-medium flex items-center gap-2"><i class="ph ph-warning"></i>Veri alınamadı: <span id="guideReason">—</span></p>
-  <p class="mt-1">Çözüm: çekirdek çalışma kitabının <span class="font-medium">v3</span> dosyasını aynı Sheets adresine yükleyin — Google Sheets'te <span class="font-medium">Dosya &gt; İçe aktar &gt; E-tabloyu değiştir</span>. Dosyada TEKLİF GİRDİ, TEKLİF FORMU ve WEB_PARAM sayfaları bulunmalı. İçe aktarınca bu sayfa kendiliğinden dolacaktır.</p>
+  <p class="mt-1">Çözüm: v4 çalışma kitabını aynı Sheets adresine yükleyin — <span class="font-medium">Dosya &gt; İçe aktar &gt; E-tabloyu değiştir</span>. Dosyada WEB_PARAM sayfası bulunmalı (v4, tüm değerleri metin olarak dışa verir).</p>
  </div>
 </div>
 
 <main class="max-w-3xl mx-auto px-4 py-5">
  <div id="sheetCard" class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
   <div class="px-6 pt-7 pb-4 text-center border-b border-slate-100">
-   <h1 class="text-2xl font-medium text-brand-900 tracking-tight">ASGARİ İŞÇİLİK HESAP / TEKLİF FORMU</h1>
-   <p class="mt-1 text-slate-500">İnşaat firması — uyum ön değerlendirme çıktısı (resmi SGK hesabı yerine geçmez)</p>
+   <h1 class="text-2xl font-medium text-brand-900 tracking-tight">YAZILIM GELİŞTİRME TEKLİF FORMU</h1>
+   <p class="mt-1 text-slate-500" id="f_proje_sub">Asgari İşçilik &amp; Hakediş Uyum Platformu — özel yazılım geliştirme teklifi</p>
    <div class="mt-3 flex justify-center gap-6 flex-wrap">
-    <p><span class="text-slate-500">Form No:</span> <span id="f_form_no" class="font-medium text-slate-900">—</span></p>
+    <p><span class="text-slate-500">Teklif No:</span> <span id="f_form_no" class="font-medium text-slate-900">—</span></p>
     <p><span class="text-slate-500">Tarih:</span> <span id="f_tarih" class="font-medium text-slate-900">—</span></p>
+    <p><span class="text-slate-500">Geçerlilik:</span> <span id="f_gecerlilik" class="font-medium text-slate-900">—</span></p>
    </div>
   </div>
-  <div class="band">PROJE</div>
+  <div class="band">TARAFLAR</div>
   <dl>
    <div class="row"><dt>Müşteri</dt><dd id="f_musteri">İnşaat firması</dd></div>
+   <div class="row"><dt>Yüklenici</dt><dd id="f_yuklenici">—</dd></div>
    <div class="row"><dt>Proje</dt><dd id="f_proje">—</dd></div>
-   <div class="row"><dt>SGK işyeri sicil no</dt><dd id="f_sgk_no">—</dd></div>
-   <div class="row"><dt>Hazırlayan</dt><dd id="f_hazirlayan">—</dd></div>
   </dl>
-  <div class="band">SEÇİLEN KOŞULLAR</div>
+  <div class="band">KAPSAM (SEÇİLİ MODÜLLER)</div>
+  <div class="px-6 py-3" id="f_kapsam"><p class="text-slate-400">yükleniyor…</p></div>
+  <div class="band">WATERFALL PLAN</div>
+  <div class="px-2 py-1">
+   <table class="w-full"><thead><tr class="text-left text-slate-500">
+    <th class="px-4 py-2 font-normal">Faz</th><th class="px-2 py-2 font-normal">Süre</th><th class="px-2 py-2 font-normal">Başlangıç</th><th class="px-2 py-2 font-normal">Bitiş</th></tr></thead>
+    <tbody id="f_plan"></tbody></table>
+  </div>
+  <div class="band">TİCARİ KOŞULLAR</div>
   <dl>
-   <div class="row"><dt>Hesap tipi</dt><dd id="f_hesap_tipi">—</dd></div>
-   <div class="row"><dt id="f_kosul1_ad">Koşul</dt><dd id="f_kosul1">—</dd></div>
-   <div class="row"><dt id="f_kosul2_ad">Koşul</dt><dd id="f_kosul2">—</dd></div>
-   <div class="row"><dt>Uygulama yılları</dt><dd id="f_yillar">—</dd></div>
-   <div class="row"><dt>Tebliğ oranı</dt><dd id="f_teblig_orani">—</dd></div>
-   <div class="row"><dt>%25 indirim (ünite araştırması)</dt><dd id="f_indirim">—</dd></div>
-   <div class="row"><dt>Tahakkuk dönemi · dönem prim oranı</dt><dd><span id="f_donem">—</span> · <span id="f_donem_orani">—</span></dd></div>
+   <div class="row"><dt>Toplam efor</dt><dd id="f_efor">—</dd></div>
+   <div class="row"><dt>Toplam takvim süresi</dt><dd id="f_sure">—</dd></div>
+   <div class="row"><dt>Teslim (GA) · tampon sonu</dt><dd><span id="f_ga">—</span> · <span id="f_tampon">—</span></dd></div>
+   <div class="row"><dt>Günlük birim ücret</dt><dd id="f_ucret">—</dd></div>
+   <div class="row"><dt>Bedel (KDV hariç)</dt><dd id="f_bedel" class="!font-medium">—</dd></div>
+   <div class="row"><dt>KDV (%20)</dt><dd id="f_kdv">—</dd></div>
+   <div class="row"><dt class="!font-medium !text-slate-900">Genel toplam</dt><dd id="f_toplam" class="!font-bold !text-brand-700">—</dd></div>
+   <div class="row"><dt>Ödeme planı</dt><dd id="f_odeme" class="text-right leading-7">—</dd></div>
   </dl>
-  <div class="band">HESAP SONUCU</div>
-  <dl>
-   <div class="row"><dt>Birim maliyet</dt><dd id="f_birim_maliyet">—</dd></div>
-   <div class="row"><dt>Matrah</dt><dd id="f_matrah">—</dd></div>
-   <div class="row"><dt>Uygulanan oran</dt><dd id="f_uygulanan_oran">—</dd></div>
-   <div class="row"><dt>Bildirilmesi gereken SPEK</dt><dd id="f_gereken_spek">—</dd></div>
-   <div class="row"><dt>Bildirilen SPEK</dt><dd id="f_bildirilen_spek">—</dd></div>
-   <div class="row"><dt>Fark SPEK</dt><dd id="f_fark_spek">—</dd></div>
-   <div class="row"><dt class="!font-medium !text-slate-900">Fark prim borcu</dt><dd id="f_fark_prim" class="!font-bold !text-red-700">—</dd></div>
-   <div class="row"><dt>Adam-ay eşdeğeri (yönetim kotası)</dt><dd id="f_adam_ay">—</dd></div>
-  </dl>
-  <div class="px-6 py-4 bg-slate-50 border-t border-slate-100">
-   <p class="leading-7"><span class="font-medium text-slate-900">Değerlendirme:</span> <span id="f_degerlendirme">—</span></p>
-   <p class="mt-2 text-slate-500 leading-6">Not: Hesap, PARAMETRELER sayfasındaki resmi değerlerle (RG referanslı) yapılır. Ünite araştırmasında tebliğ oranının %25 eksiği uygulanır; müfettiş/SMMM-YMM incelemesinde uygulanmaz. Fark prim, tahakkuk dönemine mal edilir; 5510 md.89 gecikme cezası/zammı ayrıca hesaplanır.</p>
+  <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 leading-7">
+   <p><span class="font-medium text-slate-900">Kabul kriterleri:</span> 12 altın senaryoda birebir sonuç (sapma &lt; 0,01 TL); test kapsamı ≥ %85; API p95 &lt; 300 ms; pilot mutabakatında açıklanamayan fark 0.</p>
+   <p class="mt-2"><span class="font-medium text-slate-900">Varsayımlar:</span> SGK resmi API'si yoktur — bildirilen SPEK verisi müşterice CSV/ekran ile sağlanır; barındırma müşteri sunucusundadır; mevzuat değişikliği kapsam değişikliği sayılır.</p>
+   <p class="mt-2"><span class="font-medium text-slate-900">Hariçler:</span> SGK/e-Devlet ekran otomasyonu, çok müşterili SaaS, mobil uygulama. Kaynak kod müşteriye özel kullanım lisansıyla teslim edilir.</p>
   </div>
   <div class="grid grid-cols-2 gap-8 px-6 py-8">
-   <div><p class="font-medium text-slate-900">Hazırlayan</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
-   <div><p class="font-medium text-slate-900">Onaylayan</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
+   <div><p class="font-medium text-slate-900">Yüklenici</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
+   <div><p class="font-medium text-slate-900">Müşteri (İnşaat firması)</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
   </div>
  </div>
  <p class="noprint mt-3 text-slate-400 leading-6" id="ts"></p>
@@ -103,10 +99,14 @@ body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#
 
 <script>
 const SID='1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw';
-const trTL=v=>v==null||v===''?'—':Number(v).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+' TL';
-const trPct=v=>v==null?'—':'%'+(v*100).toLocaleString('tr-TR',{maximumFractionDigits:2});
-function gDate(v){if(v==null)return null;const m=String(v).match(/Date\((\d+),(\d+),(\d+)/);return m?new Date(+m[1],+m[2],+m[3]):null;}
-const trD=v=>{const d=gDate(v);return d?d.toLocaleDateString('tr-TR'):(v??'—');};
+const num=s=>{if(s==null)return null;s=String(s).trim().replace(/\s/g,'');if(!s)return null;
+ if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',', '.');else if(s.includes(','))s=s.replace(',', '.');
+ const v=parseFloat(s);return isNaN(v)?null:v;};
+const dat=s=>{if(!s)return null;const m=String(s).match(/(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+ const n=num(s);return n&&n>40000&&n<60000?new Date(Math.round((n-25569)*864e5)):null;};
+const trD=d=>d?d.toLocaleDateString('tr-TR'):'—';
+const trN=(v,dec=0)=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+const trTL=v=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+' TL';
 async function load(){
  const dot=document.getElementById('liveDot'),st=document.getElementById('liveStatus');
  try{
@@ -114,25 +114,29 @@ async function load(){
   const t=await(await fetch(u,{cache:'no-store'})).text();
   const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
   if(j.status==='error')throw new Error('WEB_PARAM sayfası yok');
-  const T={};
-  for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);if(c[0]==='TEKLIF')T[c[1]]=c[2];}
-  if(!('fark_prim' in T))throw new Error('TEKLIF verisi yok');
-  const set=(id,val)=>{const el=document.getElementById('f_'+id);if(el)el.textContent=val;};
-  set('form_no',T.form_no??'—'); set('tarih',trD(T.tarih));
-  set('musteri',T.musteri??'İnşaat firması'); set('proje',T.proje??'—');
-  set('sgk_no',T.sgk_no??'—'); set('hazirlayan',T.hazirlayan??'—');
-  set('hesap_tipi',T.hesap_tipi??'—');
-  set('kosul1_ad',T.kosul1_ad??'Koşul'); set('kosul1',T.kosul1??'—');
-  set('kosul2_ad',T.kosul2_ad??'Koşul');
-  set('kosul2',typeof T.kosul2==='number'?Number(T.kosul2).toLocaleString('tr-TR',{minimumFractionDigits:2}):(T.kosul2??'—'));
-  set('yillar',T.yillar??'—'); set('teblig_orani',trPct(T.teblig_orani)); set('indirim',T.indirim??'—');
-  set('donem',trD(T.donem)); set('donem_orani',trPct(T.donem_orani));
-  set('birim_maliyet',typeof T.birim_maliyet==='number'?Number(T.birim_maliyet).toLocaleString('tr-TR',{minimumFractionDigits:2})+' TL/m²':'—');
-  set('matrah',trTL(T.matrah)); set('uygulanan_oran',trPct(T.uygulanan_oran));
-  set('gereken_spek',trTL(T.gereken_spek)); set('bildirilen_spek',trTL(T.bildirilen_spek));
-  set('fark_spek',trTL(T.fark_spek)); set('fark_prim',trTL(T.fark_prim));
-  set('adam_ay',(T.adam_ay??0).toLocaleString('tr-TR')+' adam-ay');
-  set('degerlendirme',T.degerlendirme??'—');
+  const kv={},tk={},modul=[],faz=[];
+  for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
+   if(c[0]==='KV')kv[c[1]]=c[2];
+   else if(c[0]==='TEKLIF')tk[c[1]]=c[2];
+   else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3])});
+   else if(c[0]==='FAZ')faz.push({ad:c[1],gun:num(c[3]),b:dat(c[4]),e:dat(c[5])});}
+  if(!('carpan' in kv)||faz.length<6)throw new Error('WEB_PARAM v4 değil');
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('f_form_no',tk.form_no||'—'); set('f_tarih',trD(dat(tk.tarih))); set('f_gecerlilik',tk.gecerlilik||'—');
+  set('f_musteri',tk.musteri||'İnşaat firması'); set('f_yuklenici',tk.yuklenici||'—');
+  set('f_proje',tk.proje||'—'); set('f_proje_sub',(tk.proje||'')+' — özel yazılım geliştirme teklifi');
+  const inc=modul.filter(m=>String(m.sec).toUpperCase()==='EVET'),exc=modul.filter(m=>String(m.sec).toUpperCase()!=='EVET');
+  document.getElementById('f_kapsam').innerHTML=
+   '<ul class="space-y-1 leading-7">'+inc.map(m=>`<li class="flex justify-between gap-3"><span>• ${m.ad}</span><span class="text-slate-500 whitespace-nowrap">${trN(m.gun)} adam-gün</span></li>`).join('')+'</ul>'
+   +(exc.length?`<p class="mt-2 text-slate-400">Kapsam dışı: ${exc.map(m=>m.ad).join(' · ')}</p>`:'');
+  document.getElementById('f_plan').innerHTML=faz.map(p=>`<tr class="border-t border-slate-100">
+   <td class="px-4 py-2">${p.ad}</td><td class="px-2 py-2 whitespace-nowrap">${trN(p.gun)} gün</td>
+   <td class="px-2 py-2 whitespace-nowrap">${trD(p.b)}</td><td class="px-2 py-2 whitespace-nowrap">${trD(p.e)}</td></tr>`).join('');
+  set('f_efor',trN(num(kv.efor))+' adam-gün'); set('f_sure',trN(num(kv.sure))+' gün');
+  set('f_ga',trD(dat(kv.ga))); set('f_tampon',trD(dat(kv.tampon)));
+  set('f_ucret',trTL(num(kv.gunluk_ucret))); set('f_bedel',trTL(num(kv.bedel)));
+  set('f_kdv',trTL(num(kv.kdv))); set('f_toplam',trTL(num(kv.toplam)));
+  document.getElementById('f_odeme').innerHTML=[tk.odeme1,tk.odeme2,tk.odeme3].filter(Boolean).join('<br>')||'—';
   dot.className='inline-block w-2.5 h-2.5 rounded-full bg-emerald-500'; st.textContent='Sheets canlı';
   document.getElementById('guide').classList.add('hidden');
   document.getElementById('ts').textContent='Son okuma: '+new Date().toLocaleString('tr-TR')+' · Kaynak: Google Sheets WEB_PARAM';
