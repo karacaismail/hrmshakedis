@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Teklif Formu — Asgari İşçilik Hesap Çıktısı (canlı)</title>
+<meta name="robots" content="noindex">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Roboto','system-ui','sans-serif']},colors:{brand:{50:'#EBF1FE',600:'#1A56DB',700:'#1642A8',900:'#0F172A'}}}}}</script>
+<style>
+html{font-size:16px}
+body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#F5F7FA}
+.row{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .9rem;border-bottom:1px solid #EEF2F7}
+.row dt{color:#64748B;font-weight:300}
+.row dd{color:#0F172A;font-weight:400;text-align:right}
+.band{background:#0F172A;color:#fff;font-weight:500;padding:.5rem .9rem;letter-spacing:.04em}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:500;padding:.65rem 1rem;border-radius:.75rem}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff}
+ .noprint{display:none!important}
+ #sheetCard{box-shadow:none!important;border:none!important;max-width:100%!important}
+}
+</style>
+</head>
+<body class="text-slate-700">
+
+<header class="noprint sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+ <div class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+  <a href="index.html" class="flex items-center gap-2 text-slate-900 font-medium"><i class="ph ph-arrow-left"></i><span class="hidden sm:inline">Rapora dön</span></a>
+  <div class="flex items-center gap-2">
+   <span id="liveDot" class="inline-block w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+   <span id="liveStatus" class="text-slate-500">yükleniyor…</span>
+  </div>
+ </div>
+</header>
+
+<div class="noprint max-w-3xl mx-auto px-4 pt-5 flex flex-wrap gap-2">
+ <button onclick="window.print()" class="btn bg-brand-600 text-white hover:bg-brand-700"><i class="ph ph-printer"></i> Yazdır (A4)</button>
+ <button onclick="load()" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-arrows-clockwise"></i> Yenile</button>
+ <a href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-table"></i> Sheets'te düzenle</a>
+</div>
+<p class="noprint max-w-3xl mx-auto px-4 pt-2 text-slate-500 leading-6">Bu sayfa, Google Sheets'teki <span class="font-medium text-slate-700">TEKLİF GİRDİ</span> sayfasından beslenir: tabloda girdileri değiştirin, burada Yenile'ye basın. 60 saniyede bir kendini de tazeler.</p>
+
+<main class="max-w-3xl mx-auto px-4 py-5">
+ <div id="sheetCard" class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+  <div class="px-6 pt-7 pb-4 text-center border-b border-slate-100">
+   <h1 class="text-2xl font-medium text-brand-900 tracking-tight">ASGARİ İŞÇİLİK HESAP / TEKLİF FORMU</h1>
+   <p class="mt-1 text-slate-500">İnşaat firması — uyum ön değerlendirme çıktısı (resmi SGK hesabı yerine geçmez)</p>
+   <div class="mt-3 flex justify-center gap-6 flex-wrap">
+    <p><span class="text-slate-500">Form No:</span> <span id="f_form_no" class="font-medium text-slate-900">—</span></p>
+    <p><span class="text-slate-500">Tarih:</span> <span id="f_tarih" class="font-medium text-slate-900">—</span></p>
+   </div>
+  </div>
+  <div class="band">PROJE</div>
+  <dl>
+   <div class="row"><dt>Müşteri</dt><dd id="f_musteri">İnşaat firması</dd></div>
+   <div class="row"><dt>Proje</dt><dd id="f_proje">—</dd></div>
+   <div class="row"><dt>SGK işyeri sicil no</dt><dd id="f_sgk_no">—</dd></div>
+   <div class="row"><dt>Hazırlayan</dt><dd id="f_hazirlayan">—</dd></div>
+  </dl>
+  <div class="band">SEÇİLEN KOŞULLAR</div>
+  <dl>
+   <div class="row"><dt>Hesap tipi</dt><dd id="f_hesap_tipi">—</dd></div>
+   <div class="row"><dt id="f_kosul1_ad">Koşul</dt><dd id="f_kosul1">—</dd></div>
+   <div class="row"><dt id="f_kosul2_ad">Koşul</dt><dd id="f_kosul2">—</dd></div>
+   <div class="row"><dt>Uygulama yılları</dt><dd id="f_yillar">—</dd></div>
+   <div class="row"><dt>Tebliğ oranı</dt><dd id="f_teblig_orani">—</dd></div>
+   <div class="row"><dt>%25 indirim (ünite araştırması)</dt><dd id="f_indirim">—</dd></div>
+   <div class="row"><dt>Tahakkuk dönemi · dönem prim oranı</dt><dd><span id="f_donem">—</span> · <span id="f_donem_orani">—</span></dd></div>
+  </dl>
+  <div class="band">HESAP SONUCU</div>
+  <dl>
+   <div class="row"><dt>Birim maliyet</dt><dd id="f_birim_maliyet">—</dd></div>
+   <div class="row"><dt>Matrah</dt><dd id="f_matrah">—</dd></div>
+   <div class="row"><dt>Uygulanan oran</dt><dd id="f_uygulanan_oran">—</dd></div>
+   <div class="row"><dt>Bildirilmesi gereken SPEK</dt><dd id="f_gereken_spek">—</dd></div>
+   <div class="row"><dt>Bildirilen SPEK</dt><dd id="f_bildirilen_spek">—</dd></div>
+   <div class="row"><dt>Fark SPEK</dt><dd id="f_fark_spek">—</dd></div>
+   <div class="row"><dt class="!font-medium !text-slate-900">Fark prim borcu</dt><dd id="f_fark_prim" class="!font-bold !text-red-700">—</dd></div>
+   <div class="row"><dt>Adam-ay eşdeğeri (yönetim kotası)</dt><dd id="f_adam_ay">—</dd></div>
+  </dl>
+  <div class="px-6 py-4 bg-slate-50 border-t border-slate-100">
+   <p class="leading-7"><span class="font-medium text-slate-900">Değerlendirme:</span> <span id="f_degerlendirme">—</span></p>
+   <p class="mt-2 text-slate-500 leading-6">Not: Hesap, PARAMETRELER sayfasındaki resmi değerlerle (RG referanslı) yapılır. Ünite araştırmasında tebliğ oranının %25 eksiği uygulanır; müfettiş/SMMM-YMM incelemesinde uygulanmaz. Fark prim, tahakkuk dönemine mal edilir; 5510 md.89 gecikme cezası/zammı ayrıca hesaplanır.</p>
+  </div>
+  <div class="grid grid-cols-2 gap-8 px-6 py-8">
+   <div><p class="font-medium text-slate-900">Hazırlayan</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
+   <div><p class="font-medium text-slate-900">Onaylayan</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
+  </div>
+ </div>
+ <p class="noprint mt-3 text-slate-400 leading-6" id="ts"></p>
+</main>
+
+<script>
+const SID='1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw';
+const trTL=v=>v==null||v===''?'—':Number(v).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+' TL';
+const trPct=v=>v==null?'—':'%'+(v*100).toLocaleString('tr-TR',{maximumFractionDigits:2});
+function gDate(v){if(v==null)return null;const m=String(v).match(/Date\((\d+),(\d+),(\d+)/);return m?new Date(+m[1],+m[2],+m[3]):null;}
+const trD=v=>{const d=gDate(v);return d?d.toLocaleDateString('tr-TR'):(v??'—');};
+async function load(){
+ const dot=document.getElementById('liveDot'),st=document.getElementById('liveStatus');
+ try{
+  const u=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=WEB_PARAM&headers=0&t=${Date.now()}`;
+  const t=await(await fetch(u,{cache:'no-store'})).text();
+  const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
+  if(j.status==='error')throw new Error('WEB_PARAM sayfası yok');
+  const T={};
+  for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);if(c[0]==='TEKLIF')T[c[1]]=c[2];}
+  if(!('fark_prim' in T))throw new Error('TEKLIF verisi yok');
+  const set=(id,val)=>{const el=document.getElementById('f_'+id);if(el)el.textContent=val;};
+  set('form_no',T.form_no??'—'); set('tarih',trD(T.tarih));
+  set('musteri',T.musteri??'İnşaat firması'); set('proje',T.proje??'—');
+  set('sgk_no',T.sgk_no??'—'); set('hazirlayan',T.hazirlayan??'—');
+  set('hesap_tipi',T.hesap_tipi??'—');
+  set('kosul1_ad',T.kosul1_ad??'Koşul'); set('kosul1',T.kosul1??'—');
+  set('kosul2_ad',T.kosul2_ad??'Koşul');
+  set('kosul2',typeof T.kosul2==='number'?Number(T.kosul2).toLocaleString('tr-TR',{minimumFractionDigits:2}):(T.kosul2??'—'));
+  set('yillar',T.yillar??'—'); set('teblig_orani',trPct(T.teblig_orani)); set('indirim',T.indirim??'—');
+  set('donem',trD(T.donem)); set('donem_orani',trPct(T.donem_orani));
+  set('birim_maliyet',typeof T.birim_maliyet==='number'?Number(T.birim_maliyet).toLocaleString('tr-TR',{minimumFractionDigits:2})+' TL/m²':'—');
+  set('matrah',trTL(T.matrah)); set('uygulanan_oran',trPct(T.uygulanan_oran));
+  set('gereken_spek',trTL(T.gereken_spek)); set('bildirilen_spek',trTL(T.bildirilen_spek));
+  set('fark_spek',trTL(T.fark_spek)); set('fark_prim',trTL(T.fark_prim));
+  set('adam_ay',(T.adam_ay??0).toLocaleString('tr-TR')+' adam-ay');
+  set('degerlendirme',T.degerlendirme??'—');
+  dot.className='inline-block w-2.5 h-2.5 rounded-full bg-emerald-500'; st.textContent='Sheets canlı';
+  document.getElementById('ts').textContent='Son okuma: '+new Date().toLocaleString('tr-TR')+' · Kaynak: Google Sheets WEB_PARAM';
+ }catch(e){
+  dot.className='inline-block w-2.5 h-2.5 rounded-full bg-amber-500'; st.textContent='veri alınamadı';
+  document.getElementById('ts').textContent='Sheets okunamadı ('+e.message+'). Çalışma kitabının v2 sürümünü (TEKLİF + WEB_PARAM sayfalı) aynı Sheets adresine içe aktarın, sonra Yenile deyin.';
+ }
+}
+load(); setInterval(load,60000);
+</script>
+</body>
+</html>
