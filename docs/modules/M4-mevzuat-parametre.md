@@ -1,37 +1,51 @@
 # M4 · Mevzuat Parametre Yönetimi
 
-**Efor:** 15 adam-gün (insan-eşdeğeri) · **Faz:** F3 · **Durum:** Teklif kapsamında
+**Efor:** 15 adam-gün · **Faz:** F3 · **Durum:** Teklif kapsamında.
 
-> Mevzuat değerlerini koddan ayırır: birim maliyetler, işçilik oranları ve dönem parametreleri (asgari ücret, fark prim oranı) **veri** olarak yönetilir. Yeni tebliğ → 15 dakikada canlı.
+> Excel'in formüllerine gömülü bütün sabitleri — 6,75; 0,345; 0,375; 38,5; 18.200; 26.005,50 — tek bir düzenlenebilir tabloya taşır. Yeni tebliğ çıktığında güncelleme, on beş dakikalık bir form işlemi olur.
 
-## Neden var? (iş değeri)
+## Bu modül hangi işi devralıyor?
 
-Bu alanda en büyük risk mevzuat hızıdır: 2024'te KVSK oranı değişti (%34,5→%34,75), 2026'da MYÖ ve tavan değişti (%35,75; 9 kat), 2026/16 hesap yöntemini değiştirdi. Kural kodda gömülü olursa her değişiklik "yazılım projesi" olur; parametre olursa bir form işlemi. Dönem kilitleme sayesinde geçmiş hesaplar yeni parametreden etkilenmez — denetimde "o gün hangi değer geçerliydi" sorusunun kanıtı hazırdır.
+Müşterinin Excel'inde mevzuat değerleri formüllerin içine yazılmış durumda. "Çarpı 6,75 bölü 100" ifadesi yüzlerce hücrede tekrar ediyor. Eksiğin lira karşılığı bir sayfada 0,345 ile, başka sayfada 0,375 ile, bir başkasında 38,5 ile çarpılıyor; üçü birden doğru olamaz ve bugün üçü de günceldışı. Asgari ücret hücresinde hâlâ 2025 değeri (26.005,50) duruyor. Birim fiyat, "2025/1 varsayımı" notuyla 18.200'e sabitlenmiş. Bir kural değiştiğinde birinin bütün sayfaları elden geçirmesi gerekiyor ve bir hücre hep unutuluyor. Bu modül, bu değerlerin tamamını kaynağıyla birlikte tek tabloya taşır. Formüller değeri tablodan okur. Geçmiş hesaplar, kendi dönemlerinin değerine kilitli kalır; bugünkü güncelleme dünkü hesabı değiştiremez.
 
-## Alt bileşenler
+## Excel'deki karşılığı, hücre hücre
 
-| # | Bileşen | Ne yapar? | Efor (a-g) |
-|---|---------|-----------|-----------:|
-| 1 | Parametre veri nesneleri | Birim maliyet (yıl × sınıf-grup, RG referanslı), AİTK işçilik oranları (tam tebliğ eki), dönem parametreleri (asgari ücret, tavan, fark prim oranı) | 5 |
-| 2 | Versiyonlama + dönem kilitleme | Her değerin geçerlilik aralığı ve kaynağı; hesaplar hesap anındaki parametre setine sabitlenir; değişiklik denetim izinde | 4 |
-| 3 | Hızlı güncelleme akışı | Tek form + CSV içe aktarma; yayın öncesi fark önizlemesi; hedef: tebliğ → canlı ≤ 15 dk | 3 |
-| 4 | Test paketi | Dönem seçimi (P1: 30.04.2025 → %34,75; 15.01.2026 → %35,75), regresyon: parametre güncellemesi eski hesabı değiştirmez | 3 |
+| Bugün Excel'de | Ne yapıyor? | Üründe nasıl olacak? |
+|---|---|---|
+| Yüzlerce hücrede "×6,75/100" | İşçilik oranı formüllere gömülü; tebliğ değişirse hepsini elle bulmak gerekiyor. | Oran, iş koluna göre tek tablodan gelecek. Tebliğ değişince tek satır güncellenecek. |
+| Z sütunu ×0,345 · İCMAL D22 ×0,375 · PRİME ESAS D68 ×38,5 | Aynı kavram üç sayfada üç farklı çarpanla hesaplanıyor; üçü de eski. | Tek dönemsel oran tablosu olacak: Eylül 2024'e kadar yüzde 34,5; sonrasında 34,75; 2026'dan itibaren 35,75. Hesap, tarihine bakıp doğru oranı kendisi seçecek. |
+| İCMAL D11: 26.005,50 | 2025 asgari ücreti elle yazılmış; 2026'da güncellenmemiş. | Asgari ücret dönem tablosunda duracak (2026: 33.030,00). Kota hesabı doğru değeri kendisi alacak. |
+| RUHSAT B5: 18.200 "2025/1 varsayımı" | Birim fiyat tek yıla sabitlenmiş. | Yıl ve yapı sınıfına göre tam tablo olacak; kaynak olarak Resmî Gazete tarihi ve sayısı yazacak. |
+
+## Kullanıcı hikâyeleri
+
+- **SGK uzmanı olarak**, yeni tebliğ çıktığında değerleri kendim güncellemek istiyorum. Böylece geliştirici beklemem ve hesaplar hiç eskimez.
+- **Genel müdür olarak**, geçmiş bir hesabın o günkü resmî değerle yapıldığının kanıtını görmek istiyorum. Böylece denetimde "sonradan mı değiştirdiniz" şüphesi hiç doğmaz.
+- **Mali işler yöneticisi olarak**, hangi dönemde hangi oranın geçerli olduğunu tek tablodan görmek istiyorum. Böylece üç sayfada üç farklı çarpan kâbusu bir daha yaşanmaz.
+
+## Kullanım yolculuğu
+
+1. Resmî Gazete'de yeni tebliğ yayımlanır. SGK uzmanı "parametre güncelle" formunu açar.
+2. Uzman yeni değerleri girer; kaynak alanına Resmî Gazete tarihini ve sayısını yazar.
+3. Sistem yayınlamadan önce önizleme gösterir: hangi değer neyden neye değişecek. Uzman onaylar.
+4. Yeni hesaplar yeni değeri kullanır. Geçmiş hesaplar kendi dönemlerinin değerinde kilitli kalır.
+5. Denetçi sorduğunda uzman geçmişi açar: hangi değer, ne zaman, kim tarafından, hangi dayanakla girilmiş — hepsi ekranda.
+
+## Alt bileşenler ve efor
+
+| # | Bileşen | Bu bileşen ne yapar? | Efor (a-g) |
+|---|---------|----------------------|-----------:|
+| 1 | Parametre tabloları | Üç tabloyu kurar: yıl ve sınıfa göre birim fiyatlar, iş koluna göre oranlar, döneme göre asgari ücret ve prim oranları. Her satır kaynağıyla durur. | 5 |
+| 2 | Dönem kilidi ve sürümleme | Her değerin geçerlilik aralığını tutar. Hesapları, yapıldıkları andaki değer setine bağlar. | 4 |
+| 3 | Hızlı güncelleme formu | Tek form ve dosya yüklemeyle güncellemeyi on beş dakikanın altına indirir; önizleme gösterir. | 3 |
+| 4 | Doğrulama test paketi | Dönem seçimini ve "güncelleme geçmişi bozmaz" kuralını her sürümde yeniden sınar. | 3 |
 | **Toplam** | | | **15** |
-
-## Girdiler → Çıktılar
-
-- **Girdi:** Resmî Gazete tebliğ/genelge değerleri (elle veya CSV).
-- **Çıktı:** Tüm hesap modüllerinin (M1–M3) beslendiği tek doğruluk kaynağı; RG referanslı parametre geçmişi.
 
 ## Kabul kriterleri
 
-- Yeni tebliğ girişi uçtan uca ≤ 15 dk; işlem denetim izinde kim/ne zaman ile görünür.
-- Regresyon: güncelleme sonrası eski dönem hesapları bit düzeyinde değişmez.
-
-## Bağımlılıklar ve varsayımlar
-
-- Mevzuat izleme otomasyonu (RG takibi) kapsam dışıdır; n8n ile sonradan eklenebilir (uyarı → bu modülün formu).
+- Yeni bir tebliğin girilmesi, baştan sona on beş dakikayı geçmemelidir.
+- Güncellemeden sonra geçmiş dönem hesapları, yeniden açıldığında aynı kalmalıdır.
 
 ## Mevzuat dayanağı
 
-Birim maliyet tebliğleri (RG 31.01.2025/32799 · 03.02.2026/33157) · AİTK Oran Tebliği (son değ. RG 22.03.2023/32140) · 7524 ve 7566 sayılı Kanunlar (prim oranı/tavan) · SGK Genelgesi 2026/16
+Yıllık birim maliyet tebliğleri · Oran tebliği · 7524 ve 7566 sayılı Kanunlar · SGK Genelgesi 2026/16.
