@@ -1,4 +1,4 @@
-# M5 · Google Sheets Köprüsü ve Veri Teyit Akışı
+# M5 · Google Sheets köprüsü & veri teyidi
 
 **Efor:** 18 adam-gün · **Faz:** F3–F5 · **Durum:** Teklif kapsamında.
 

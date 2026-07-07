@@ -1,5 +1,7 @@
 # Google Sheets'i Claude'dan Canlı Düzenleme — Kurulum Rehberi
 
+> **Durum (07.07.2026): Yol 1 (Zapier) KURULDU ve doğrulandı.** Google Sheets 29 aksiyonla bağlı; canlı okuma ve yazma test edildi (tek batchUpdate ile 21 hücre güncellendi). Kayıtlı beceri: **"hrmshakedis sheet güncelle"** — güvenli hücre haritasını ve oku→yaz→doğrula desenini içerir. Rutin güncellemeler için artık bu beceri kullanılır; aşağıdaki diğer yollar yedek/alternatif olarak durur.
+
 Amaç: "Dosya > İçe aktar" adımını tarihe gömmek. Bağlayıcı kurulunca Claude, mevcut e-tabloyu (ID: `1VXwPEh-...GPJIYw`) hücre-hücre, delta olarak canlı düzenler.
 
 Önemli gerçek: Google yazma yetkisi OAuth ister; onay ekranına yalnız hesap sahibi basabilir. Bu yüzden aşağıdaki her yolda ~2 dakikalık bir "izin ver" adımı sende.

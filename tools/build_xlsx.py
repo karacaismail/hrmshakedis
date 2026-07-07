@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""hrmshakedis v4 — sıfırdan: YAZILIM GELİŞTİRME teklifi (waterfall) + parametreler. 6 sayfa, Pareto.
+"""hrmshakedis v4.1 — sıfırdan: YAZILIM GELİŞTİRME teklifi (waterfall) + parametreler. 6 sayfa, Pareto.
 WEB_PARAM protokolü: tüm değerler METİN (=""&x / TEXT(t,"yyyy-mm-dd")) — gviz karışık-tip null sorununu çözer."""
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -85,13 +85,13 @@ ws["C8"].number_format=DT; ws["C9"].number_format="0"
 sect(ws,12,"2) Kapsam seçimi (modüller)")
 hdr_row(ws,13,["","Modül","Dahil?","Taban efor (adam-gün)","İçerik"],start=1)
 mods=[
- ("Çekirdek altyapı & CI (zorunlu)","EVET","Kurulum (Docker, staging+prod), CI kalite kapıları, iskelet app, güvenlik taraması"),
- ("M1 · Ruhsat hesap motoru","EVET","Yüzölçümü × birim maliyet × oran; aritmetik ortalama kuralı (2026/16); altın senaryo testleri"),
- ("M2 · İhale hesabı + kısmi araştırma","EVET","İstihkak bazlı hesap, ödenen hakedişten kısmi araştırma ve mahsup akışı"),
- ("M3 · Hakediş izleme + adam-ay kota","EVET","Taşeron bazlı aylık SPEK takibi, fark/kesinti önerisi, kota eşik uyarıları"),
- ("M4 · Mevzuat parametre yönetimi","EVET","Birim maliyet/oran/dönem tabloları; 15 dakikada tebliğ güncelleme; dönem kilitleme"),
- ("M5 · Google Sheets köprüsü","EVET","Mevcut çalışma alışkanlığını koruyan çift yönlü veri akışı (Apps Script)"),
- ("M6 · Denetim raporları + KVKK/RBAC","EVET","4 denetim raporu (PDF), rol bazlı erişim, maskeleme, denetim izi"),
+ ("Çekirdek altyapı & CI (zorunlu)","EVET","Excel'in hiç yapamadığını ekler: yedeklilik, kalite kapıları, iki saatte kurulabilirlik"),
+ ("M1 · Ruhsat & alan bazlı hesap","EVET","RUHSAT HESAPLAMASI sayfasının ürün hâli; 2026/16 ortalama kuralı ve giriş denetimi"),
+ ("M2 · İhale & sözleşme hesabı + kısmi araştırma","EVET","GENEL HESAPLAMA sayfasının ürün hâli; kırılan Etap-2 bağları ve mahsup akışı"),
+ ("M3 · Aylık bildirim matrisi, İcmal & kota","EVET","ASGARİ İŞÇİLİK 1&2 matrisi + İCMAL panelinin ürün hâli; alt-taşeron kuralları, elle 'kalan adam/ay' biter"),
+ ("M4 · Mevzuat parametre yönetimi","EVET","Formüllere gömülü 6,75 / 0,345 / 0,375 / 38,5 sabitleri tek tabloya taşınır; dönem kilidi"),
+ ("M5 · Google Sheets köprüsü & veri teyidi","EVET","'Manuel elle yazılacak alan' ve 'TEYİT EDİLDİ' notları, denetimli giriş ve izlenen teyide dönüşür"),
+ ("M6 · Taşeron sicili, raporlar & KVKK","EVET","TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, dört denetim raporu"),
 ]
 for j,(ad,sec,ic) in enumerate(mods):
     r=14+j
@@ -231,9 +231,9 @@ lbl(ws,"A18","ZAMAN ÇARPANI (nihai)",bold=True)
 out(ws,"B18","=ROUND(B8*D17/B5,3)","0.000"); ws["B18"].font=F(bold=True,size=14,color=BLUE); ws["B18"].fill=PatternFill("solid",start_color=BLUE_L)
 lbl(ws,"C18","Formül: Amdahl × ECA ÷ geliştirici. Varsayılan 0,550; 3 geliştiricide 0,183.",color=MUTED); ws.merge_cells("C18:E18")
 sect(ws,20,"2) Modül taban eforları (insan-eşdeğeri adam-gün)")
-mod_ef=[("Çekirdek altyapı & CI (zorunlu)",20),("M1 · Ruhsat hesap motoru",25),("M2 · İhale hesabı + kısmi araştırma",20),
-        ("M3 · Hakediş izleme + adam-ay kota",30),("M4 · Mevzuat parametre yönetimi",15),("M5 · Google Sheets köprüsü",18),
-        ("M6 · Denetim raporları + KVKK/RBAC",25)]
+mod_ef=[("Çekirdek altyapı & CI (zorunlu)",20),("M1 · Ruhsat & alan bazlı hesap",25),("M2 · İhale & sözleşme hesabı + kısmi araştırma",20),
+        ("M3 · Aylık bildirim matrisi, İcmal & kota",30),("M4 · Mevzuat parametre yönetimi",15),("M5 · Google Sheets köprüsü & veri teyidi",18),
+        ("M6 · Taşeron sicili, raporlar & KVKK",25)]
 for j,(ad,g) in enumerate(mod_ef):
     r=21+j; lbl(ws,f"A{r}",ad); inp(ws,f"B{r}",g,'#,##0" a-g"')
 lbl(ws,"A29","Seçili toplam efor (adam-gün)"); out(ws,"B29",f'={G}D22','#,##0" a-g"')

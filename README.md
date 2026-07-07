@@ -12,6 +12,10 @@ hrmshakedis/
 ├── index.html                  # C-level canlı rapor (Tailwind + ECharts + Phosphor, min 1rem, Roboto)
 ├── teklif.html                 # Yazılım Geliştirme Teklif Formu — canlı, A4 yazdırılabilir
 ├── docs/
+│   ├── data-map.md             # SÖZLEŞME: Sheets hücresi → WEB_PARAM → web bileşeni haritası + bakım kuralları
+│   ├── guides/
+│   │   ├── yonetici-kilavuzu.md   # Yazılım tarafını işleten kişi için
+│   │   └── musteri-kilavuzu.md    # İnşaat firması temsilcileri için (teknik bilgi gerektirmez)
 │   ├── modules/                # Modül kapsam sözleşmeleri (rapor kartlarındaki modallar buradan beslenir)
 │   │   ├── M0-cekirdek-altyapi.md
 │   │   ├── M1-ruhsat-hesap-motoru.md
@@ -21,7 +25,7 @@ hrmshakedis/
 │   │   ├── M5-google-sheets-koprusu.md
 │   │   └── M6-denetim-raporlari-kvkk.md
 │   └── setup/
-│       └── google-sheets-mcp.md  # Sheets'i Claude'dan canlı düzenleme: 4 kurulum yolu
+│       └── google-sheets-mcp.md  # Sheets'i Claude'dan canlı düzenleme (Zapier kurulu; alternatif yollar)
 └── tools/
     └── build_xlsx.py           # Çalışma kitabı üretici (v4): teklif + waterfall + parametreler + WEB_PARAM
 ```
@@ -36,7 +40,7 @@ Tamamen vibecoding: AI kodu ultra hızlı yazar, insan doğrular. Takvim çarpan
 
 ## Geliştirme
 
-Çalışma kitabını yeniden üretmek için: `python3 tools/build_xlsx.py` (çıktı: `hrmshakedis_projelendirme_v4.xlsx`; Sheets'e **Dosya > İçe aktar > E-tabloyu değiştir** ile yüklenir). Sheets'i Claude üzerinden hücre-hücre canlı düzenlemek için `docs/setup/google-sheets-mcp.md` rehberindeki bir yolu bir kez kurun; sonrası delta güncellemedir.
+Rutin değer değişiklikleri Sheets üzerinden yapılır (elle veya Claude + Zapier becerisi "hrmshakedis sheet güncelle" ile hücre-hücre canlı). Çalışma kitabını YAPISAL değişiklikte yeniden üretmek için: `python3 tools/build_xlsx.py` → Sheets'e **Dosya > İçe aktar > E-tabloyu değiştir** → index.html içindeki FB yedek nesnesini eşitle. Hangi bilginin nereden aktığı ve isim değişikliği prosedürü için: `docs/data-map.md`.
 
 ## Notlar
 

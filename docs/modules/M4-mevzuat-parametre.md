@@ -1,4 +1,4 @@
-# M4 · Mevzuat Parametre Yönetimi
+# M4 · Mevzuat parametre yönetimi
 
 **Efor:** 15 adam-gün · **Faz:** F3 · **Durum:** Teklif kapsamında.
 

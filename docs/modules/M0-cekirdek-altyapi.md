@@ -1,4 +1,4 @@
-# M0 · Çekirdek Altyapı & CI (zorunlu)
+# M0 · Çekirdek altyapı & CI (zorunlu)
 
 **Efor:** 20 adam-gün · **Faz:** F2–F3 · **Durum:** Zorunlu modül. Kapsamdan çıkarılamaz.
 

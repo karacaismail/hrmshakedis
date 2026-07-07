@@ -1,4 +1,4 @@
-# M3 · Aylık Bildirim Matrisi, İcmal Paneli ve Adam-Ay Kota
+# M3 · Aylık bildirim matrisi, İcmal & kota
 
 **Efor:** 30 adam-gün · **Faz:** F3–F4 · **Durum:** Teklif kapsamında. En kapsamlı modül budur; çünkü Excel'in kalbi burasıdır.
 

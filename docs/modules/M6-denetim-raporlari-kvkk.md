@@ -1,4 +1,4 @@
-# M6 · Taşeron Sicili, Denetim Raporları ve KVKK
+# M6 · Taşeron sicili, raporlar & KVKK
 
 **Efor:** 25 adam-gün · **Faz:** F4–F6 · **Durum:** Teklif kapsamında.
 

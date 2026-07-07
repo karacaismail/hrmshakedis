@@ -1,4 +1,4 @@
-# M1 · Ruhsat ve Alan Bazlı Hesap
+# M1 · Ruhsat & alan bazlı hesap
 
 **Efor:** 25 adam-gün · **Faz:** F3–F4 · **Durum:** Teklif kapsamında.
 

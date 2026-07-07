@@ -238,7 +238,7 @@ table{font-size:1rem}
 
 <footer class="border-t border-slate-200 bg-white">
  <div class="max-w-6xl mx-auto px-4 py-8 leading-7">
-  <p class="muted">hrmshakedis · v4 · Müşteri adı anonimleştirildi. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a></p>
+  <p class="muted">hrmshakedis · v<span id="vSurum">4</span> · Müşteri adı anonimleştirildi. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/yonetici-kilavuzu.md" target="_blank" rel="noopener">Yönetici kılavuzu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/musteri-kilavuzu.md" target="_blank" rel="noopener">Müşteri kılavuzu</a></p>
   <p class="muted mt-2">Dayanaklar: <a class="text-brand-700 hover:underline" href="https://www.alomaliye.com/2026/06/26/sgk-genelgesi-2026-16-2011-13-sayili-genelge/">SGK Genelgesi 2026/16</a> · <a class="text-brand-700 hover:underline" href="https://www.mevzuat.gov.tr/File/GeneratePdf?mevzuatNo=13973&mevzuatTur=KurumVeKurulusYonetmeligi&mevzuatTertip=5">SSİY md.110-112</a> · <a class="text-brand-700 hover:underline" href="https://www.resmigazete.gov.tr/eskiler/2026/02/20260203-4.htm">2026 Birim Maliyetleri</a> · <a class="text-brand-700 hover:underline" href="https://x.com/karpathy/status/1886192184808149383">Vibe coding (Karpathy)</a> · <a class="text-brand-700 hover:underline" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl yasası</a></p>
  </div>
 </footer>
@@ -281,6 +281,7 @@ const FB={kv:{dev:1,ai_hiz:4,ai_pay:.6,amdahl:.55,eca:1,carpan:.55,efor:153,sure
   ['M6 · Taşeron sicili, raporlar & KVKK','EVET',25,'TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, 4 denetim raporu']].map(m=>({ad:m[0],sec:m[1],gun:m[2],ic:m[3]})),
  faz:null,
  donem:[{b:new Date(2024,0,1),o:.345,u:20002.5},{b:new Date(2024,8,1),o:.3475,u:20002.5},{b:new Date(2025,0,1),o:.3475,u:26005.5},{b:new Date(2026,0,1),o:.3575,u:33030}],
+ teklif:{form_no:'SW-2026-001',gecerlilik:'30 gün',odeme1:'İmza %30: 183.600,00 TL',odeme2:'UAT %40: 244.800,00 TL',odeme3:'GA %30: 183.600,00 TL'},
  maliyet:[['III-A',17100,19800],['III-B',18200,21050],['III-C',19150,23400],['IV-A',21500,26450],['IV-B',27500,33900],['IV-C',32600,40500],['V-A',34400,42350],['V-D',43400,53500]].map(m=>({s:m[0],y25:m[1],y26:m[2]}))};
 function fbFaz(kv){const pays=[.12,.15,.38,.18,.10,.07],ads=['F1 · Analiz & Gereksinim','F2 · Tasarım','F3 · Geliştirme (vibecoding)','F4 · Test & Doğrulama','F5 · UAT / Geçiş','F6 · Devreye Alma & Hypercare'];
  let cur=new Date(kv.baslangic),out=[],rem=kv.sure;
@@ -292,24 +293,26 @@ async function fetchLive(){
  const t=await(await fetch(u,{cache:'no-store'})).text();
  const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
  if(j.status==='error')throw new Error('WEB_PARAM sayfası yok');
- const kv={},modul=[],faz=[],donem=[],maliyet=[];
+ const kv={},modul=[],faz=[],donem=[],maliyet=[],teklif={};
  for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
   if(c[0]==='KV')kv[c[1]]=c[2];
   else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3]),ic:c[4]});
   else if(c[0]==='FAZ')faz.push({ad:c[1],gun:num(c[3]),b:dat(c[4]),e:dat(c[5])});
   else if(c[0]==='DONEM')donem.push({b:dat(c[1]),o:num(c[2]),u:num(c[3])});
-  else if(c[0]==='MALIYET')maliyet.push({s:c[1],y25:num(c[2]),y26:num(c[3])});}
+  else if(c[0]==='MALIYET')maliyet.push({s:c[1],y25:num(c[2]),y26:num(c[3])});
+  else if(c[0]==='TEKLIF')teklif[c[1]]=c[2];}
  if(!('carpan' in kv)||faz.length<6)throw new Error('WEB_PARAM v4 değil — v4 dosyasını içe aktarın');
  ['dev','ai_hiz','ai_pay','amdahl','eca','carpan','efor','sure','gunluk_ucret','bedel','kdv','toplam','asgari_ucret_2026'].forEach(k=>kv[k]=num(kv[k]));
  ['baslangic','ga','tampon'].forEach(k=>kv[k]=dat(kv[k]));
- return{kv,modul,faz,donem,maliyet};
+ return{kv,modul,faz,donem,maliyet,teklif};
 }
 function render(D,live,msg){
  const kv=D.kv, faz=D.faz||fbFaz(kv);
  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
  document.getElementById('liveDot').className='inline-block w-2.5 h-2.5 rounded-full '+(live?'bg-emerald-400':'bg-amber-400');
  set('liveStatus',live?'Sheets canlı':'statik yedek'); set('liveMode',live?'CANLI':'STATİK');
- set('liveNote',msg); set('liveTime',new Date().toLocaleTimeString('tr-TR'));
+ set('liveNote',msg); set('liveTime',new Date().toLocaleTimeString('tr-TR')+(kv.guncelleme?' · Sheets kaydı: '+kv.guncelleme:''));
+ set('vSurum',kv.surum||'4');
  set('kEfor',trN(kv.efor,0)+' adam-gün'); set('kSure',trN(kv.sure,0)+' gün'); set('kGA',trD(kv.ga));
  set('kBedel',trTL(kv.bedel)); set('kDev',kv.dev); set('kCarpan',trN(kv.carpan));
  set('kEfor2',trN(kv.efor,0)+' adam-gün');
@@ -319,10 +322,9 @@ function render(D,live,msg){
  set('tEfor',trN(kv.efor,0)+' adam-gün'); set('tUcret',trTL(kv.gunluk_ucret));
  set('tBedel',trTL(kv.bedel)); set('tKdv',trTL(kv.kdv)); set('tToplam',trTL(kv.toplam));
  set('tGecerlilik',(D.teklif&&D.teklif.gecerlilik)||'30 gün'); set('tNo',(D.teklif&&D.teklif.form_no)||'SW-2026-001');
- document.getElementById('tOdeme').innerHTML=(D.odeme||['İmza %30','UAT %40','GA %30']).map((o,i)=>{
-  const tut=[.3,.4,.3][i]*kv.bedel;
-  const txt=typeof o==='string'&&o.includes(':')?o:`${o}: ${trTL(tut)}`;
-  return `<div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center font-medium">${i+1}</span><span>${txt}</span></div>`;}).join('');
+ const odemeler=[D.teklif&&D.teklif.odeme1,D.teklif&&D.teklif.odeme2,D.teklif&&D.teklif.odeme3].filter(Boolean);
+ const odFall=['İmza %30','UAT %40','GA %30'].map((o,i)=>`${o}: ${trTL([.3,.4,.3][i]*kv.bedel)}`);
+ document.getElementById('tOdeme').innerHTML=(odemeler.length===3?odemeler:odFall).map((txt,i)=>`<div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center font-medium">${i+1}</span><span>${txt}</span></div>`).join('');
  // Kapsam kartları — tıklanınca alt bileşen modalı
  MODS=D.modul;
  document.getElementById('modCards').innerHTML=D.modul.map(m=>{
@@ -403,8 +405,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
 
 async function tick(){
  try{const D=await fetchLive();
-  // TEKLIF ek alanları
-  D.teklif={};D.odeme=null;
   render(D,true,'Google Sheets çalışma kitabından canlı okunuyor; Sheets\'i düzenleyin, 60 sn içinde buraya yansır.');
  }catch(e){render(FB,false,'Sheets okunamadı: '+e.message+'. v4 dosyasını aynı Sheets adresine içe aktarın (Dosya > İçe aktar > E-tabloyu değiştir).');}
 }

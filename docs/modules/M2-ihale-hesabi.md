@@ -1,4 +1,4 @@
-# M2 · İhale ve Sözleşme Bazlı Hesap + Kısmi Araştırma
+# M2 · İhale & sözleşme hesabı + kısmi araştırma
 
 **Efor:** 20 adam-gün · **Faz:** F3–F4 · **Durum:** Teklif kapsamında.
 
