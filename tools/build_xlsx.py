@@ -60,12 +60,12 @@ G="'TEKLİF GİRDİ'!"; P="PARAMETRELER!"; W="'WATERFALL PLAN'!"
 # ============ 1 OKU BENİ ============
 ws=sheet(wb,"OKU BENİ",NAVY)
 title(ws,"hrmshakedis — Yazılım Geliştirme Teklifi Çalışma Kitabı",
-      "Sürüm 4.0 · 07.07.2026 · Müşteri: İnşaat firması · Waterfall proje tanımı · 6 sayfa (Pareto: müşterinin görecekleri + parametreler)")
+      "Sürüm 4.1 · 07.07.2026 · Müşteri: İnşaat firması · Waterfall proje tanımı · 6 sayfa (Pareto: müşterinin görecekleri + parametreler)")
 rows=[
  ["Bu dosya nedir?","Asgari işçilik & hakediş uyum platformunun GELİŞTİRİLMESİ için yazılım teklifi kitabı: kapsam seçimi, waterfall faz planı, A4 yazdırılabilir YAZILIM GELİŞTİRME TEKLİF FORMU ve tüm değişken parametreler. Ürünün çözdüğü ihtiyaç, ekteki asgari işçilik tablosu ve SGK Genelge 2026/16'dır."],
  ["Sayfalar","TEKLİF GİRDİ: kimlik + kapsam seçimi (EVET/HAYIR) · TEKLİF FORMU: A4 çıktı · WATERFALL PLAN: 6 fazın tarihleri (otomatik) · PARAMETRELER: hız modeli, efor, fiyat, mevzuat mini · WEB_PARAM: web beslemesi (dokunmayın)."],
  ["Canlı bağ","GitHub Pages raporu ve teklif sayfası bu dosyanın Google Sheets kopyasındaki WEB_PARAM sayfasını okur; Sheets'te değişen her şey web'e ~60 sn içinde yansır. Adres: karacaismail.github.io/hrmshakedis"],
- ["Google Sheets","YALNIZCA şu adreste yayınlanır: docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw — Güncelleme: Dosya > İçe aktar > E-tabloyu değiştir. Makro yok; formüller Sheets uyumlu."],
+ ["Google Sheets","YALNIZCA şu adreste yayınlanır: docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw — Rutin değişiklikler artık CANLI yapılır: Claude + Zapier 'hrmshakedis sheet güncelle' becerisi hücreleri yerinde günceller. 'Dosya > İçe aktar > E-tabloyu değiştir' yalnız YAPISAL değişiklikte kullanılır. Kurallar: docs/data-map.md ve docs/guides/. Makro yok; formüller Sheets uyumlu."],
  ["Hız modeli","Tamamen vibecoding: AI kodu ultra hızlı yazar, insan doğrular. Takvim çarpanı = Amdahl × ECA ÷ geliştirici sayısı (LİNEER: 3 kişi → süre ÷ 3). PARAMETRELER §1'den yönetilir; fazlar, GA ve web otomatik ölçeklenir. Bedel, insan-eşdeğeri efora (adam-gün) dayanır; AI hızlanması takvimi kısaltır, bedeli değiştirmez."],
  ["Renk kodu","Mavi zeminli mavi yazı = SİZİN GİRECEĞİNİZ değer. Siyah = formül (dokunmayın)."],
 ]
@@ -78,7 +78,7 @@ title(ws,"Yazılım Geliştirme Teklifi — Girdiler","Kimlik bilgilerini yazın
 sect(ws,4,"1) Kimlik")
 kim=[("Müşteri","İnşaat firması"),("Proje adı","Asgari İşçilik & Hakediş Uyum Platformu"),
      ("Teklif no","SW-2026-001"),("Teklif tarihi",_dt.date(2026,7,7)),("Geçerlilik (gün)",30),
-     ("Hazırlayan / Yüklenici","İsmail Karaca — bağımsız yazılım geliştirici")]
+     ("Hazırlayan / Yüklenici","İsmail Karaca — bağımsız yazılım geliştirici · karacai@yandex.com")]
 for j,(t,v) in enumerate(kim):
     r=5+j; lbl(ws,f"B{r}",t); inp(ws,f"C{r}",v)
 ws["C8"].number_format=DT; ws["C9"].number_format="0"
@@ -277,7 +277,7 @@ ws["H1"].font=F(color=MUTED)
 S=lambda ref: f'=""&{ref}'                      # metin zorla
 N=lambda ref,dec=3: f'=""&ROUND({ref},{dec})'   # sayı→metin
 D=lambda ref: f'=TEXT({ref},"yyyy-mm-dd")'      # tarih→ISO metin
-kv=[("surum",'="4"'),("guncelleme",'=TEXT(NOW(),"yyyy-mm-dd hh:mm")'),
+kv=[("surum",'="4.1"'),("guncelleme",'=TEXT(NOW(),"yyyy-mm-dd hh:mm")'),
     ("dev",N(P+"B5",0)),("ai_hiz",N(P+"B6",1)),("ai_pay",N(P+"B7",2)),("amdahl",N(P+"B8",3)),
     ("eca",N(P+"D17",3)),("carpan",N(P+"B18",3)),
     ("efor",N(P+"B29",0)),("sure",N(P+"B31",0)),
