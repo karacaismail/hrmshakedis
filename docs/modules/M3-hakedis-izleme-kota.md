@@ -2,6 +2,8 @@
 
 **Efor:** 30 adam-gün · **Faz:** F3–F4 · **Durum:** Teklif kapsamında. En kapsamlı modül budur; çünkü Excel'in kalbi burasıdır.
 
+**Katman:** MVP · Faz 1 — müşteri Excel'i + SGK Genelge 2026/16. Aylık bildirim matrisi ve İcmal/kota hesabı MVP'dir; düzeltmelerin ayrı kalem yapılması, alt-taşeron kuralının tanıma dönüşmesi ve iş akışı durumları ("hakediş iste/kesilecek") Faz 2 · Gap'tir (bkz. [gap-analizi](../gap-analizi.md)).
+
 > Excel'deki "ASGARİ İŞÇİLİK 1&2 ETAP" matrisinin ve "İCMAL" panelinin işini devralır: her taşeron her ay yeterli bildirim yaptı mı, eksiği kaç lira, hakedişinden ne kesilmeli ve sahada kaç işçi eksik?
 
 ## Bu modül hangi işi devralıyor?

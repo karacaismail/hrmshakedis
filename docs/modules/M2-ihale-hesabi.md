@@ -2,6 +2,8 @@
 
 **Efor:** 20 adam-gün · **Faz:** F3–F4 · **Durum:** Teklif kapsamında.
 
+**Katman:** MVP · Faz 1 — müşteri Excel'i + SGK Genelge 2026/16. Sözleşme/istihkak hesabı ve Genelge'nin getirdiği kısmi araştırma MVP'dir; kırık Etap-2 bağlarının kalıcı onarımı, mahsup akışının izlenmesi ve giriş denetimi Faz 2 · Gap'tir (bkz. [gap-analizi](../gap-analizi.md)).
+
 > Excel'deki "GENEL HESAPLAMA" sayfasının işini devralır: sözleşme bedeli veya toplam hakediş üzerinden beklenen işçiliği hesaplar. Üstüne, 2026'da gelen yeni hakkı ekler: iş bitmeden, ödenen kısım üzerinden ön hesap.
 
 ## Bu modül hangi işi devralıyor?

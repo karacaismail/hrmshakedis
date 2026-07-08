@@ -2,6 +2,8 @@
 
 **Efor:** 25 adam-gün · **Faz:** F4–F6 · **Durum:** Teklif kapsamında.
 
+**Katman:** Enterprise — taşeron sicilinin kendisi Excel'de vardır, ama KVKK maskeleme, rol bazlı erişim (RBAC) ve dört denetim raporu Excel'in hiç sahip olmadığı kurumsal katmandır. Bu nedenle MVP değil, Enterprise'dır.
+
 > Excel'deki "TAŞERON 1&2-3 ETAP" sicil sayfasının işini devralır ve iki eksiğini tamamlar: kişisel veriler korumaya alınır, denetçiye verilecek dökümler tek tuşla hazırlanır.
 
 ## Bu modül hangi işi devralıyor?

@@ -60,7 +60,7 @@ G="'TEKLİF GİRDİ'!"; P="PARAMETRELER!"; W="'WATERFALL PLAN'!"
 # ============ 1 OKU BENİ ============
 ws=sheet(wb,"OKU BENİ",NAVY)
 title(ws,"hrmshakedis — Yazılım Geliştirme Teklifi Çalışma Kitabı",
-      "Sürüm 4.1 · 07.07.2026 · Müşteri: İnşaat firması · Waterfall proje tanımı · 6 sayfa (Pareto: müşterinin görecekleri + parametreler)")
+      "Sürüm 5.0 · 08.07.2026 · Müşteri: İnşaat firması · Waterfall proje tanımı · 6 sayfa · MVP/Gap/Enterprise katmanlı kapsam")
 rows=[
  ["Bu dosya nedir?","Asgari işçilik & hakediş uyum platformunun GELİŞTİRİLMESİ için yazılım teklifi kitabı: kapsam seçimi, waterfall faz planı, A4 yazdırılabilir YAZILIM GELİŞTİRME TEKLİF FORMU ve tüm değişken parametreler. Ürünün çözdüğü ihtiyaç, ekteki asgari işçilik tablosu ve SGK Genelge 2026/16'dır."],
  ["Sayfalar","TEKLİF GİRDİ: kimlik + kapsam seçimi (EVET/HAYIR) · TEKLİF FORMU: A4 çıktı · WATERFALL PLAN: 6 fazın tarihleri (otomatik) · PARAMETRELER: hız modeli, efor, fiyat, mevzuat mini · WEB_PARAM: web beslemesi (dokunmayın)."],
@@ -68,6 +68,7 @@ rows=[
  ["Google Sheets","YALNIZCA şu adreste yayınlanır: docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw — Rutin değişiklikler artık CANLI yapılır: Claude + Zapier 'hrmshakedis sheet güncelle' becerisi hücreleri yerinde günceller. 'Dosya > İçe aktar > E-tabloyu değiştir' yalnız YAPISAL değişiklikte kullanılır. Kurallar: docs/data-map.md ve docs/guides/. Makro yok; formüller Sheets uyumlu."],
  ["Hız modeli","Tamamen vibecoding: AI kodu ultra hızlı yazar, insan doğrular. Takvim çarpanı = Amdahl × ECA ÷ geliştirici sayısı (LİNEER: 3 kişi → süre ÷ 3). PARAMETRELER §1'den yönetilir; fazlar, GA ve web otomatik ölçeklenir. Bedel, insan-eşdeğeri efora (adam-gün) dayanır; AI hızlanması takvimi kısaltır, bedeli değiştirmez."],
  ["Renk kodu","Mavi zeminli mavi yazı = SİZİN GİRECEĞİNİZ değer. Siyah = formül (dokunmayın)."],
+ ["Kapsam katmanı","Kapsam üç katmandır (TEKLİF GİRDİ F sütunu): MVP = müşteri Excel'i + SGK Genelge 2026/16 çekirdek hesabı (M1-M4). Faz 2 · Gap = Excel'de/Genelge'de olmayan iyileştirmeler (M5 köprü + giriş denetimi, iş akışı, dönem kilidi). Enterprise = M0 çekirdek altyapı & CI + M6 KVKK/denetim raporları. Web raporu üç grupta gösterir."],
 ]
 hdr_row(ws,4,["Başlık","Açıklama"]); body(ws,5,rows,heights=56)
 widths(ws,{"A":22,"B":140}); ws.freeze_panes="A5"
@@ -83,30 +84,31 @@ for j,(t,v) in enumerate(kim):
     r=5+j; lbl(ws,f"B{r}",t); inp(ws,f"C{r}",v)
 ws["C8"].number_format=DT; ws["C9"].number_format="0"
 sect(ws,12,"2) Kapsam seçimi (modüller)")
-hdr_row(ws,13,["","Modül","Dahil?","Taban efor (adam-gün)","İçerik"],start=1)
+hdr_row(ws,13,["","Modül","Dahil?","Taban efor (adam-gün)","İçerik","Katman"],start=1)
 mods=[
- ("Çekirdek altyapı & CI (zorunlu)","EVET","Excel'in hiç yapamadığını ekler: yedeklilik, kalite kapıları, iki saatte kurulabilirlik"),
- ("M1 · Ruhsat & alan bazlı hesap","EVET","RUHSAT HESAPLAMASI sayfasının ürün hâli; 2026/16 ortalama kuralı ve giriş denetimi"),
- ("M2 · İhale & sözleşme hesabı + kısmi araştırma","EVET","GENEL HESAPLAMA sayfasının ürün hâli; kırılan Etap-2 bağları ve mahsup akışı"),
- ("M3 · Aylık bildirim matrisi, İcmal & kota","EVET","ASGARİ İŞÇİLİK 1&2 matrisi + İCMAL panelinin ürün hâli; alt-taşeron kuralları, elle 'kalan adam/ay' biter"),
- ("M4 · Mevzuat parametre yönetimi","EVET","Formüllere gömülü 6,75 / 0,345 / 0,375 / 38,5 sabitleri tek tabloya taşınır; dönem kilidi"),
- ("M5 · Google Sheets köprüsü & veri teyidi","EVET","'Manuel elle yazılacak alan' ve 'TEYİT EDİLDİ' notları, denetimli giriş ve izlenen teyide dönüşür"),
- ("M6 · Taşeron sicili, raporlar & KVKK","EVET","TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, dört denetim raporu"),
+ ("Çekirdek altyapı & CI (zorunlu)","EVET","Excel'in hiç yapamadığını ekler: yedeklilik, kalite kapıları, iki saatte kurulabilirlik","ENT"),
+ ("M1 · Ruhsat & alan bazlı hesap","EVET","RUHSAT HESAPLAMASI sayfasının ürün hâli; 2026/16 ortalama kuralı ve giriş denetimi","MVP"),
+ ("M2 · İhale & sözleşme hesabı + kısmi araştırma","EVET","GENEL HESAPLAMA sayfasının ürün hâli; kırılan Etap-2 bağları ve mahsup akışı","MVP"),
+ ("M3 · Aylık bildirim matrisi, İcmal & kota","EVET","ASGARİ İŞÇİLİK 1&2 matrisi + İCMAL panelinin ürün hâli; alt-taşeron kuralları, elle 'kalan adam/ay' biter","MVP"),
+ ("M4 · Mevzuat parametre yönetimi","EVET","Formüllere gömülü 6,75 / 0,345 / 0,375 / 38,5 sabitleri tek tabloya taşınır; dönem kilidi","MVP"),
+ ("M5 · Google Sheets köprüsü & veri teyidi","EVET","'Manuel elle yazılacak alan' ve 'TEYİT EDİLDİ' notları, denetimli giriş ve izlenen teyide dönüşür","GAP"),
+ ("M6 · Taşeron sicili, raporlar & KVKK","EVET","TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, dört denetim raporu","ENT"),
 ]
-for j,(ad,sec,ic) in enumerate(mods):
+for j,(ad,sec,ic,kat) in enumerate(mods):
     r=14+j
     lbl(ws,f"A{r}",f"K{j}") ; lbl(ws,f"B{r}",ad)
     inp(ws,f"C{r}",sec)
     out(ws,f"D{r}",f"=VLOOKUP(B{r},{P}$A$21:$B$27,2,FALSE)",'#,##0" a-g"')
     lbl(ws,f"E{r}",ic,color=MUTED)
+    inp(ws,f"F{r}",kat)
     if j%2==1:
-        for col in "ABDE": ws[f"{col}{r}"].fill=PatternFill("solid",start_color=ZEBRA)
+        for col in "ABDEF": ws[f"{col}{r}"].fill=PatternFill("solid",start_color=ZEBRA)
 dv=DataValidation(type="list",formula1='"EVET,HAYIR"',allow_blank=False); ws.add_data_validation(dv); dv.add("C15:C20")
-lbl(ws,"C14b" if False else "F14","",False)
+dvk=DataValidation(type="list",formula1='"MVP,GAP,ENT"',allow_blank=False); ws.add_data_validation(dvk); dvk.add("F14:F20")
 lbl(ws,"A22","Seçili toplam efor:",bold=True)
 out(ws,"D22",f'=SUMPRODUCT((C14:C20="EVET")*D14:D20)','#,##0" adam-gün"'); ws["D22"].font=F(bold=True,color=BLUE)
 lbl(ws,"E22","Çekirdek altyapı zorunludur (K0 = EVET kalmalı). Süre ve bedel bu toplamdan türetilir.",color=MUTED)
-widths(ws,{"A":5,"B":40,"C":12,"D":20,"E":70})
+widths(ws,{"A":5,"B":40,"C":12,"D":20,"E":64,"F":10})
 ws.freeze_panes="A5"
 
 # ============ 3 WATERFALL PLAN ============
@@ -277,7 +279,7 @@ ws["H1"].font=F(color=MUTED)
 S=lambda ref: f'=""&{ref}'                      # metin zorla
 N=lambda ref,dec=3: f'=""&ROUND({ref},{dec})'   # sayı→metin
 D=lambda ref: f'=TEXT({ref},"yyyy-mm-dd")'      # tarih→ISO metin
-kv=[("surum",'="4.1"'),("guncelleme",'=TEXT(NOW(),"yyyy-mm-dd hh:mm")'),
+kv=[("surum",'="5.0"'),("guncelleme",'=TEXT(NOW(),"yyyy-mm-dd hh:mm")'),
     ("dev",N(P+"B5",0)),("ai_hiz",N(P+"B6",1)),("ai_pay",N(P+"B7",2)),("amdahl",N(P+"B8",3)),
     ("eca",N(P+"D17",3)),("carpan",N(P+"B18",3)),
     ("efor",N(P+"B29",0)),("sure",N(P+"B31",0)),
@@ -288,7 +290,7 @@ for j,(k,v) in enumerate(kv):
     r=2+j; ws[f"A{r}"]="KV"; ws[f"B{r}"]=k; ws[f"C{r}"]=v
 for j in range(7):
     r=23+j; gr=14+j
-    ws[f"A{r}"]="MODUL"; ws[f"B{r}"]=S(G+f"B{gr}"); ws[f"C{r}"]=S(G+f"C{gr}"); ws[f"D{r}"]=N(G+f"D{gr}",0); ws[f"E{r}"]=S(G+f"E{gr}")
+    ws[f"A{r}"]="MODUL"; ws[f"B{r}"]=S(G+f"B{gr}"); ws[f"C{r}"]=S(G+f"C{gr}"); ws[f"D{r}"]=N(G+f"D{gr}",0); ws[f"E{r}"]=S(G+f"E{gr}"); ws[f"F{r}"]=S(G+f"F{gr}")
 for j in range(6):
     r=32+j; wr=5+j
     ws[f"A{r}"]="FAZ"; ws[f"B{r}"]=S(W+f"A{wr}"); ws[f"C{r}"]=N(W+f"C{wr}",2); ws[f"D{r}"]=N(W+f"D{wr}",0)
@@ -306,11 +308,13 @@ for j,(k,v) in enumerate(tk):
     r=56+j; ws[f"A{r}"]="TEKLIF"; ws[f"B{r}"]=k; ws[f"C{r}"]=v
 widths(ws,{"A":10,"B":34,"C":40,"D":30,"E":30,"F":16,"H":70})
 
-wb.save("/sessions/stoic-bold-goldberg/mnt/outputs/hrmshakedis_projelendirme_v4.xlsx")
-print("saved v4:",wb.sheetnames)
+import os
+OUT=os.environ.get("HRM_OUT","hrmshakedis_projelendirme_v5.xlsx")
+wb.save(OUT)
+print("saved v5:",wb.sheetnames)
 
 import openpyxl
-wb2=openpyxl.load_workbook("/sessions/stoic-bold-goldberg/mnt/outputs/hrmshakedis_projelendirme_v4.xlsx")
+wb2=openpyxl.load_workbook(OUT)
 bad=["frappe","rönesans","ronesans","erpnext","asgari işçilik hesap / teklif"]
 hits=[]
 for wsx in wb2.worksheets:

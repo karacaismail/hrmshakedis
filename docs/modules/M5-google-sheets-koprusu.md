@@ -2,6 +2,8 @@
 
 **Efor:** 18 adam-gün · **Faz:** F3–F5 · **Durum:** Teklif kapsamında.
 
+**Katman:** Faz 2 · Gap analizi — Excel'de/Genelge'de olmayan; ekibin alıştığı tabloyu koruyan denetimli veri köprüsü ve izlenen teyit. MVP çekirdek hesabı (M1–M4) bu köprü olmadan da çalışır; köprü, veri girişini güvenli ve izlenebilir kılan Faz 2 iyileştirmesidir.
+
 > Excel'deki "MANUEL ELLE YAZILACAK ALAN" etiketlerinin ve "TEYİT EDİLDİ" notlarının işini devralır: ekip alıştığı tabloda çalışmaya devam eder; veriler denetimden geçerek sisteme akar, güncel sonuçlar tabloya geri yazılır.
 
 ## Bu modül hangi işi devralıyor?

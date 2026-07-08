@@ -2,6 +2,8 @@
 
 **Efor:** 20 adam-gün · **Faz:** F2–F3 · **Durum:** Zorunlu modül. Kapsamdan çıkarılamaz.
 
+**Katman:** Enterprise — Excel'in hiç sahip olmadığı kurumsal zemin (yedeklilik, kalite kapıları, iki saatte kurulabilirlik). Teknik olarak zorunludur; ürün bu zemin üzerinde çalışır. MVP çekirdek hesabının (M1–M4) kapsamı dışındadır.
+
 > Bu modül, ürünün üzerinde çalışacağı güvenli zemini kurar. Excel'in hiç sahip olmadığı şeyleri ekler: yedeklilik, kalite kontrolü ve kurulumun tekrarlanabilir olması.
 
 ## Bu modül hangi işi devralıyor?

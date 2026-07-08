@@ -80,7 +80,8 @@ table{font-size:1rem}
     <span class="badge bg-white/10 border border-white/20" id="liveMode">—</span>
    </div>
    <dl class="mt-3 space-y-2">
-    <div class="flex justify-between gap-3"><dt class="text-slate-300">Kapsam</dt><dd id="kEfor" class="font-medium">— adam-gün</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Toplam kapsam</dt><dd id="kEfor" class="font-medium">— adam-gün</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">MVP (Faz 1)</dt><dd id="kMvp" class="font-medium">—</dd></div>
     <div class="flex justify-between gap-3"><dt class="text-slate-300">Takvim</dt><dd id="kSure" class="font-medium">— gün</dd></div>
     <div class="flex justify-between gap-3"><dt class="text-slate-300">Teslim (GA)</dt><dd id="kGA" class="font-medium">—</dd></div>
     <div class="flex justify-between gap-3"><dt class="text-slate-300">Bedel (KDV hariç)</dt><dd id="kBedel" class="font-medium">—</dd></div>
@@ -111,12 +112,14 @@ table{font-size:1rem}
 <!-- 02 KAPSAM -->
 <section id="kapsam">
  <p class="kicker">02 · Kapsam</p>
- <h2 class="h2 mt-2">Modüller <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">Sheets'ten canlı</span></h2>
- <p class="mt-2 muted">Kapsam, Google Sheets TEKLİF GİRDİ sayfasındaki EVET/HAYIR seçimleriyle belirlenir; teklif ve plan otomatik güncellenir.</p>
- <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3" id="modCards"></div>
+ <h2 class="h2 mt-2">Kapsam üç katman <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">Sheets'ten canlı</span></h2>
+ <p class="mt-2 muted max-w-3xl leading-7"><span class="font-medium text-slate-900">MVP</span> (en küçük çalışır ürün) = müşterinin Excel'inin yaptığı ruhsat/ihale/hakediş hesabı, SGK Genelge 2026/16'nın güncel kurallarıyla. <span class="font-medium text-slate-900">Faz 2 · Gap</span> = Excel'de ve Genelge'de olmayan ama olması gereken iyileştirmeler. <span class="font-medium text-slate-900">Enterprise</span> = Excel'in hiç sahip olmadığı kurumsal katman. Katman ataması Google Sheets TEKLİF GİRDİ (F sütunu) üzerinden canlıdır.</p>
+ <div class="mt-4 flex flex-wrap gap-2" id="katmanOzet"></div>
+ <div class="mt-6 space-y-8" id="modCards"></div>
  <div class="mt-4 flex flex-wrap gap-2">
   <span class="chip"><i class="ph ph-sigma text-brand-600"></i>Seçili toplam: <span id="kEfor2" class="font-medium text-slate-900">—</span></span>
   <span class="chip"><i class="ph ph-info text-brand-600"></i>Efor insan-eşdeğeri adam-gündür; bedelin tabanıdır</span>
+  <a href="docs/gap-analizi.md" target="_blank" rel="noopener" class="chip hover:border-brand-600"><i class="ph ph-list-checks text-brand-600"></i>Faz 2 · Gap analizi belgesi</a>
  </div>
 </section>
 
@@ -238,7 +241,7 @@ table{font-size:1rem}
 
 <footer class="border-t border-slate-200 bg-white">
  <div class="max-w-6xl mx-auto px-4 py-8 leading-7">
-  <p class="muted">hrmshakedis · v<span id="vSurum">4</span> · Müşteri adı anonimleştirildi. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/yonetici-kilavuzu.md" target="_blank" rel="noopener">Yönetici kılavuzu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/musteri-kilavuzu.md" target="_blank" rel="noopener">Müşteri kılavuzu</a></p>
+  <p class="muted">hrmshakedis · v<span id="vSurum">5.0</span> · Müşteri adı anonimleştirildi. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/yonetici-kilavuzu.md" target="_blank" rel="noopener">Yönetici kılavuzu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/musteri-kilavuzu.md" target="_blank" rel="noopener">Müşteri kılavuzu</a></p>
   <p class="muted mt-2">Dayanaklar: <a class="text-brand-700 hover:underline" href="https://www.alomaliye.com/2026/06/26/sgk-genelgesi-2026-16-2011-13-sayili-genelge/">SGK Genelgesi 2026/16</a> · <a class="text-brand-700 hover:underline" href="https://www.mevzuat.gov.tr/File/GeneratePdf?mevzuatNo=13973&mevzuatTur=KurumVeKurulusYonetmeligi&mevzuatTertip=5">SSİY md.110-112</a> · <a class="text-brand-700 hover:underline" href="https://www.resmigazete.gov.tr/eskiler/2026/02/20260203-4.htm">2026 Birim Maliyetleri</a> · <a class="text-brand-700 hover:underline" href="https://x.com/karpathy/status/1886192184808149383">Vibe coding (Karpathy)</a> · <a class="text-brand-700 hover:underline" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl yasası</a></p>
  </div>
 </footer>
@@ -269,16 +272,26 @@ const RISKS=[['Mevzuat değişikliği','Kapsam değişikliği prosedürü + para
  ['Bus factor 1','Runbook + karar kayıtları; imajdan kurulum ≤ 2 sa'],
  ['AI kod hatası','Test-first + çift inceleme + güvenlik taraması + altın dosya paritesi'],
  ['SGK API yok','CSV/ekran içe aktarma şablonu; aylık kapanış kontrol listesi']];
+const KATMAN_ORDER=['MVP','GAP','ENT'];
+const KATMAN={
+ MVP:{ad:'MVP · Faz 1',tag:'MVP',badge:'bg-emerald-50 text-emerald-700 border border-emerald-100',
+  aciklama:'Kapsam = müşterinin Excel\'i + SGK Genelge 2026/16. Aracın bugün Excel\'in yaptığı ruhsat/ihale/hakediş hesabını güncel mevzuatla, giriş hatasına kapalı ve kanıtlı yapması.'},
+ GAP:{ad:'Faz 2 · Gap analizi',tag:'GAP',badge:'bg-amber-50 text-amber-700 border border-amber-100',
+  aciklama:'Excel\'de ve Genelge\'de olmayan ama olması gereken iyileştirmeler: giriş denetimi, düzeltmelerin kalemlenmesi, iş akışı durumları, dönem kilidi ve Google Sheets köprüsü/veri teyidi.'},
+ ENT:{ad:'Enterprise modüller',tag:'ENT',badge:'bg-slate-200 text-slate-700 border border-slate-300',
+  aciklama:'Excel\'in hiç sahip olmadığı kurumsal katman: çekirdek altyapı & CI (yedeklilik, kalite kapıları, iki saatte kurulabilirlik) ve KVKK/RBAC maskeleme + dört denetim raporu.'}
+};
+const codeTier=code=>({M0:'ENT',M1:'MVP',M2:'MVP',M3:'MVP',M4:'MVP',M5:'GAP',M6:'ENT'}[code]||'MVP');
 const FB={kv:{dev:1,ai_hiz:4,ai_pay:.6,amdahl:.55,eca:1,carpan:.55,efor:153,sure:84,
  baslangic:new Date(2026,6,20),ga:new Date(2026,9,11),tampon:new Date(2026,9,24),
- gunluk_ucret:4000,bedel:612000,kdv:122400,toplam:734400,asgari_ucret_2026:33030},
- modul:[['Çekirdek altyapı & CI (zorunlu)','EVET',20,'Excel\'in hiç yapamadığını ekler: yedeklilik, kalite kapıları, 2 saatte kurulabilirlik'],
-  ['M1 · Ruhsat & alan bazlı hesap','EVET',25,'RUHSAT HESAPLAMASI sayfasının ürün hâli; 2026/16 ortalama kuralı ve giriş denetimi'],
-  ['M2 · İhale & sözleşme hesabı + kısmi araştırma','EVET',20,'GENEL HESAPLAMA sayfasının ürün hâli; kırılan Etap-2 bağları ve mahsup akışı'],
-  ['M3 · Aylık bildirim matrisi, İcmal & kota','EVET',30,'ASGARİ İŞÇİLİK 1&2 matrisi + İCMAL panelinin ürün hâli; alt-taşeron kuralları, elle "kalan adam/ay" biter'],
-  ['M4 · Mevzuat parametre yönetimi','EVET',15,'Formüllere gömülü 6,75 / 0,345 / 0,375 / 38,5 sabitleri tek tabloya taşınır; dönem kilidi'],
-  ['M5 · Google Sheets köprüsü & veri teyidi','EVET',18,'"Manuel elle yazılacak alan" ve "TEYİT EDİLDİ" notları, denetimli giriş ve izlenen teyide dönüşür'],
-  ['M6 · Taşeron sicili, raporlar & KVKK','EVET',25,'TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, 4 denetim raporu']].map(m=>({ad:m[0],sec:m[1],gun:m[2],ic:m[3]})),
+ gunluk_ucret:4000,bedel:612000,kdv:122400,toplam:734400,asgari_ucret_2026:33030,surum:'5.0'},
+ modul:[['Çekirdek altyapı & CI (zorunlu)','EVET',20,'Excel\'in hiç yapamadığını ekler: yedeklilik, kalite kapıları, 2 saatte kurulabilirlik','ENT'],
+  ['M1 · Ruhsat & alan bazlı hesap','EVET',25,'RUHSAT HESAPLAMASI sayfasının ürün hâli; 2026/16 ortalama kuralı ve giriş denetimi','MVP'],
+  ['M2 · İhale & sözleşme hesabı + kısmi araştırma','EVET',20,'GENEL HESAPLAMA sayfasının ürün hâli; kırılan Etap-2 bağları ve mahsup akışı','MVP'],
+  ['M3 · Aylık bildirim matrisi, İcmal & kota','EVET',30,'ASGARİ İŞÇİLİK 1&2 matrisi + İCMAL panelinin ürün hâli; alt-taşeron kuralları, elle "kalan adam/ay" biter','MVP'],
+  ['M4 · Mevzuat parametre yönetimi','EVET',15,'Formüllere gömülü 6,75 / 0,345 / 0,375 / 38,5 sabitleri tek tabloya taşınır; dönem kilidi','MVP'],
+  ['M5 · Google Sheets köprüsü & veri teyidi','EVET',18,'"Manuel elle yazılacak alan" ve "TEYİT EDİLDİ" notları, denetimli giriş ve izlenen teyide dönüşür','GAP'],
+  ['M6 · Taşeron sicili, raporlar & KVKK','EVET',25,'TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, 4 denetim raporu','ENT']].map(m=>({ad:m[0],sec:m[1],gun:m[2],ic:m[3],katman:m[4]})),
  faz:null,
  donem:[{b:new Date(2024,0,1),o:.345,u:20002.5},{b:new Date(2024,8,1),o:.3475,u:20002.5},{b:new Date(2025,0,1),o:.3475,u:26005.5},{b:new Date(2026,0,1),o:.3575,u:33030}],
  teklif:{form_no:'SW-2026-001',gecerlilik:'30 gün',odeme1:'İmza %30: 183.600,00 TL',odeme2:'UAT %40: 244.800,00 TL',odeme3:'GA %30: 183.600,00 TL'},
@@ -296,7 +309,7 @@ async function fetchLive(){
  const kv={},modul=[],faz=[],donem=[],maliyet=[],teklif={};
  for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
   if(c[0]==='KV')kv[c[1]]=c[2];
-  else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3]),ic:c[4]});
+  else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3]),ic:c[4],katman:c[5]});
   else if(c[0]==='FAZ')faz.push({ad:c[1],gun:num(c[3]),b:dat(c[4]),e:dat(c[5])});
   else if(c[0]==='DONEM')donem.push({b:dat(c[1]),o:num(c[2]),u:num(c[3])});
   else if(c[0]==='MALIYET')maliyet.push({s:c[1],y25:num(c[2]),y26:num(c[3])});
@@ -312,7 +325,7 @@ function render(D,live,msg){
  document.getElementById('liveDot').className='inline-block w-2.5 h-2.5 rounded-full '+(live?'bg-emerald-400':'bg-amber-400');
  set('liveStatus',live?'Sheets canlı':'statik yedek'); set('liveMode',live?'CANLI':'STATİK');
  set('liveNote',msg); set('liveTime',new Date().toLocaleTimeString('tr-TR')+(kv.guncelleme?' · Sheets kaydı: '+kv.guncelleme:''));
- set('vSurum',kv.surum||'4');
+ set('vSurum',kv.surum||'5.0');
  set('kEfor',trN(kv.efor,0)+' adam-gün'); set('kSure',trN(kv.sure,0)+' gün'); set('kGA',trD(kv.ga));
  set('kBedel',trTL(kv.bedel)); set('kDev',kv.dev); set('kCarpan',trN(kv.carpan));
  set('kEfor2',trN(kv.efor,0)+' adam-gün');
@@ -325,18 +338,32 @@ function render(D,live,msg){
  const odemeler=[D.teklif&&D.teklif.odeme1,D.teklif&&D.teklif.odeme2,D.teklif&&D.teklif.odeme3].filter(Boolean);
  const odFall=['İmza %30','UAT %40','GA %30'].map((o,i)=>`${o}: ${trTL([.3,.4,.3][i]*kv.bedel)}`);
  document.getElementById('tOdeme').innerHTML=(odemeler.length===3?odemeler:odFall).map((txt,i)=>`<div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center font-medium">${i+1}</span><span>${txt}</span></div>`).join('');
- // Kapsam kartları — tıklanınca alt bileşen modalı
+ // Kapsam kartları — üç katman (MVP / Faz 2 Gap / Enterprise); kart tıklanınca alt bileşen modalı
  MODS=D.modul;
- document.getElementById('modCards').innerHTML=D.modul.map(m=>{
-  const on=String(m.sec).toUpperCase()==='EVET';
-  const code=codeOf(m.ad);
+ const tierOf=m=>{const k=String(m.katman||'').toUpperCase();return (k==='MVP'||k==='GAP'||k==='ENT')?k:codeTier(codeOf(m.ad));};
+ const tierEfor=t=>D.modul.filter(m=>tierOf(m)===t&&String(m.sec).toUpperCase()==='EVET').reduce((s,m)=>s+(m.gun||0),0);
+ const cardHTML=m=>{const on=String(m.sec).toUpperCase()==='EVET';const code=codeOf(m.ad);
   return `<button type="button" onclick="openMod('${code}')" class="card text-left w-full hover:border-brand-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-600 transition ${on?'':'opacity-60'}">
    <div class="flex items-center justify-between gap-2">
     <span class="badge ${on?'bg-emerald-50 text-emerald-700 border border-emerald-100':'bg-slate-100 text-slate-500 border border-slate-200'}">${on?'DAHİL':'HARİÇ'}</span>
     <span class="badge bg-brand-50 text-brand-700 border border-brand-100">${trN(m.gun,0)} a-g</span></div>
    <h3 class="mt-2 font-medium text-slate-900">${m.ad}</h3>
    <p class="mt-1 leading-7">${m.ic||''}</p>
-   <p class="mt-3 inline-flex items-center gap-1 text-brand-700 font-medium">Alt bileşenler <i class="ph ph-caret-right"></i></p></button>`;}).join('');
+   <p class="mt-3 inline-flex items-center gap-1 text-brand-700 font-medium">Alt bileşenler <i class="ph ph-caret-right"></i></p></button>`;};
+ set('kMvp',trN(tierEfor('MVP'),0)+' a-g · '+trTL(tierEfor('MVP')*(kv.gunluk_ucret||0)));
+ document.getElementById('modCards').innerHTML=KATMAN_ORDER.map(t=>{
+  const items=D.modul.filter(m=>tierOf(m)===t); if(!items.length)return '';
+  const cfg=KATMAN[t], ef=tierEfor(t), bd=ef*(kv.gunluk_ucret||0);
+  return `<div>
+   <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+    <span class="badge ${cfg.badge}">${cfg.tag}</span>
+    <h3 class="font-medium text-slate-900 text-lg">${cfg.ad}</h3>
+    <span class="badge bg-slate-100 text-slate-600">${trN(ef,0)} adam-gün</span>
+    <span class="badge bg-slate-100 text-slate-600">${trTL(bd)} · KDV hariç</span></div>
+   <p class="mt-1 muted leading-7 max-w-3xl">${cfg.aciklama}</p>
+   <div class="mt-3 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">${items.map(cardHTML).join('')}</div></div>`;}).join('');
+ document.getElementById('katmanOzet').innerHTML=KATMAN_ORDER.map(t=>{const ef=tierEfor(t);if(!ef)return '';const cfg=KATMAN[t];
+  return `<span class="chip"><span class="badge ${cfg.badge}">${cfg.tag}</span>${cfg.ad}: <span class="font-medium text-slate-900">${trN(ef,0)} a-g · ${trTL(ef*(kv.gunluk_ucret||0))}</span></span>`;}).join('');
  // Timeline
  const colors=['#64748B','#1A56DB','#1642A8','#0E9F6E','#B45309','#0F172A'];
  document.getElementById('timeline').innerHTML=faz.map((p,i)=>{

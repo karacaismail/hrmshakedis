@@ -2,6 +2,8 @@
 
 **Efor:** 25 adam-gün · **Faz:** F3–F4 · **Durum:** Teklif kapsamında.
 
+**Katman:** MVP · Faz 1 — müşteri Excel'i + SGK Genelge 2026/16. Bu modülün çekirdek hesabı (alan × birim maliyet × oran, aritmetik ortalama kuralı) MVP'dir; giriş denetimi ve hesabın kanıtla saklanması Faz 2 · Gap kapsamındadır (bkz. [gap-analizi](../gap-analizi.md)).
+
 > Excel'deki "RUHSAT HESAPLAMASI" sayfasının işini devralır: inşaatın metrekaresinden ve yapı sınıfından, SGK'nın beklediği asgari işçiliği hesaplar. Aynı işi yapar; ama güncel kuralla, giriş hatasına kapalı ve kanıtlı biçimde.
 
 ## Bu modül hangi işi devralıyor?

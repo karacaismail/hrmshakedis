@@ -29,7 +29,7 @@ Kural: bir bilgi ya Sheets'ten gelir (canlı) ya depodan gelir (statik). İkisin
 | PARAMETRELER B39-B41 (formül) | KV bedel, kdv, toplam | Hero #kBedel · Ticari #tBedel #tKdv #tToplam · ödeme yedek hesabı | #f_bedel #f_kdv #f_toplam |
 | PARAMETRELER C52, B52 | KV asgari_ucret_2026, fark_prim_2026 | (yedek; görünür kaynak DONEM satırları) | — |
 | WEB_PARAM C2, C3 (formül) | KV surum, guncelleme | Footer v-etiketi #vSurum · durum satırı "Sheets kaydı" | — |
-| TEKLİF GİRDİ B14:B20 + C + D + E | MODUL ×7 (ad, seçim, efor, açıklama) | Kapsam #modCards kartları + modal başlık rozetleri | Kapsam bandı #f_kapsam |
+| TEKLİF GİRDİ B14:B20 + C + D + E + F (katman) | MODUL ×7 (ad, seçim, efor, açıklama, katman=MVP/GAP/ENT → EK3/F) | Kapsam #modCards üç grup (MVP/Faz 2 Gap/Enterprise) + #katmanOzet + modal | Kapsam bandı #f_kapsam (katman gruplu) |
 | WATERFALL PLAN A5:F10 (formül tarihler) | FAZ ×6 (ad, gün, başlangıç, bitiş) | Plan #timeline + #chartFaz | Plan tablosu #f_plan |
 | PARAMETRELER A49:C52 (dönem tablosu) | DONEM ×4 | Mevzuat #tblDonem | — |
 | PARAMETRELER A55:C62 (maliyet tablosu) | MALIYET ×8 | Mevzuat #chartMaliyet | — |
@@ -57,6 +57,7 @@ Kural: bir bilgi ya Sheets'ten gelir (canlı) ya depodan gelir (statik). İkisin
 |---|---|---|
 | Sayısal parametre (geliştirici, AI hızı, ücret, tarih, kapsam EVET/HAYIR, kimlik) | Sheets'te ilgili girdi hücresi | Elle veya Claude + Zapier becerisi "hrmshakedis sheet güncelle" |
 | Modül adı/açıklaması | İki aralık birlikte: GİRDİ B/E + PARAMETRELER A | Zapier becerisi (tek batchUpdate) |
+| Modül katmanı (MVP/GAP/ENT) | TEKLİF GİRDİ F14:F20 girdi; WEB_PARAM F23:F29 formülle çeker | Zapier becerisi (batchUpdate) |
 | Modül detay metni (modal) | docs/modules/*.md düzenle | Depo push (Pages ~1 dk'da yayınlar) |
 | Statik web metni, risk kartı, kabul kriteri | index.html / teklif.html | Depo push |
 | Yapısal değişiklik (yeni sayfa, yeni satır düzeni, yeni modül satırı) | tools/build_xlsx.py güncelle → xlsx üret → Sheets'e "E-tabloyu değiştir" ile içe aktar → FB'yi eşitle | Depo + içe aktarma |
@@ -68,3 +69,4 @@ Kural: bir bilgi ya Sheets'ten gelir (canlı) ya depodan gelir (statik). İkisin
 3. **FB eşitleme:** Sheets'te kalıcı bir değer değiştiyse (ör. bedel, tarihler), index.html içindeki FB yedek nesnesi de aynı değere çekilir; yoksa Sheets erişilemediği gün eski rakam görünür.
 4. **Metin protokolü:** WEB_PARAM'a eklenecek her yeni satır metin olarak dışa verilir (`=""&…` veya `TEXT(…,"yyyy-mm-dd")`); aksi hâlde gviz kolon tipini bozar ve alanlar boş düşer.
 5. **Yasaklı kelimeler:** ürün yüzeylerinde teknoloji markası ve gerçek müşteri adı geçmez ("Python framework", "İnşaat firması" kullanılır).
+6. **Katman boyutu:** modül katmanı TEKLİF GİRDİ F sütununda (MVP/GAP/ENT); WEB_PARAM EK3 (F) formülle çeker; index.html/teklif.html `c[5]` olarak okur; build_xlsx.py `mods[]` 4. elemanı ve index.html `FB.modul` `m[4]` ile senkron kalır. Katman anlamları ve gap kalemleri: `docs/gap-analizi.md`.

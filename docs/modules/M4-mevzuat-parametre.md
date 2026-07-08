@@ -2,6 +2,8 @@
 
 **Efor:** 15 adam-gün · **Faz:** F3 · **Durum:** Teklif kapsamında.
 
+**Katman:** MVP · Faz 1 — müşteri Excel'i + SGK Genelge 2026/16. Güncel oran/birim-maliyet/dönem tabloları (Genelge değerleri) MVP'dir; çünkü doğru hesap bu tablosuz olmaz. Geçmiş hesabı kendi dönemine sabitleyen "dönem kilidi/snapshot" Faz 2 · Gap'tir (bkz. [gap-analizi](../gap-analizi.md)).
+
 > Excel'in formüllerine gömülü bütün sabitleri — 6,75; 0,345; 0,375; 38,5; 18.200; 26.005,50 — tek bir düzenlenebilir tabloya taşır. Yeni tebliğ çıktığında güncelleme, on beş dakikalık bir form işlemi olur.
 
 ## Bu modül hangi işi devralıyor?

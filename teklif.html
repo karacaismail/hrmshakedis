@@ -119,7 +119,7 @@ async function load(){
   for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
    if(c[0]==='KV')kv[c[1]]=c[2];
    else if(c[0]==='TEKLIF')tk[c[1]]=c[2];
-   else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3])});
+   else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3]),katman:c[5]});
    else if(c[0]==='FAZ')faz.push({ad:c[1],gun:num(c[3]),b:dat(c[4]),e:dat(c[5])});}
   if(!('carpan' in kv)||faz.length<6)throw new Error('WEB_PARAM v4 değil');
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
@@ -127,8 +127,14 @@ async function load(){
   set('f_musteri',tk.musteri||'İnşaat firması'); set('f_yuklenici',tk.yuklenici||'—');
   set('f_proje',tk.proje||'—'); set('f_proje_sub',(tk.proje||'')+' — özel yazılım geliştirme teklifi');
   const inc=modul.filter(m=>String(m.sec).toUpperCase()==='EVET'),exc=modul.filter(m=>String(m.sec).toUpperCase()!=='EVET');
-  document.getElementById('f_kapsam').innerHTML=
-   '<ul class="space-y-1 leading-7">'+inc.map(m=>`<li class="flex justify-between gap-3"><span>• ${m.ad}</span><span class="text-slate-500 whitespace-nowrap">${trN(m.gun)} adam-gün</span></li>`).join('')+'</ul>'
+  const KT={MVP:'MVP · Faz 1 (müşteri Excel\'i + Genelge 2026/16)',GAP:'Faz 2 · Gap analizi',ENT:'Enterprise modüller'};
+  const codeT=ad=>{const s=String(ad||'').trim();const c=s.startsWith('M')?s.split(' ')[0]:'M0';return ({M0:'ENT',M1:'MVP',M2:'MVP',M3:'MVP',M4:'MVP',M5:'GAP',M6:'ENT'})[c]||'MVP';};
+  const tOf=m=>{const k=String(m.katman||'').toUpperCase();return (k==='MVP'||k==='GAP'||k==='ENT')?k:codeT(m.ad);};
+  const grp=['MVP','GAP','ENT'].map(t=>{const its=inc.filter(m=>tOf(m)===t);if(!its.length)return '';
+    const ef=its.reduce((s,m)=>s+(m.gun||0),0);
+    return `<div class="mb-2"><p class="font-medium text-slate-900">${KT[t]} <span class="text-slate-500 font-normal">· ${trN(ef)} adam-gün</span></p><ul class="space-y-1 leading-7 mt-1">`+its.map(m=>`<li class="flex justify-between gap-3"><span>• ${m.ad}</span><span class="text-slate-500 whitespace-nowrap">${trN(m.gun)} adam-gün</span></li>`).join('')+'</ul></div>';}).join('');
+  document.getElementById('f_kapsam').innerHTML=grp
+   +`<p class="mt-2 text-slate-500 leading-6">MVP (Faz 1), müşterinin Excel'inin yaptığı hesabı SGK Genelge 2026/16 ile doğru yapan taban teslimdir. Faz 2 · Gap ve Enterprise katmanları sonraki fazlardır.</p>`
    +(exc.length?`<p class="mt-2 text-slate-400">Kapsam dışı: ${exc.map(m=>m.ad).join(' · ')}</p>`:'');
   document.getElementById('f_plan').innerHTML=faz.map(p=>`<tr class="border-t border-slate-100">
    <td class="px-4 py-2">${p.ad}</td><td class="px-2 py-2 whitespace-nowrap">${trN(p.gun)} gün</td>
