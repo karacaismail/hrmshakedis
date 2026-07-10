@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Yazılım Geliştirme Teklif Formu — canlı, A4</title>
+<!-- kaynak: docs/modules/*.md kapsam sözleşmeleri -->
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Roboto,sans-serif'>h</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Roboto','system-ui','sans-serif']},colors:{brand:{50:'#EBF1FE',600:'#1A56DB',700:'#1642A8',900:'#0F172A'}}}}}</script>
+<style>
+html{font-size:16px}
+body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem;background:#F4F6FA}
+.row{display:flex;justify-content:space-between;gap:1rem;padding:.5rem .9rem;border-bottom:1px solid #EEF2F7}
+.row dt{color:#64748B;font-weight:300}
+.row dd{color:#0F172A;font-weight:400;text-align:right}
+.band{background:#0F172A;color:#fff;font-weight:500;padding:.5rem .9rem;letter-spacing:.04em}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:500;padding:.65rem 1rem;border-radius:.75rem}
+@media print{@page{size:A4;margin:12mm}body{background:#fff}.noprint{display:none!important}
+ #sheetCard{box-shadow:none!important;border:none!important;max-width:100%!important}}
+</style>
+</head>
+<body class="text-slate-700">
+
+<header class="noprint sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+ <div class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+  <a href="index.html" class="flex items-center gap-2 text-slate-900 font-medium"><i class="ph ph-arrow-left"></i><span class="hidden sm:inline">Rapora dön</span></a>
+  <div class="flex items-center gap-2">
+   <span id="liveDot" class="inline-block w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+   <span id="liveStatus" class="text-slate-500">yükleniyor…</span>
+  </div>
+ </div>
+</header>
+
+<div class="noprint max-w-3xl mx-auto px-4 pt-5 flex flex-wrap gap-2">
+ <button onclick="window.print()" class="btn bg-brand-600 text-white hover:bg-brand-700"><i class="ph ph-printer"></i> Yazdır (A4)</button>
+ <button onclick="load()" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-arrows-clockwise"></i> Yenile</button>
+ <a href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"><i class="ph ph-table"></i> Sheets'te düzenle</a>
+</div>
+<p class="noprint max-w-3xl mx-auto px-4 pt-2 text-slate-500 leading-6">Kaynak: Google Sheets <span class="font-medium text-slate-700">TEKLİF GİRDİ</span> + <span class="font-medium text-slate-700">PARAMETRELER</span>. 60 saniyede bir ve sekmeye dönüşte kendini tazeler.</p>
+<div id="guide" class="noprint hidden max-w-3xl mx-auto mt-3 px-4">
+ <div class="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 p-4 leading-7">
+  <p class="font-medium flex items-center gap-2"><i class="ph ph-warning"></i>Veri alınamadı: <span id="guideReason">—</span></p>
+  <p class="mt-1">Çözüm: v4 çalışma kitabını aynı Sheets adresine yükleyin — <span class="font-medium">Dosya &gt; İçe aktar &gt; E-tabloyu değiştir</span>. Dosyada WEB_PARAM sayfası bulunmalı (v4, tüm değerleri metin olarak dışa verir).</p>
+ </div>
+</div>
+
+<main class="max-w-3xl mx-auto px-4 py-5">
+ <div id="sheetCard" class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+  <div class="px-6 pt-7 pb-4 text-center border-b border-slate-100">
+   <h1 class="text-2xl font-medium text-brand-900 tracking-tight">YAZILIM GELİŞTİRME TEKLİF FORMU</h1>
+   <p class="mt-1 text-slate-500" id="f_proje_sub">Asgari İşçilik &amp; Hakediş Uyum Platformu — özel yazılım geliştirme teklifi</p>
+   <div class="mt-3 flex justify-center gap-6 flex-wrap">
+    <p><span class="text-slate-500">Teklif No:</span> <span id="f_form_no" class="font-medium text-slate-900">—</span></p>
+    <p><span class="text-slate-500">Tarih:</span> <span id="f_tarih" class="font-medium text-slate-900">—</span></p>
+    <p><span class="text-slate-500">Geçerlilik:</span> <span id="f_gecerlilik" class="font-medium text-slate-900">—</span></p>
+   </div>
+  </div>
+  <div class="band">TARAFLAR</div>
+  <dl>
+   <div class="row"><dt>Müşteri</dt><dd id="f_musteri">İnşaat firması</dd></div>
+   <div class="row"><dt>Yüklenici</dt><dd id="f_yuklenici">—</dd></div>
+   <div class="row"><dt>Proje</dt><dd id="f_proje">—</dd></div>
+  </dl>
+  <div class="band">KAPSAM (SEÇİLİ MODÜLLER)</div>
+  <div class="px-6 py-3" id="f_kapsam"><p class="text-slate-400">yükleniyor…</p></div>
+  <div class="band">WATERFALL PLAN</div>
+  <div class="px-2 py-1">
+   <table class="w-full"><thead><tr class="text-left text-slate-500">
+    <th class="px-4 py-2 font-normal">Faz</th><th class="px-2 py-2 font-normal">Süre</th><th class="px-2 py-2 font-normal">Başlangıç</th><th class="px-2 py-2 font-normal">Bitiş</th></tr></thead>
+    <tbody id="f_plan"></tbody></table>
+  </div>
+  <div class="band">TİCARİ KOŞULLAR</div>
+  <dl>
+   <div class="row"><dt>Toplam efor</dt><dd id="f_efor">—</dd></div>
+   <div class="row"><dt>Toplam takvim süresi</dt><dd id="f_sure">—</dd></div>
+   <div class="row"><dt>Teslim (GA) · tampon sonu</dt><dd><span id="f_ga">—</span> · <span id="f_tampon">—</span></dd></div>
+   <div class="row"><dt>Günlük birim ücret</dt><dd id="f_ucret">—</dd></div>
+   <div class="row"><dt>Bedel (KDV hariç)</dt><dd id="f_bedel" class="!font-medium">—</dd></div>
+   <div class="row"><dt>KDV (%20)</dt><dd id="f_kdv">—</dd></div>
+   <div class="row"><dt class="!font-medium !text-slate-900">Genel toplam</dt><dd id="f_toplam" class="!font-bold !text-brand-700">—</dd></div>
+   <div class="row"><dt>Ödeme planı</dt><dd id="f_odeme" class="text-right leading-7">—</dd></div>
+  </dl>
+  <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 leading-7">
+   <p><span class="font-medium text-slate-900">Kabul kriterleri:</span> 12 altın senaryoda birebir sonuç (sapma &lt; 0,01 TL); test kapsamı ≥ %85; API p95 &lt; 300 ms; pilot mutabakatında açıklanamayan fark 0.</p>
+   <p class="mt-2"><span class="font-medium text-slate-900">Varsayımlar:</span> SGK resmi API'si yoktur — bildirilen SPEK verisi müşterice CSV/ekran ile sağlanır; barındırma müşteri sunucusundadır; mevzuat değişikliği kapsam değişikliği sayılır.</p>
+   <p class="mt-2"><span class="font-medium text-slate-900">Hariçler:</span> SGK/e-Devlet ekran otomasyonu, çok müşterili SaaS, mobil uygulama. Kaynak kod müşteriye özel kullanım lisansıyla teslim edilir.</p>
+  </div>
+  <div class="grid grid-cols-2 gap-8 px-6 py-8">
+   <div><p class="font-medium text-slate-900">Yüklenici</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
+   <div><p class="font-medium text-slate-900">Müşteri (İnşaat firması)</p><div class="mt-12 border-t border-slate-400"></div><p class="mt-1 text-slate-500">Ad Soyad / İmza / Tarih</p></div>
+  </div>
+ </div>
+ <p class="noprint mt-3 text-slate-400 leading-6" id="ts"></p>
+</main>
+
+<script>
+const SID='1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw';
+const num=s=>{if(s==null)return null;s=String(s).trim().replace(/\s/g,'');if(!s)return null;
+ if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',', '.');else if(s.includes(','))s=s.replace(',', '.');
+ const v=parseFloat(s);return isNaN(v)?null:v;};
+const dat=s=>{if(!s)return null;const m=String(s).match(/(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+ const n=num(s);return n&&n>40000&&n<60000?new Date(Math.round((n-25569)*864e5)):null;};
+const trD=d=>d?d.toLocaleDateString('tr-TR'):'—';
+const trN=(v,dec=0)=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+const trTL=v=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+' TL';
+async function load(){
+ const dot=document.getElementById('liveDot'),st=document.getElementById('liveStatus');
+ try{
+  const u=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=WEB_PARAM&headers=0&t=${Date.now()}`;
+  const t=await(await fetch(u,{cache:'no-store'})).text();
+  const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
+  if(j.status==='error')throw new Error('WEB_PARAM sayfası yok');
+  const kv={},tk={},modul=[],faz=[];
+  for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
+   if(c[0]==='KV')kv[c[1]]=c[2];
+   else if(c[0]==='TEKLIF')tk[c[1]]=c[2];
+   else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3])});
+   else if(c[0]==='FAZ')faz.push({ad:c[1],gun:num(c[3]),b:dat(c[4]),e:dat(c[5])});}
+  if(!('carpan' in kv)||faz.length<6)throw new Error('WEB_PARAM v4 değil');
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('f_form_no',tk.form_no||'—'); set('f_tarih',trD(dat(tk.tarih))); set('f_gecerlilik',tk.gecerlilik||'—');
+  set('f_musteri',tk.musteri||'İnşaat firması'); set('f_yuklenici',tk.yuklenici||'—');
+  set('f_proje',tk.proje||'—'); set('f_proje_sub',(tk.proje||'')+' — özel yazılım geliştirme teklifi');
+  const inc=modul.filter(m=>String(m.sec).toUpperCase()==='EVET'),exc=modul.filter(m=>String(m.sec).toUpperCase()!=='EVET');
+  document.getElementById('f_kapsam').innerHTML=
+   '<ul class="space-y-1 leading-7">'+inc.map(m=>`<li class="flex justify-between gap-3"><span>• ${m.ad}</span><span class="text-slate-500 whitespace-nowrap">${trN(m.gun)} adam-gün</span></li>`).join('')+'</ul>'
+   +(exc.length?`<p class="mt-2 text-slate-400">Kapsam dışı: ${exc.map(m=>m.ad).join(' · ')}</p>`:'');
+  document.getElementById('f_plan').innerHTML=faz.map(p=>`<tr class="border-t border-slate-100">
+   <td class="px-4 py-2">${p.ad}</td><td class="px-2 py-2 whitespace-nowrap">${trN(p.gun)} gün</td>
+   <td class="px-2 py-2 whitespace-nowrap">${trD(p.b)}</td><td class="px-2 py-2 whitespace-nowrap">${trD(p.e)}</td></tr>`).join('');
+  set('f_efor',trN(num(kv.efor))+' adam-gün'); set('f_sure',trN(num(kv.sure))+' gün');
+  set('f_ga',trD(dat(kv.ga))); set('f_tampon',trD(dat(kv.tampon)));
+  set('f_ucret',trTL(num(kv.gunluk_ucret))); set('f_bedel',trTL(num(kv.bedel)));
+  set('f_kdv',trTL(num(kv.kdv))); set('f_toplam',trTL(num(kv.toplam)));
+  document.getElementById('f_odeme').innerHTML=[tk.odeme1,tk.odeme2,tk.odeme3].filter(Boolean).join('<br>')||'—';
+  dot.className='inline-block w-2.5 h-2.5 rounded-full bg-emerald-500'; st.textContent='Sheets canlı';
+  document.getElementById('guide').classList.add('hidden');
+  document.getElementById('ts').textContent='Son okuma: '+new Date().toLocaleString('tr-TR')+' · Kaynak: Google Sheets WEB_PARAM';
+ }catch(e){
+  dot.className='inline-block w-2.5 h-2.5 rounded-full bg-amber-500'; st.textContent='veri alınamadı';
+  document.getElementById('guide').classList.remove('hidden');
+  document.getElementById('guideReason').textContent=e.message;
+  document.getElementById('ts').textContent='Son deneme: '+new Date().toLocaleString('tr-TR');
+ }
+}
+load(); setInterval(load,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});
+</script>
+</body>
+</html>

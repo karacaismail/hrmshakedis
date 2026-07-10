@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>hrmshakedis — Yazılım Geliştirme Teklifi &amp; Waterfall Proje Planı</title>
+<meta name="description" content="Asgari İşçilik & Hakediş Uyum Platformu: yazılım geliştirme teklifi, canlı waterfall planı ve parametreler. Veriler Google Sheets'ten canlı okunur.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230F172A'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Roboto,sans-serif'>h</text></svg>">
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Roboto','system-ui','sans-serif']},colors:{brand:{50:'#EBF1FE',100:'#DCE7FD',600:'#1A56DB',700:'#1642A8',900:'#0F172A'}}}}}
+</script>
+<style>
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Roboto',sans-serif;font-weight:300;font-size:1rem}
+table{font-size:1rem}
+.tbl th{font-weight:500;text-align:left;padding:.7rem .9rem;border-bottom:2px solid #E2E8F0;color:#0F172A;white-space:nowrap;background:#F8FAFC}
+.tbl td{font-weight:300;padding:.65rem .9rem;border-bottom:1px solid #EEF2F7;color:#334155;vertical-align:top}
+.chip{display:inline-flex;align-items:center;gap:.45rem;font-size:1rem;font-weight:400;padding:.35rem .8rem;border-radius:9999px;border:1px solid #E2E8F0;color:#475569;background:#fff;white-space:nowrap}
+.card{background:#fff;border:1px solid #E7ECF3;border-radius:1rem;padding:1.25rem;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.h2{font-size:1.55rem;font-weight:500;color:#0F172A;letter-spacing:-.01em}
+.kicker{font-size:1rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#1A56DB;display:flex;align-items:center;gap:.75rem}
+.kicker::after{content:"";flex:1;height:1px;background:#E2E8F0}
+.navlink{font-size:1rem;color:#475569;padding:.45rem .8rem;border-radius:9999px;white-space:nowrap}
+.navlink:hover{color:#1A56DB;background:#EBF1FE}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:1rem;font-weight:500;padding:.65rem 1.1rem;border-radius:.75rem;transition:.15s}
+.muted{color:#64748B;font-size:1rem}
+.stat{font-size:1.7rem;font-weight:500;color:#1642A8;line-height:1.2}
+.badge{font-size:.95rem;font-weight:500;padding:.15rem .6rem;border-radius:9999px}
+.scrollnav{display:flex;gap:.25rem;overflow-x:auto;padding:.5rem 1rem;scrollbar-width:none}
+.scrollnav::-webkit-scrollbar{display:none}
+.tline{position:relative;padding-left:2.4rem}
+.tline::before{content:"";position:absolute;left:.95rem;top:.4rem;bottom:.4rem;width:2px;background:linear-gradient(#DCE7FD,#1A56DB33)}
+.titem{position:relative;padding-bottom:1.5rem}
+.titem:last-child{padding-bottom:0}
+.tdot{position:absolute;left:-2.4rem;top:.1rem;width:2rem;height:2rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:.9rem;box-shadow:0 0 0 4px #fff}
+</style>
+</head>
+<body class="bg-[#F4F6FA] text-slate-700">
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+ <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+  <div class="flex items-center gap-2 min-w-0">
+   <span class="w-9 h-9 rounded-xl bg-brand-900 text-white flex items-center justify-center"><i class="ph ph-buildings text-xl"></i></span>
+   <span class="font-medium text-slate-900 truncate">hrmshakedis</span>
+  </div>
+  <div class="flex items-center gap-2">
+   <span id="liveDot" class="inline-block w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+   <span id="liveStatus" class="muted hidden sm:inline">bağlanıyor…</span>
+  </div>
+ </div>
+ <nav class="scrollnav max-w-6xl mx-auto border-t border-slate-100">
+  <a class="navlink" href="#urun">Ürün</a><a class="navlink" href="#kapsam">Kapsam</a>
+  <a class="navlink" href="#plan">Plan</a><a class="navlink" href="#hiz">Hız Modeli</a>
+  <a class="navlink" href="#ticari">Ticari</a><a class="navlink" href="#mevzuat">Mevzuat</a>
+  <a class="navlink" href="#risk">Risk</a>
+ </nav>
+</header>
+
+<!-- HERO -->
+<section class="bg-brand-900 text-white">
+ <div class="max-w-6xl mx-auto px-4 py-12 sm:py-16 grid lg:grid-cols-3 gap-8 items-start">
+  <div class="lg:col-span-2">
+   <p class="text-blue-300 font-medium tracking-widest uppercase">Yazılım Geliştirme Teklifi · Waterfall</p>
+   <h1 class="mt-3 text-3xl sm:text-5xl font-medium leading-tight">Asgari İşçilik &amp; Hakediş<br>Uyum Platformu</h1>
+   <p class="mt-4 max-w-2xl text-slate-300 text-lg font-light leading-8">İnşaat firması için özel geliştirme: SGK asgari işçilik yükümlülüğünü (ruhsat · ihale · hakediş) tek doğruluk kaynağında hesaplayan headless ürün. Tamamen vibecoding: AI kodu ultra hızlı yazar, insan doğrular.</p>
+   <div class="mt-7 flex flex-wrap gap-3">
+    <a href="teklif.html" target="_blank" rel="noopener" class="btn bg-white text-brand-900 hover:bg-blue-50"><i class="ph ph-file-text"></i> Teklif Formu <span class="badge bg-brand-100 text-brand-700">canlı · A4</span></a>
+    <a href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener" class="btn bg-white/10 border border-white/25 text-white hover:bg-white/20"><i class="ph ph-table"></i> Google Sheets</a>
+   </div>
+  </div>
+  <div class="card !bg-white/5 !border-white/15 text-slate-100 w-full">
+   <div class="flex items-center justify-between">
+    <p class="font-medium flex items-center gap-2"><i class="ph ph-broadcast text-blue-300"></i>Canlı özet</p>
+    <span class="badge bg-white/10 border border-white/20" id="liveMode">—</span>
+   </div>
+   <dl class="mt-3 space-y-2">
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Kapsam</dt><dd id="kEfor" class="font-medium">— adam-gün</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Takvim</dt><dd id="kSure" class="font-medium">— gün</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Teslim (GA)</dt><dd id="kGA" class="font-medium">—</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Bedel (KDV hariç)</dt><dd id="kBedel" class="font-medium">—</dd></div>
+    <div class="flex justify-between gap-3"><dt class="text-slate-300">Geliştirici × çarpan</dt><dd class="font-medium"><span id="kDev">1</span> × <span id="kCarpan">0,550</span></dd></div>
+   </dl>
+   <p class="mt-3 text-slate-400 leading-6" id="liveNote">Sheets'e bağlanılıyor…</p>
+   <p class="mt-1 text-slate-400">Oto-yenileme 60 sn · <span id="liveTime">—</span></p>
+  </div>
+ </div>
+</section>
+
+<main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
+
+<!-- 01 ÜRÜN -->
+<section id="urun">
+ <p class="kicker">01 · Ürün</p>
+ <h2 class="h2 mt-2">Ne geliştiriyoruz?</h2>
+ <div class="mt-6 grid gap-4 md:grid-cols-3">
+  <div class="card"><i class="ph ph-question text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Bu nedir?</h3><p class="mt-2 leading-7">SGK'nın aradığı asgari işçilik yükümlülüğünü (bildirilmesi zorunlu en az prim matrahı) hesaplayan ve izleyen bir uyum platformu. Python framework üzerinde headless: iş mantığı API'den sunulur, ekran dayatmaz.</p></div>
+  <div class="card"><i class="ph ph-gear text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne yapar?</h3><p class="mt-2 leading-7">Sistem: ruhsat, ihale ve hakediş bazlı üç hesabı güncel resmi parametrelerle çalıştırır; taşeron bazında aylık SPEK ve adam-ay kotasını izler; eşik aşımında uyarır; denetim izi tutar. Kullanıcı: veri girer, raporları onaylar.</p></div>
+  <div class="card"><i class="ph ph-prohibit text-brand-600 text-2xl"></i><h3 class="mt-2 font-medium text-slate-900">Ne yapmaz?</h3><p class="mt-2 leading-7">SGK'ya otomatik bildirim göndermez; resmi hesabın yerine geçmez (nihai karar SGK ünitesinindir); bordroyu yeniden hesaplamaz; insan onayı olmadan veri değiştirmez.</p></div>
+ </div>
+ <div class="mt-4 card border-l-4 !border-l-brand-600">
+  <p class="leading-8"><span class="font-medium text-slate-900">İhtiyacın kaynağı:</span> müşterinin mevcut asgari işçilik tablosu (kırık başvurular, günceldışı 0,345/0,375/0,385 çarpanları, elle veri girişi) ve 16.05.2026 SSİY değişikliği + SGK Genelgesi 2026/16'nın getirdiği yeni hesap kuralları (aritmetik ortalama, kısmi araştırma).</p>
+ </div>
+</section>
+
+<!-- 02 KAPSAM -->
+<section id="kapsam">
+ <p class="kicker">02 · Kapsam</p>
+ <h2 class="h2 mt-2">Modüller <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">Sheets'ten canlı</span></h2>
+ <p class="mt-2 muted">Kapsam, Google Sheets TEKLİF GİRDİ sayfasındaki EVET/HAYIR seçimleriyle belirlenir; teklif ve plan otomatik güncellenir.</p>
+ <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3" id="modCards"></div>
+ <div class="mt-4 flex flex-wrap gap-2">
+  <span class="chip"><i class="ph ph-sigma text-brand-600"></i>Seçili toplam: <span id="kEfor2" class="font-medium text-slate-900">—</span></span>
+  <span class="chip"><i class="ph ph-info text-brand-600"></i>Efor insan-eşdeğeri adam-gündür; bedelin tabanıdır</span>
+ </div>
+</section>
+
+<!-- 03 PLAN -->
+<section id="plan">
+ <p class="kicker">03 · Waterfall Plan</p>
+ <h2 class="h2 mt-2">Faz planı <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">tarihler canlı</span></h2>
+ <div class="mt-6 grid gap-4 lg:grid-cols-5">
+  <div class="card lg:col-span-3"><div class="tline mt-1" id="timeline"></div></div>
+  <div class="lg:col-span-2 space-y-4">
+   <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-bar-horizontal text-brand-600"></i>Faz süreleri (gün)</h3>
+    <div id="chartFaz" class="h-64 mt-2"></div></div>
+   <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-steps text-brand-600"></i>Waterfall kuralı</h3>
+    <p class="mt-2 leading-7">Fazlar sıralı ilerler; bir faz, teslimatları onaylanmadan kapanmaz (faz kapısı). Vibecoding hızlanması takvimi kısaltır, kapıları kaldırmaz. Mevzuat değişikliği kapsam değişikliği sayılır ve F1'e döner.</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- 04 HIZ -->
+<section id="hiz">
+ <p class="kicker">04 · Hız Modeli</p>
+ <h2 class="h2 mt-2">Velocity: tahmin değil, parametre <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">canlı</span></h2>
+ <p class="mt-2 max-w-3xl leading-7"><span class="font-mono bg-slate-100 px-1 rounded">takvim çarpanı = Amdahl × ECA ÷ geliştirici</span>. Amdahl: süre oranı = insana bağlı pay + AI payı ÷ AI hızı. Geliştirici etkisi <span class="font-medium text-slate-900">lineer</span>: 3 kişi → süre ÷ 3. ECA kuralları (hızlan/yavaşla) Sheets PARAMETRELER'den yönetilir.</p>
+ <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="card"><p class="muted">Geliştirici (insan)</p><p class="stat" id="vDev">1</p><p class="mt-1 leading-6">Kod yazmaz; spec, test onayı, merge kararı</p></div>
+  <div class="card"><p class="muted">AI hızı × devredilebilir pay</p><p class="stat"><span id="vAi">×4,0</span> · <span id="vPay">%60</span></p><p class="mt-1 leading-6">Amdahl oranı: <span id="vAmdahl" class="font-medium text-slate-900">0,550</span></p></div>
+  <div class="card"><p class="muted">ECA çarpanı</p><p class="stat" id="vEca">1,000</p><p class="mt-1 leading-6">5 pragmatik kural (Olay-Koşul-Aksiyon)</p></div>
+  <div class="card !border-brand-600 border-2"><p class="muted">Nihai çarpan → takvim</p><p class="stat"><span id="vCarpan">0,550</span> → <span id="vGun">—</span></p><p class="mt-1 leading-6">GA: <span id="vGA" class="font-medium text-slate-900">—</span> · tampon <span id="vTampon">—</span></p></div>
+ </div>
+ <div class="mt-4 card">
+  <div class="space-y-3" id="cmpBars"></div>
+  <div class="mt-4 flex flex-wrap gap-2" id="whatif"></div>
+  <p class="muted mt-3">What-if çipleri aynı Amdahl × ECA ile farklı geliştirici sayısını gösterir. Kalıcı değişiklik: Sheets PARAMETRELER §1.</p>
+ </div>
+</section>
+
+<!-- 05 TİCARİ -->
+<section id="ticari">
+ <p class="kicker">05 · Ticari Özet</p>
+ <h2 class="h2 mt-2">Bedel ve koşullar <span class="badge bg-brand-50 text-brand-700 border border-brand-100 align-middle">canlı</span></h2>
+ <div class="mt-6 grid gap-4 lg:grid-cols-3">
+  <div class="card">
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-currency-circle-dollar text-brand-600"></i>Bedel</h3>
+   <dl class="mt-3 space-y-2">
+    <div class="flex justify-between"><dt class="muted">Efor</dt><dd id="tEfor" class="font-medium text-slate-900">—</dd></div>
+    <div class="flex justify-between"><dt class="muted">Günlük birim</dt><dd id="tUcret" class="font-medium text-slate-900">—</dd></div>
+    <div class="flex justify-between"><dt class="muted">Bedel (KDV hariç)</dt><dd id="tBedel" class="font-medium text-slate-900">—</dd></div>
+    <div class="flex justify-between"><dt class="muted">KDV</dt><dd id="tKdv" class="font-medium text-slate-900">—</dd></div>
+    <div class="flex justify-between border-t border-slate-200 pt-2"><dt class="font-medium text-slate-900">Genel toplam</dt><dd id="tToplam" class="stat !text-xl">—</dd></div>
+   </dl>
+  </div>
+  <div class="card">
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-hand-coins text-brand-600"></i>Ödeme planı</h3>
+   <div class="mt-3 space-y-2" id="tOdeme"></div>
+   <p class="muted mt-3">Geçerlilik: <span id="tGecerlilik">—</span> · Teklif no: <span id="tNo">—</span></p>
+  </div>
+  <div class="card">
+   <h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-check-square text-brand-600"></i>Kabul kriterleri</h3>
+   <ul class="mt-3 space-y-2 leading-7 list-none">
+    <li class="flex gap-2"><i class="ph ph-check text-emerald-600 mt-1"></i>12 altın senaryoda birebir sonuç (sapma &lt; 0,01 TL)</li>
+    <li class="flex gap-2"><i class="ph ph-check text-emerald-600 mt-1"></i>Test kapsamı ≥ %85 (hesap motoru ≥ %90)</li>
+    <li class="flex gap-2"><i class="ph ph-check text-emerald-600 mt-1"></i>API p95 &lt; 300 ms</li>
+    <li class="flex gap-2"><i class="ph ph-check text-emerald-600 mt-1"></i>Pilot mutabakatında açıklanamayan fark 0</li>
+   </ul>
+  </div>
+ </div>
+ <div class="mt-4 flex flex-wrap items-center gap-3">
+  <a href="teklif.html" target="_blank" rel="noopener" class="btn bg-brand-600 text-white hover:bg-brand-700"><i class="ph ph-file-text"></i> Teklif Formunu Aç (A4)</a>
+  <span class="muted">Varsayımlar ve hariçler formun içindedir (SGK resmi API'si yoktur; barındırma müşteri sunucusunda).</span>
+ </div>
+</section>
+
+<!-- 06 MEVZUAT -->
+<section id="mevzuat">
+ <p class="kicker">06 · Mevzuat Bağlamı</p>
+ <h2 class="h2 mt-2">Ürünün hesapladığı üç yükümlülük</h2>
+ <div class="mt-6 grid gap-4 md:grid-cols-3">
+  <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-blueprint text-brand-600"></i>Ruhsata göre</h3><p class="mt-2 leading-7"><span class="font-mono bg-slate-100 px-1 rounded">m² × birim maliyet × oran × 0,75</span> — yıllara sâri işte aritmetik ortalama (2026/16).</p></div>
+  <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-gavel text-brand-600"></i>İhaleye göre</h3><p class="mt-2 leading-7"><span class="font-mono bg-slate-100 px-1 rounded">istihkak × oran × 0,75</span> — ödenen hakedişten kısmi araştırma ve mahsup.</p></div>
+  <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-line-up text-brand-600"></i>Hakedişe göre</h3><p class="mt-2 leading-7">Taşeron bazında aylık SPEK takibi; eksik → kesinti önerisi + adam-ay kota uyarısı.</p></div>
+ </div>
+ <div class="mt-4 grid gap-4 lg:grid-cols-2">
+  <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-chart-bar text-brand-600"></i>Birim maliyetler 2025 → 2026 (TL/m²) <span class="badge bg-brand-50 text-brand-700 border border-brand-100">canlı</span></h3>
+   <div id="chartMaliyet" class="mt-3 h-64"></div></div>
+  <div class="card"><h3 class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-percent text-brand-600"></i>Fark prim oranı dönemleri <span class="badge bg-brand-50 text-brand-700 border border-brand-100">canlı</span></h3>
+   <div class="overflow-x-auto mt-3"><table class="tbl w-full min-w-[420px]"><thead><tr><th>Geçerlilik</th><th>Oran</th><th>Asgari ücret</th></tr></thead><tbody id="tblDonem"></tbody></table></div>
+   <p class="muted mt-2">Eski tablolardaki 0,345/0,375/0,385 çarpanları günceldışı; ürün oranı döneme göre kendisi seçer.</p></div>
+ </div>
+</section>
+
+<!-- 07 RİSK -->
+<section id="risk">
+ <p class="kicker">07 · Öne Çıkan Riskler</p>
+ <h2 class="h2 mt-2">İlk beş risk ve yanıtları</h2>
+ <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5" id="riskCards"></div>
+ <p class="muted mt-3">Unk-unk (önceden listelenemeyen) riskler için: %15 takvim tamponu, %20 yönetim rezervi ve ECA kurallarıyla esneyen plan.</p>
+</section>
+</main>
+
+<!-- MODÜL DETAY MODALI -->
+<div id="modal" class="fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true" aria-labelledby="mdlCode">
+ <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="closeMod()"></div>
+ <div class="absolute inset-x-0 bottom-0 top-12 sm:inset-0 sm:m-auto sm:h-fit sm:max-h-[85vh] sm:w-[min(44rem,92vw)] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+  <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-200 bg-slate-50">
+   <div class="flex items-center gap-2 min-w-0">
+    <span id="mdlCode" class="badge bg-brand-900 text-white">M1</span>
+    <span id="mdlEfor" class="badge bg-brand-50 text-brand-700 border border-brand-100">— adam-gün</span>
+    <span class="badge bg-slate-100 text-slate-500 border border-slate-200 hidden sm:inline">kapsam sözleşmesi</span>
+   </div>
+   <button onclick="closeMod()" class="w-10 h-10 rounded-full hover:bg-slate-200 flex items-center justify-center shrink-0" aria-label="Kapat"><i class="ph ph-x text-2xl"></i></button>
+  </div>
+  <div id="mdlBody" class="overflow-y-auto px-6 py-5 prose prose-slate max-w-none prose-headings:font-medium prose-h1:text-2xl prose-h1:mb-2 prose-h2:text-lg prose-h2:mt-6 prose-p:leading-7 prose-li:leading-7 prose-table:text-base prose-blockquote:text-slate-600 prose-blockquote:border-brand-600" style="font-size:1rem"></div>
+  <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+   <a id="mdlSrc" href="#" target="_blank" rel="noopener" class="text-brand-700 hover:underline inline-flex items-center gap-1"><i class="ph ph-file-text"></i> Kaynak .md</a>
+   <button onclick="closeMod()" class="btn bg-brand-600 text-white hover:bg-brand-700">Kapat</button>
+  </div>
+ </div>
+</div>
+
+<footer class="border-t border-slate-200 bg-white">
+ <div class="max-w-6xl mx-auto px-4 py-8 leading-7">
+  <p class="muted">hrmshakedis · v<span id="vSurum">4</span> · Müşteri adı anonimleştirildi. Veri kaynağı: <a class="text-brand-700 hover:underline" href="https://docs.google.com/spreadsheets/d/1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw/edit" target="_blank" rel="noopener">Google Sheets</a> · <a class="text-brand-700 hover:underline" href="teklif.html" target="_blank" rel="noopener">Teklif formu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/yonetici-kilavuzu.md" target="_blank" rel="noopener">Yönetici kılavuzu</a> · <a class="text-brand-700 hover:underline" href="https://github.com/karacaismail/hrmshakedis/blob/main/docs/guides/musteri-kilavuzu.md" target="_blank" rel="noopener">Müşteri kılavuzu</a></p>
+  <p class="muted mt-2">Dayanaklar: <a class="text-brand-700 hover:underline" href="https://www.alomaliye.com/2026/06/26/sgk-genelgesi-2026-16-2011-13-sayili-genelge/">SGK Genelgesi 2026/16</a> · <a class="text-brand-700 hover:underline" href="https://www.mevzuat.gov.tr/File/GeneratePdf?mevzuatNo=13973&mevzuatTur=KurumVeKurulusYonetmeligi&mevzuatTertip=5">SSİY md.110-112</a> · <a class="text-brand-700 hover:underline" href="https://www.resmigazete.gov.tr/eskiler/2026/02/20260203-4.htm">2026 Birim Maliyetleri</a> · <a class="text-brand-700 hover:underline" href="https://x.com/karpathy/status/1886192184808149383">Vibe coding (Karpathy)</a> · <a class="text-brand-700 hover:underline" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl yasası</a></p>
+ </div>
+</footer>
+
+<script>
+const SID='1VXwPEh-eEIYXqRpxRO3MoN3cib-R5jBjkNRU-GPJIYw';
+const brand='#1A56DB', slate='#94A3B8';
+const baseTxt={fontFamily:'Roboto',color:'#334155',fontSize:14};
+const num=s=>{if(s==null)return null;s=String(s).trim().replace(/\s/g,'');if(!s)return null;
+ if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',', '.');else if(s.includes(','))s=s.replace(',', '.');
+ const v=parseFloat(s);return isNaN(v)?null:v;};
+const dat=s=>{if(!s)return null;const m=String(s).match(/(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);
+ const n=num(s);return n&&n>40000&&n<60000?new Date(Math.round((n-25569)*864e5)):null;};
+const trD=d=>d?d.toLocaleDateString('tr-TR'):'—';
+const trN=(v,dec=3)=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+const trTL=v=>v==null?'—':v.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+' TL';
+function chart(id){const el=document.getElementById(id);return echarts.getInstanceByDom(el)||echarts.init(el);}
+addEventListener('resize',()=>document.querySelectorAll('[id^=chart]').forEach(el=>{const c=echarts.getInstanceByDom(el);if(c)c.resize();}));
+
+const FAZ_TESLIM={F1:'Onaylı gereksinim dokümanı; 12 altın senaryonun kabul testi olarak dökümü; kapsam dondurma.',
+ F2:'Mimari + veri modeli; API sözleşmesi; test planı; KVKK veri sınıflaması.',
+ F3:'AI ajanlarıyla modül geliştirme; her PR\'da CI kapıları; haftalık çalışan ara sürüm.',
+ F4:'Altın dosya paritesi 12/12; entegrasyon + güvenlik testleri; yük testi p95 < 300 ms.',
+ F5:'Müşteri kabul testi (gerçek veriyle mutabakat, fark 0); eğitim; veri göçü provası.',
+ F6:'Üretim yayını (GA); 2 hafta yakın izleme; runbook + devir.'};
+const RISKS=[['Mevzuat değişikliği','Kapsam değişikliği prosedürü + parametre mimarisi (15 dk güncelleme)'],
+ ['Veri kalitesi','İçe aktarmada doğrulama + mutabakat raporu; reddedilen satır listesi'],
+ ['Bus factor 1','Runbook + karar kayıtları; imajdan kurulum ≤ 2 sa'],
+ ['AI kod hatası','Test-first + çift inceleme + güvenlik taraması + altın dosya paritesi'],
+ ['SGK API yok','CSV/ekran içe aktarma şablonu; aylık kapanış kontrol listesi']];
+const FB={kv:{dev:1,ai_hiz:4,ai_pay:.6,amdahl:.55,eca:1,carpan:.55,efor:153,sure:84,
+ baslangic:new Date(2026,6,20),ga:new Date(2026,9,11),tampon:new Date(2026,9,24),
+ gunluk_ucret:4000,bedel:612000,kdv:122400,toplam:734400,asgari_ucret_2026:33030},
+ modul:[['Çekirdek altyapı & CI (zorunlu)','EVET',20,'Excel\'in hiç yapamadığını ekler: yedeklilik, kalite kapıları, 2 saatte kurulabilirlik'],
+  ['M1 · Ruhsat & alan bazlı hesap','EVET',25,'RUHSAT HESAPLAMASI sayfasının ürün hâli; 2026/16 ortalama kuralı ve giriş denetimi'],
+  ['M2 · İhale & sözleşme hesabı + kısmi araştırma','EVET',20,'GENEL HESAPLAMA sayfasının ürün hâli; kırılan Etap-2 bağları ve mahsup akışı'],
+  ['M3 · Aylık bildirim matrisi, İcmal & kota','EVET',30,'ASGARİ İŞÇİLİK 1&2 matrisi + İCMAL panelinin ürün hâli; alt-taşeron kuralları, elle "kalan adam/ay" biter'],
+  ['M4 · Mevzuat parametre yönetimi','EVET',15,'Formüllere gömülü 6,75 / 0,345 / 0,375 / 38,5 sabitleri tek tabloya taşınır; dönem kilidi'],
+  ['M5 · Google Sheets köprüsü & veri teyidi','EVET',18,'"Manuel elle yazılacak alan" ve "TEYİT EDİLDİ" notları, denetimli giriş ve izlenen teyide dönüşür'],
+  ['M6 · Taşeron sicili, raporlar & KVKK','EVET',25,'TAŞERON sicil sayfasının ürün hâli; maskeleme, evrak takibi, 4 denetim raporu']].map(m=>({ad:m[0],sec:m[1],gun:m[2],ic:m[3]})),
+ faz:null,
+ donem:[{b:new Date(2024,0,1),o:.345,u:20002.5},{b:new Date(2024,8,1),o:.3475,u:20002.5},{b:new Date(2025,0,1),o:.3475,u:26005.5},{b:new Date(2026,0,1),o:.3575,u:33030}],
+ teklif:{form_no:'SW-2026-001',gecerlilik:'30 gün',odeme1:'İmza %30: 183.600,00 TL',odeme2:'UAT %40: 244.800,00 TL',odeme3:'GA %30: 183.600,00 TL'},
+ maliyet:[['III-A',17100,19800],['III-B',18200,21050],['III-C',19150,23400],['IV-A',21500,26450],['IV-B',27500,33900],['IV-C',32600,40500],['V-A',34400,42350],['V-D',43400,53500]].map(m=>({s:m[0],y25:m[1],y26:m[2]}))};
+function fbFaz(kv){const pays=[.12,.15,.38,.18,.10,.07],ads=['F1 · Analiz & Gereksinim','F2 · Tasarım','F3 · Geliştirme (vibecoding)','F4 · Test & Doğrulama','F5 · UAT / Geçiş','F6 · Devreye Alma & Hypercare'];
+ let cur=new Date(kv.baslangic),out=[],rem=kv.sure;
+ pays.forEach((p,i)=>{const d=i<5?Math.max(1,Math.round(kv.sure*p)):rem;rem-=i<5?d:0;
+  const b=new Date(cur),e=new Date(cur.getTime()+(d-1)*864e5);cur=new Date(e.getTime()+864e5);
+  out.push({ad:ads[i],gun:d,b,e});});return out;}
+async function fetchLive(){
+ const u=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:json&sheet=WEB_PARAM&headers=0&t=${Date.now()}`;
+ const t=await(await fetch(u,{cache:'no-store'})).text();
+ const j=JSON.parse(t.substring(t.indexOf('(')+1,t.lastIndexOf(')')));
+ if(j.status==='error')throw new Error('WEB_PARAM sayfası yok');
+ const kv={},modul=[],faz=[],donem=[],maliyet=[],teklif={};
+ for(const r of j.table.rows){const c=(r.c||[]).map(x=>x?x.v:null);
+  if(c[0]==='KV')kv[c[1]]=c[2];
+  else if(c[0]==='MODUL')modul.push({ad:c[1],sec:c[2],gun:num(c[3]),ic:c[4]});
+  else if(c[0]==='FAZ')faz.push({ad:c[1],gun:num(c[3]),b:dat(c[4]),e:dat(c[5])});
+  else if(c[0]==='DONEM')donem.push({b:dat(c[1]),o:num(c[2]),u:num(c[3])});
+  else if(c[0]==='MALIYET')maliyet.push({s:c[1],y25:num(c[2]),y26:num(c[3])});
+  else if(c[0]==='TEKLIF')teklif[c[1]]=c[2];}
+ if(!('carpan' in kv)||faz.length<6)throw new Error('WEB_PARAM v4 değil — v4 dosyasını içe aktarın');
+ ['dev','ai_hiz','ai_pay','amdahl','eca','carpan','efor','sure','gunluk_ucret','bedel','kdv','toplam','asgari_ucret_2026'].forEach(k=>kv[k]=num(kv[k]));
+ ['baslangic','ga','tampon'].forEach(k=>kv[k]=dat(kv[k]));
+ return{kv,modul,faz,donem,maliyet,teklif};
+}
+function render(D,live,msg){
+ const kv=D.kv, faz=D.faz||fbFaz(kv);
+ const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+ document.getElementById('liveDot').className='inline-block w-2.5 h-2.5 rounded-full '+(live?'bg-emerald-400':'bg-amber-400');
+ set('liveStatus',live?'Sheets canlı':'statik yedek'); set('liveMode',live?'CANLI':'STATİK');
+ set('liveNote',msg); set('liveTime',new Date().toLocaleTimeString('tr-TR')+(kv.guncelleme?' · Sheets kaydı: '+kv.guncelleme:''));
+ set('vSurum',kv.surum||'4');
+ set('kEfor',trN(kv.efor,0)+' adam-gün'); set('kSure',trN(kv.sure,0)+' gün'); set('kGA',trD(kv.ga));
+ set('kBedel',trTL(kv.bedel)); set('kDev',kv.dev); set('kCarpan',trN(kv.carpan));
+ set('kEfor2',trN(kv.efor,0)+' adam-gün');
+ set('vDev',kv.dev); set('vAi','×'+trN(kv.ai_hiz,1)); set('vPay','%'+Math.round(kv.ai_pay*100));
+ set('vAmdahl',trN(kv.amdahl)); set('vEca',trN(kv.eca)); set('vCarpan',trN(kv.carpan));
+ set('vGun',trN(kv.sure,0)+' gün'); set('vGA',trD(kv.ga)); set('vTampon',trD(kv.tampon));
+ set('tEfor',trN(kv.efor,0)+' adam-gün'); set('tUcret',trTL(kv.gunluk_ucret));
+ set('tBedel',trTL(kv.bedel)); set('tKdv',trTL(kv.kdv)); set('tToplam',trTL(kv.toplam));
+ set('tGecerlilik',(D.teklif&&D.teklif.gecerlilik)||'30 gün'); set('tNo',(D.teklif&&D.teklif.form_no)||'SW-2026-001');
+ const odemeler=[D.teklif&&D.teklif.odeme1,D.teklif&&D.teklif.odeme2,D.teklif&&D.teklif.odeme3].filter(Boolean);
+ const odFall=['İmza %30','UAT %40','GA %30'].map((o,i)=>`${o}: ${trTL([.3,.4,.3][i]*kv.bedel)}`);
+ document.getElementById('tOdeme').innerHTML=(odemeler.length===3?odemeler:odFall).map((txt,i)=>`<div class="flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center font-medium">${i+1}</span><span>${txt}</span></div>`).join('');
+ // Kapsam kartları — tıklanınca alt bileşen modalı
+ MODS=D.modul;
+ document.getElementById('modCards').innerHTML=D.modul.map(m=>{
+  const on=String(m.sec).toUpperCase()==='EVET';
+  const code=codeOf(m.ad);
+  return `<button type="button" onclick="openMod('${code}')" class="card text-left w-full hover:border-brand-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-600 transition ${on?'':'opacity-60'}">
+   <div class="flex items-center justify-between gap-2">
+    <span class="badge ${on?'bg-emerald-50 text-emerald-700 border border-emerald-100':'bg-slate-100 text-slate-500 border border-slate-200'}">${on?'DAHİL':'HARİÇ'}</span>
+    <span class="badge bg-brand-50 text-brand-700 border border-brand-100">${trN(m.gun,0)} a-g</span></div>
+   <h3 class="mt-2 font-medium text-slate-900">${m.ad}</h3>
+   <p class="mt-1 leading-7">${m.ic||''}</p>
+   <p class="mt-3 inline-flex items-center gap-1 text-brand-700 font-medium">Alt bileşenler <i class="ph ph-caret-right"></i></p></button>`;}).join('');
+ // Timeline
+ const colors=['#64748B','#1A56DB','#1642A8','#0E9F6E','#B45309','#0F172A'];
+ document.getElementById('timeline').innerHTML=faz.map((p,i)=>{
+  const kod=(p.ad||'').split(' ')[0];
+  return `<div class="titem"><span class="tdot" style="background:${colors[i%6]}">${kod}</span>
+   <div><div class="flex flex-wrap items-center gap-2">
+    <span class="font-medium text-slate-900 text-lg">${p.ad}</span>
+    <span class="badge bg-slate-100 text-slate-600">${trD(p.b)} → ${trD(p.e)}</span>
+    <span class="badge bg-brand-50 text-brand-700 border border-brand-100">${trN(p.gun,0)} gün</span></div>
+   <p class="mt-1 leading-7">${FAZ_TESLIM[kod]||''}</p></div></div>`;}).join('')+
+  `<div class="titem"><span class="tdot bg-emerald-600"><i class="ph ph-flag"></i></span>
+   <div><div class="flex flex-wrap items-center gap-2"><span class="font-medium text-slate-900 text-lg">GA — teslim</span>
+   <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-100">${trD(kv.ga)}</span>
+   <span class="badge bg-slate-100 text-slate-600">tampon sonu ${trD(kv.tampon)}</span></div></div></div>`;
+ // Karşılaştırma + what-if
+ document.getElementById('cmpBars').innerHTML=[
+  ['İnsan-eşdeğeri efor',kv.efor,'bg-slate-300 text-slate-700',100],
+  ['Vibecoding takvimi (canlı)',kv.sure,'bg-brand-600 text-white',Math.max(8,Math.round(kv.sure/kv.efor*100))]
+ ].map(b=>`<div><div class="flex justify-between"><span class="muted">${b[0]}</span><span class="font-medium text-slate-900">${trN(b[1],0)} gün</span></div>
+  <div class="mt-1 h-8 rounded-lg bg-slate-100 overflow-hidden"><div class="h-full ${b[2]} flex items-center px-3 rounded-lg" style="width:${b[3]}%">${trN(b[1],0)} g</div></div></div>`).join('');
+ const ae=kv.amdahl*kv.eca;
+ document.getElementById('whatif').innerHTML=[1,2,3,4].map(n=>{
+  const g=Math.max(10,Math.round(kv.efor*ae/n));
+  const ga=new Date(kv.baslangic.getTime()+g*864e5);
+  return `<span class="chip ${kv.dev===n?'!bg-brand-600 !text-white !border-brand-600':''}"><i class="ph ph-users"></i>${n} geliştirici → ${g} gün → ${trD(ga)}</span>`;}).join('');
+ // Dönem + risk
+ document.getElementById('tblDonem').innerHTML=D.donem.map((d,i)=>{
+  const nxt=D.donem[i+1];const lbl=nxt?`${trD(d.b)} – ${trD(new Date(nxt.b-864e5))}`:`${trD(d.b)} →`;
+  const b=!nxt?' class="font-medium text-slate-900"':'';
+  return `<tr><td${b}>${lbl}</td><td${b}>%${(d.o*100).toLocaleString('tr-TR',{minimumFractionDigits:2})}</td><td${b}>${trTL(d.u)}</td></tr>`;}).join('');
+ document.getElementById('riskCards').innerHTML=RISKS.map(r=>`<div class="card"><p class="font-medium text-slate-900 flex items-center gap-2"><i class="ph ph-warning-diamond text-brand-600"></i>${r[0]}</p><p class="mt-2 leading-7">${r[1]}</p></div>`).join('');
+ // Grafikler
+ chart('chartFaz').setOption({textStyle:baseTxt,tooltip:{},grid:{left:110,right:40,top:10,bottom:24},
+  xAxis:{type:'value',axisLabel:baseTxt,splitLine:{lineStyle:{color:'#EEF2F7'}}},
+  yAxis:{type:'category',inverse:true,data:faz.map(p=>(p.ad||'').split(' · ')[0]),axisLabel:{...baseTxt,fontSize:12}},
+  series:[{type:'bar',barWidth:14,itemStyle:{borderRadius:7,color:p=>colors[p.dataIndex%6]},
+   label:{show:true,position:'right',formatter:p=>faz[p.dataIndex].gun+' g',fontFamily:'Roboto'},data:faz.map(p=>p.gun)}]});
+ chart('chartMaliyet').setOption({textStyle:baseTxt,tooltip:{trigger:'axis'},legend:{bottom:0,textStyle:baseTxt},
+  grid:{left:64,right:12,top:20,bottom:44},
+  xAxis:{type:'category',data:D.maliyet.map(m=>m.s),axisLabel:baseTxt},
+  yAxis:{type:'value',axisLabel:{...baseTxt,formatter:v=>(v/1000)+' bin'}},
+  series:[{name:'2025',type:'bar',itemStyle:{color:slate,borderRadius:[4,4,0,0]},data:D.maliyet.map(m=>m.y25)},
+          {name:'2026',type:'bar',itemStyle:{color:brand,borderRadius:[4,4,0,0]},data:D.maliyet.map(m=>m.y26)}]});
+}
+// ===== Modül detay modalı (docs/modules/*.md) =====
+let MODS=[];const mdCache={};
+const MODFILES={M0:'M0-cekirdek-altyapi',M1:'M1-ruhsat-hesap-motoru',M2:'M2-ihale-hesabi',M3:'M3-hakedis-izleme-kota',M4:'M4-mevzuat-parametre',M5:'M5-google-sheets-koprusu',M6:'M6-denetim-raporlari-kvkk'};
+const codeOf=ad=>{const s=String(ad||'').trim();return s.startsWith('M')?s.split(' ')[0]:'M0';};
+function openMod(code){
+ const f=MODFILES[code]||MODFILES.M0;
+ const m=MODS.find(x=>codeOf(x.ad)===code);
+ document.getElementById('mdlCode').textContent=code;
+ document.getElementById('mdlEfor').textContent=m?trN(m.gun,0)+' adam-gün':'';
+ document.getElementById('mdlSrc').href='docs/modules/'+f+'.md';
+ const b=document.getElementById('mdlBody');
+ b.innerHTML='<p class="text-slate-400">Kapsam sözleşmesi yükleniyor…</p>';
+ document.getElementById('modal').classList.remove('hidden');
+ document.body.style.overflow='hidden';
+ (mdCache[f]?Promise.resolve(mdCache[f])
+   :fetch('docs/modules/'+f+'.md',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(t=>(mdCache[f]=t)))
+ .then(t=>{b.innerHTML=marked.parse(t);b.scrollTop=0;})
+ .catch(()=>{b.innerHTML='<p class="text-amber-700">Detay dosyası yüklenemedi: docs/modules/'+f+'.md</p>';});
+}
+function closeMod(){document.getElementById('modal').classList.add('hidden');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
+
+async function tick(){
+ try{const D=await fetchLive();
+  render(D,true,'Google Sheets çalışma kitabından canlı okunuyor; Sheets\'i düzenleyin, 60 sn içinde buraya yansır.');
+ }catch(e){render(FB,false,'Sheets okunamadı: '+e.message+'. v4 dosyasını aynı Sheets adresine içe aktarın (Dosya > İçe aktar > E-tabloyu değiştir).');}
+}
+tick(); setInterval(tick,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
+</script>
+</body>
+</html>
